@@ -12,8 +12,12 @@ public class FxmlSample {
 
     private static final ObservableList<MyDataType> data = FXCollections.observableArrayList(
             new MyDataType("aaaaaaaa","baaaaaa","caaaaaaaa","daaaaaa", "eaaaaa", "faaaaa", "daaaaaa"));
-    public void click(MouseEvent mouseEvent) {
+
+
+
+    public void click() {
 
         table1.setItems(data);
+
     }
 }
