@@ -18,4 +18,5 @@ public class AuctionHouseApp extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
 }
