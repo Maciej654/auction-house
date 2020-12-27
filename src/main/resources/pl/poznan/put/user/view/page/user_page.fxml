@@ -64,7 +64,7 @@
                                 <Label text="Aukcja #1" />
                                 <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../../../../../../../../../../../OneDrive/Pictures/stuffed-hippo.jpg" />
+                                        <Image url="@../../../stuffed-hippo.jpg" />
                                     </image>
                                 </ImageView>
                             </children>
@@ -76,7 +76,7 @@
                                 <Label text="Aukcja #2" />
                                 <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../../../../../../../../../../../OneDrive/Pictures/stuffed-hippo.jpg" />
+                                        <Image url="@../../../stuffed-hippo.jpg" />
                                     </image>
                                 </ImageView>
                             </children>
@@ -88,7 +88,7 @@
                                 <Label text="Aukcja #3" />
                                 <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../../../../../../../../../../../OneDrive/Pictures/stuffed-hippo.jpg" />
+                                        <Image url="@../../../stuffed-hippo.jpg" />
                                     </image>
                                 </ImageView>
                             </children>
@@ -100,7 +100,7 @@
                                 <Label text="Aukcja #4" />
                                 <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../../../../../../../../../../../OneDrive/Pictures/stuffed-hippo.jpg" />
+                                        <Image url="@../../../stuffed-hippo.jpg" />
                                     </image>
                                 </ImageView>
                             </children>
@@ -112,7 +112,7 @@
                                 <Label text="Aukcja #5" />
                                 <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../../../../../../../../../../../OneDrive/Pictures/stuffed-hippo.jpg" />
+                                        <Image url="@../../../stuffed-hippo.jpg" />
                                     </image>
                                 </ImageView>
                             </children>
@@ -124,7 +124,7 @@
                                 <Label text="Aukcja #6" />
                                 <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../../../../../../../../../../../OneDrive/Pictures/stuffed-hippo.jpg" />
+                                        <Image url="@../../../stuffed-hippo.jpg" />
                                     </image>
                                 </ImageView>
                             </children>
@@ -136,7 +136,7 @@
                                 <Label text="Aukcja #7" />
                                 <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../../../../../../../../../../../OneDrive/Pictures/stuffed-hippo.jpg" />
+                                        <Image url="@../../../stuffed-hippo.jpg" />
                                     </image>
                                 </ImageView>
                             </children>
@@ -148,7 +148,7 @@
                                 <Label text="Aukcja #8" />
                                 <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../../../../../../../../../../../OneDrive/Pictures/stuffed-hippo.jpg" />
+                                        <Image url="@../../../stuffed-hippo.jpg" />
                                     </image>
                                 </ImageView>
                             </children>
@@ -160,7 +160,7 @@
                                 <Label text="Aukcja #9" />
                                 <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../../../../../../../../../../../OneDrive/Pictures/stuffed-hippo.jpg" />
+                                        <Image url="@../../../stuffed-hippo.jpg" />
                                     </image>
                                 </ImageView>
                             </children>
