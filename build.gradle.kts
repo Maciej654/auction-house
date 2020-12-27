@@ -34,15 +34,19 @@ application {
 }
 
 dependencies {
+    // javafx
     implementation("org.openjfx:javafx:${javafx.version}")
     javafxModuleNames.forEach {
         implementation("org.openjfx:javafx-$it:${javafx.version}")
     }
-//    val lombok = "org.projectlombok:lombok:1.18.16"
-//    compileOnly(lombok)
-//    annotationProcessor(lombok)
 
+    // hibernate
+    implementation("org.hibernate:hibernate-core:5.4.26.Final")
+
+    // markdown support
     implementation("com.sandec:mdfx:0.1.6")
+
+    // logging
     implementation("org.slf4j:slf4j-simple:1.7.30")
 }
 
