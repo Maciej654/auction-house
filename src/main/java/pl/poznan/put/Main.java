@@ -1,9 +1,9 @@
 package pl.poznan.put;
 
-import static javafx.application.Application.launch;
+import javafx.application.Application;
 
 public class Main {
     public static void main(String[] args) {
-        launch(AuctionHouseApp.class, args);
+        Application.launch(AuctionHouseApp.class, args);
     }
 }

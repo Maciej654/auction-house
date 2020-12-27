@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+    <persistence-unit name="data" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>pl.poznan.put.model.ad.Ad</class>
+        <class>pl.poznan.put.model.ad.personal.PersonalAd</class>
+        <class>pl.poznan.put.model.auction.Auction</class>
+        <class>pl.poznan.put.model.auction.Default</class>
+        <class>pl.poznan.put.model.auction.book.Book</class>
+        <class>pl.poznan.put.model.auction.car.Car</class>
+        <class>pl.poznan.put.model.auction.log.AuctionLog</class>
+        <class>pl.poznan.put.model.auction.phone.Phone</class>
+        <class>pl.poznan.put.model.delivery.preference.DeliveryPreference</class>
+        <class>pl.poznan.put.model.follower.Follower</class>
+        <class>pl.poznan.put.model.picture.Picture</class>
+        <class>pl.poznan.put.model.rating.Rating</class>
+        <class>pl.poznan.put.model.shopping.cart.ShoppingCart</class>
+        <class>pl.poznan.put.model.user.User</class>
+        <class>pl.poznan.put.model.watch.list.WatchList</class>
+
+        <properties>
+            <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/dblab02_students.cs.put.poznan.pl" />
+            <property name="javax.persistence.jdbc.user" value="" />
+            <property name="javax.persistence.jdbc.password" value="" />
+            <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle12cDialect" />
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+        </properties>
+    </persistence-unit>
+</persistence>
