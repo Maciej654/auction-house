@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "PHONES")
@@ -22,7 +23,7 @@ import javax.persistence.Table;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class Phone extends Auction {
+public class Phone extends Auction implements Serializable {
     @Column(name = "PRODUCER")
     private String producer;
 

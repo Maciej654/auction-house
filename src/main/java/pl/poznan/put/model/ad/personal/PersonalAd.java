@@ -3,17 +3,15 @@ package pl.poznan.put.model.ad.personal;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.poznan.put.model.ad.Ad;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.user.User;
-import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -23,8 +21,15 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonalAd {
-    private static final EntityManager em = EntityManagerProvider.getEntityManager();
+public class PersonalAd implements Serializable {
+    @Id
+    @JoinColumn(name = "AUCTION")
+    @ManyToOne
+    private Auction auction;
+    @Id
+    @JoinColumn(name = "RECIPIENT")
+    @OneToOne
+    private User    recipient;
 
     @Data
     @NoArgsConstructor
@@ -33,14 +38,4 @@ public class PersonalAd {
         private Auction auction;
         private User    recipient;
     }
-
-    @Id
-    @Column(name = "AUCTION")
-    @ManyToOne
-    private Auction auction;
-
-    @Id
-    @Column(name = "RECIPIENT")
-    @ManyToOne
-    private User recipient;
 }

@@ -10,8 +10,8 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import pl.poznan.put.model.user.User;
-import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 import pl.poznan.put.util.password.hasher.PasswordHasher;
+import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
@@ -19,45 +19,21 @@ import java.time.format.DateTimeFormatter;
 
 @Slf4j
 public class UserInfo {
-    @RequiredArgsConstructor
-    private static class SimpleDateConverter extends StringConverter<LocalDate> {
-        private final DateTimeFormatter formatter;
-
-        @Override
-        public String toString(LocalDate object) {
-            return object == null ? StringUtils.EMPTY : formatter.format(object);
-        }
-
-        @Override
-        public LocalDate fromString(String string) {
-            return StringUtils.isBlank(string) ? null : LocalDate.parse(string, formatter);
-        }
-    }
-
-    public enum Action {
-        CREATE,
-        UPDATE
-    }
-
     @FXML
-    private TextField emailTextField;
-
+    private TextField      emailTextField;
     @FXML
-    private TextField firstNameTextField;
-
+    private TextField      firstNameTextField;
     @FXML
-    private TextField lastNameTextField;
-
+    private TextField      lastNameTextField;
     @FXML
-    private DatePicker birthdayDatePicker;
-
+    private DatePicker     birthdayDatePicker;
     @FXML
-    private PasswordField passwordField;
-
-    private Action action;
-
+    private PasswordField  passwordField;
+    private Action         action;
     @Setter
-    private EntityManager em;
+    private EntityManager  em;
+    @Setter
+    private PasswordHasher hasher = PasswordHasher.of("MD5");
 
     public void setAction(Action action) {
 
@@ -71,9 +47,6 @@ public class UserInfo {
                 break;
         }
     }
-
-    @Setter
-    private PasswordHasher hasher = PasswordHasher.of("MD5");
 
     @FXML
     private void initialize() {
@@ -127,5 +100,25 @@ public class UserInfo {
             }
         }
         else log.error("Hasher is null");
+    }
+
+    public enum Action {
+        CREATE,
+        UPDATE
+    }
+
+    @RequiredArgsConstructor
+    private static class SimpleDateConverter extends StringConverter<LocalDate> {
+        private final DateTimeFormatter formatter;
+
+        @Override
+        public String toString(LocalDate object) {
+            return object == null ? StringUtils.EMPTY : formatter.format(object);
+        }
+
+        @Override
+        public LocalDate fromString(String string) {
+            return StringUtils.isBlank(string) ? null : LocalDate.parse(string, formatter);
+        }
     }
 }

@@ -11,6 +11,8 @@ import java.util.function.Function;
 @Slf4j
 @RequiredArgsConstructor
 public class PasswordHasher implements Function<String, String> {
+    private final MessageDigest digest;
+
     public static PasswordHasher of(String algorithm) {
         try {
             var digest = MessageDigest.getInstance(algorithm);
@@ -21,8 +23,6 @@ public class PasswordHasher implements Function<String, String> {
             return null;
         }
     }
-
-    private final MessageDigest digest;
 
     @Override
     public String apply(String raw) {

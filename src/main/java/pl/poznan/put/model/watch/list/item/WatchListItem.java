@@ -1,4 +1,4 @@
-package pl.poznan.put.model.watch.list;
+package pl.poznan.put.model.watch.list.item;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,17 +10,30 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "WATCH_LISTS")
-@IdClass(WatchList.WatchListId.class)
+@IdClass(WatchListItem.WatchListId.class)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class WatchList {
+public class WatchListItem implements Serializable {
+    @Id
+    @JoinColumn(name = "AUCTION")
+    @ManyToOne
+    private Auction auction;
+    @Id
+    @JoinColumn(name = "FOLLOWER")
+    @ManyToOne
+    private User    follower;
+    @Id
+    @Column(name = "NAME")
+    private String  name;
+
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
@@ -29,18 +42,4 @@ public class WatchList {
         private User    follower;
         private String  name;
     }
-
-    @Id
-    @Column(name = "AUCTION")
-    @ManyToOne
-    private Auction auction;
-
-    @Id
-    @Column(name = "FOLLOWER")
-    @ManyToOne
-    private User follower;
-
-    @Id
-    @Column(name = "NAME")
-    private String name;
 }
