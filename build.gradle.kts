@@ -53,7 +53,7 @@ dependencies {
     implementation("org.apache.commons:commons-lang3:3.0")
 
     // oracle driver
-    implementation("com.oracle.database.jdbc:ojdbc8:12.2.0.1")
+    implementation("com.oracle.database.jdbc:ojdbc10:19.9.0.0")
 }
 
 tasks.wrapper {
