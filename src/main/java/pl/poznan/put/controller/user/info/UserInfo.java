@@ -11,10 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
-import pl.poznan.put.util.user.hash.UserPasswordHasher;
+import pl.poznan.put.util.password.hasher.PasswordHasher;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -74,7 +73,7 @@ public class UserInfo {
     }
 
     @Setter
-    private UserPasswordHasher hasher = UserPasswordHasher.of("MD5");
+    private PasswordHasher hasher = PasswordHasher.of("MD5");
 
     @FXML
     private void initialize() {

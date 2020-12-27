@@ -1,4 +1,4 @@
-package pl.poznan.put.model.auction.log;
+package pl.poznan.put.model.watch.list;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.user.User;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,22 +13,21 @@ import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
-@Table(name = "AUCTIONS_LOGS")
-@IdClass(AuctionLog.AuctionLogId.class)
+@Table(name = "WATCH_LISTS")
+@IdClass(WatchList.WatchListId.class)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuctionLog {
+public class WatchList {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class AuctionLogId implements Serializable {
+    public static class WatchListId implements Serializable {
         private Auction auction;
-        private long    timestamp;
+        private User    follower;
+        private String  name;
     }
 
     @Id
@@ -38,13 +36,11 @@ public class AuctionLog {
     private Auction auction;
 
     @Id
-    @Column(name = "TIMESTAMP")
-    private long timestamp;
-
-    @Column(name = "ACTION_DESCRIPTION")
-    private String description;
-
-    @Column(name = "ACTOR")
+    @Column(name = "FOLLOWER")
     @ManyToOne
-    private User actor;
+    private User follower;
+
+    @Id
+    @Column(name = "NAME")
+    private String name;
 }

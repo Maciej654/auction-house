@@ -1,21 +1,23 @@
-package pl.poznan.put.util.user.hash;
+package pl.poznan.put.util.password.hasher;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.function.Function;
 
+@Slf4j
 @RequiredArgsConstructor
-public class UserPasswordHasher implements Function<String, String> {
-    public static UserPasswordHasher of(String algorithm) {
+public class PasswordHasher implements Function<String, String> {
+    public static PasswordHasher of(String algorithm) {
         try {
             var digest = MessageDigest.getInstance(algorithm);
-            return new UserPasswordHasher(digest);
+            return new PasswordHasher(digest);
         }
         catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            log.error("Cannot construct a PasswordHasher", e);
             return null;
         }
     }

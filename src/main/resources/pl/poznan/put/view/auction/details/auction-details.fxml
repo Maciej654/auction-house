@@ -55,16 +55,16 @@
     <TabPane minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="100.0"
         tabMaxWidth="100.0" tabMinWidth="100.0" VBox.vgrow="ALWAYS">
         <Tab closable="false" text="Opis">
-            <fx:include fx:id="auctionDescription" source="description/auction_description.fxml" />
+            <fx:include fx:id="auctionDescription" source="description/auction-description.fxml" />
         </Tab>
         <Tab closable="false" text="Zdjęcia">
-            <fx:include fx:id="auctionPhotos" source="photos/auction_photos.fxml" />
+            <fx:include fx:id="auctionPhotos" source="photos/auction-photos.fxml" />
         </Tab>
         <Tab closable="false" text="Historia">
-            <fx:include fx:id="auctionHistory" source="history/auction_history.fxml" />
+            <fx:include fx:id="auctionHistory" source="history/auction-history.fxml" />
         </Tab>
         <Tab closable="false" text="Udział">
-            <fx:include fx:id="auctionBid" source="bid/auction_bid.fxml" />
+            <fx:include fx:id="auctionBid" source="bid/auction-bid.fxml" />
         </Tab>
     </TabPane>
 </VBox>
