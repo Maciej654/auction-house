@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "BOOKS")
@@ -22,18 +23,16 @@ import javax.persistence.Table;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class Book extends Auction {
+public class Book extends Auction implements Serializable {
+    @Column(name = "AUTHOR")
+    private String author;
+    @Column(name = "COVER")
+    private Cover  cover;
+    @Column(name = "GENRE")
+    private String genre;
+
     public enum Cover {
         SOFT,
         HARD
     }
-
-    @Column(name = "AUTHOR")
-    private String author;
-
-    @Column(name = "COVER")
-    private Cover cover;
-
-    @Column(name = "GENRE")
-    private String genre;
 }

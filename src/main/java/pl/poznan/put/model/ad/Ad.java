@@ -8,17 +8,19 @@ import pl.poznan.put.model.auction.Auction;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "ADS")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Ad {
+public class Ad implements Serializable {
     @Id
-    @Column(name = "AUCTION")
+    @JoinColumn(name = "AUCTION")
     @OneToOne
     private Auction auction;
 

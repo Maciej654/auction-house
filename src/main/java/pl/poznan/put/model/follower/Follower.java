@@ -5,11 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.poznan.put.model.user.User;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -20,7 +19,16 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Follower {
+public class Follower implements Serializable {
+    @Id
+    @JoinColumn(name = "FOLLOWER")
+    @ManyToOne
+    private User follower;
+    @Id
+    @JoinColumn(name = "FOLLOWEE")
+    @ManyToOne
+    private User followee;
+
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
@@ -28,14 +36,4 @@ public class Follower {
         private User follower;
         private User followee;
     }
-
-    @Id
-    @Column(name = "FOLLOWER")
-    @ManyToOne
-    private User follower;
-
-    @Id
-    @Column(name = "FOLLOWEE")
-    @ManyToOne
-    private User followee;
 }

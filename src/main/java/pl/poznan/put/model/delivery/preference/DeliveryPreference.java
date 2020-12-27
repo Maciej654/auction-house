@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -19,7 +20,16 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeliveryPreference {
+public class DeliveryPreference implements Serializable {
+    @Id
+    @JoinColumn(name = "USER")
+    @ManyToOne
+    private User user;
+
+    @Id
+    @Column(name = "ADDRESS")
+    private String address;
+
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
@@ -27,14 +37,5 @@ public class DeliveryPreference {
         private User   user;
         private String address;
     }
-
-    @Id
-    @Column(name = "USER")
-    @ManyToOne
-    private User user;
-
-    @Id
-    @Column(name = "ADDRESS")
-    private String address;
 }
 

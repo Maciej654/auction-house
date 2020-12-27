@@ -5,11 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.poznan.put.model.auction.Auction;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -20,7 +20,15 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Picture {
+public class Picture implements Serializable {
+    @Id
+    @JoinColumn(name = "AUCTION")
+    @ManyToOne
+    private Auction auction;
+    @Id
+    @Column(name = "PATH")
+    private String  path;
+
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
@@ -28,13 +36,4 @@ public class Picture {
         private Auction auction;
         private String  path;
     }
-
-    @Id
-    @Column(name = "AUCTION")
-    @ManyToOne
-    private Auction auction;
-
-    @Id
-    @Column(name = "PATH")
-    private String path;
 }

@@ -18,49 +18,39 @@ public class AuctionHistoryController {
     private TableView<AuctionLog> historyTableView;
 
     @FXML
-    private TableColumn<AuctionLog, Date> dateTableColumn;
+    private TableColumn<AuctionLog, Long> dateTableColumn;
 
     @FXML
     private TableColumn<AuctionLog, String> descriptionTableColumn;
-
-    private static class SimpleDateFormatTableCell extends TableCell<AuctionLog, Date> {
-        private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        @Override
-        protected void updateItem(Date item, boolean empty) {
-            super.updateItem(item, empty);
-            if (empty) setText("");
-            else setText(FORMAT.format(item));
-        }
-    }
 
     @FXML
     private void initialize() {
         log.info("initialize");
 
         dateTableColumn.setCellFactory(column -> new SimpleDateFormatTableCell());
-        dateTableColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        dateTableColumn.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
         descriptionTableColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         historyTableView.getSortOrder().add(dateTableColumn);
         historyTableView.getItems().addListener((ListChangeListener<? super AuctionLog>) change -> {
             if (change.next() && change.getAddedSize() > 0) historyTableView.sort();
         });
-
-        new Thread(() -> {
-            for (int i = 0; i < 20; i++) {
-                var log = new AuctionLog(new Date(), "Log #" + i);
-                historyTableView.getItems().add(log);
-                try {
-                    Thread.sleep(1000);
-                }
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
     }
 
     public void hello() {
         log.info("hello");
+    }
+
+    private static class SimpleDateFormatTableCell extends TableCell<AuctionLog, Long> {
+        private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        @Override
+        protected void updateItem(Long item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty) setText("");
+            else {
+                var date = new Date(item);
+                setText(FORMAT.format(date));
+            }
+        }
     }
 }
