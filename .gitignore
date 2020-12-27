@@ -3,6 +3,8 @@
 /.idea/
 /build/
 /gradle/
+/lib/
+src/main/resources/pl/poznan/put/util/persistence/entity/manager/provider/user.properties
 gradlew
 gradlew.bat
 lombok.config

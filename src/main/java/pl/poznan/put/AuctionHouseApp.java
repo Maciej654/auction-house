@@ -13,7 +13,7 @@ import java.io.IOException;
 public class AuctionHouseApp extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        var resource = AuctionHouseApp.class.getResource("auction/view/details/auction_details.fxml");
+        var resource = AuctionHouseApp.class.getResource("view/user/info/user_info.fxml");
         var root     = FXMLLoader.<Parent>load(resource);
         var scene    = new Scene(root);
         primaryStage.setTitle("Welcome to Auction House");
