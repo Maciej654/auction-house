@@ -22,13 +22,14 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class ShoppingCartItem implements Serializable {
     @Id
-    @JoinColumn(name = "AUCTION")
+    @JoinColumn(name = "AUCTION", referencedColumnName = "AUCTION_ID")
     @ManyToOne
     private Auction auction;
+
     @Id
-    @JoinColumn(name = "BUYER")
+    @JoinColumn(name = "BUYER", referencedColumnName = "EMAIL")
     @ManyToOne
-    private User    buyer;
+    private User buyer;
 
     @Data
     @NoArgsConstructor

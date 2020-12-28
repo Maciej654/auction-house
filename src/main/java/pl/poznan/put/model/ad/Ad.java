@@ -20,7 +20,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class Ad implements Serializable {
     @Id
-    @JoinColumn(name = "AUCTION")
+    @JoinColumn(name = "AUCTION", referencedColumnName = "AUCTION_ID")
     @OneToOne
     private Auction auction;
 

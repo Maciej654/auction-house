@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class AuctionLog implements Serializable {
     @Id
-    @JoinColumn(name = "AUCTION")
+    @JoinColumn(name = "AUCTION", referencedColumnName = "AUCTION_ID")
     @ManyToOne
     private Auction auction;
 
@@ -35,7 +35,7 @@ public class AuctionLog implements Serializable {
     @Column(name = "ACTION_DESCRIPTION")
     private String description;
 
-    @JoinColumn(name = "ACTOR")
+    @JoinColumn(name = "ACTOR", referencedColumnName = "EMAIL")
     @ManyToOne
     private User actor;
 
@@ -43,7 +43,7 @@ public class AuctionLog implements Serializable {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class AuctionLogId implements Serializable {
-        private Auction auction;
-        private long    timestamp;
+        private Auction       auction;
+        private LocalDateTime timestamp;
     }
 }

@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -23,13 +22,14 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class PersonalAd implements Serializable {
     @Id
-    @JoinColumn(name = "AUCTION")
+    @JoinColumn(name = "AUCTION", referencedColumnName = "AUCTION_ID")
     @ManyToOne
     private Auction auction;
+
     @Id
-    @JoinColumn(name = "RECIPIENT")
-    @OneToOne
-    private User    recipient;
+    @JoinColumn(name = "RECIPIENT", referencedColumnName = "EMAIL")
+    @ManyToOne
+    private User recipient;
 
     @Data
     @NoArgsConstructor

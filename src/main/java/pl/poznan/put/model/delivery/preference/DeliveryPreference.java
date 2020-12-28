@@ -22,7 +22,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class DeliveryPreference implements Serializable {
     @Id
-    @JoinColumn(name = "USER")
+    @JoinColumn(name = "USER", referencedColumnName = "EMAIL")
     @ManyToOne
     private User user;
 

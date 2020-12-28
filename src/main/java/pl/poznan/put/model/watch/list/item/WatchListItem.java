@@ -23,16 +23,18 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class WatchListItem implements Serializable {
     @Id
-    @JoinColumn(name = "AUCTION")
+    @JoinColumn(name = "AUCTION", referencedColumnName = "AUCTION_ID")
     @ManyToOne
     private Auction auction;
+
     @Id
-    @JoinColumn(name = "FOLLOWER")
+    @JoinColumn(name = "FOLLOWER", referencedColumnName = "EMAIL")
     @ManyToOne
-    private User    follower;
+    private User follower;
+
     @Id
     @Column(name = "NAME")
-    private String  name;
+    private String name;
 
     @Data
     @NoArgsConstructor
