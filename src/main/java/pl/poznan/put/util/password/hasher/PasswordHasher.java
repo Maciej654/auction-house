@@ -3,6 +3,7 @@ package pl.poznan.put.util.password.hasher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import pl.poznan.put.util.hex.codecs.HexCodecs;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -14,7 +15,7 @@ import java.util.function.Function;
 @Slf4j
 @RequiredArgsConstructor
 public class PasswordHasher implements Function<String, String> {
-    private static final String DEFAULT_ALGORITHM = "MD5";
+    private static final String DEFAULT_ALGORITHM = "SHA-256";
 
     private static final Map<String, PasswordHasher> CACHE = new HashMap<>();
 
@@ -30,7 +31,7 @@ public class PasswordHasher implements Function<String, String> {
             if (hasher != null) return hasher;
             try {
                 val digest = MessageDigest.getInstance(algorithm);
-                hasher = new PasswordHasher(digest);
+                hasher = new PasswordHasher(digest, new HexCodecs());
                 CACHE.put(algorithm, hasher);
                 return hasher;
             }
@@ -43,6 +44,8 @@ public class PasswordHasher implements Function<String, String> {
 
     private final MessageDigest digest;
 
+    private final HexCodecs codecs;
+
     @Override
     public String apply(String raw) {
         synchronized (digest) {
@@ -50,7 +53,7 @@ public class PasswordHasher implements Function<String, String> {
             val bytes = raw.getBytes(StandardCharsets.UTF_8);
             digest.update(bytes);
             val hash = digest.digest();
-            return new String(hash);
+            return codecs.encode(hash);
         }
     }
 }

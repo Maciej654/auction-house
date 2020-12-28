@@ -36,7 +36,7 @@ import static pl.poznan.put.model.user.User.QUERY_CHECK_LOGIN;
 @Table(name = "USERS")
 @NamedQuery(
         name = QUERY_CHECK_LOGIN,
-        query = "select user from User user where email = :" + PARAM_EMAIL + " and hash = :" + PARAM_HASH
+        query = "select user from User user where user.email = :" + PARAM_EMAIL + " and user.hash = :" + PARAM_HASH
 )
 @Data
 @NoArgsConstructor
