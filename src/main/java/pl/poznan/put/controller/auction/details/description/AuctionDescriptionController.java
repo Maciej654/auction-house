@@ -4,6 +4,7 @@ import com.sandec.mdfx.MDFXNode;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import pl.poznan.put.Main;
 
 import java.io.IOException;
@@ -20,9 +21,9 @@ public class AuctionDescriptionController {
     private void initialize() throws IOException, URISyntaxException {
         log.info("initialize");
 
-        var sample   = Main.class.getResource("markdown/sample.md").toURI();
-        var markdown = Files.readString(Paths.get(sample));
-        var node     = new MDFXNode(markdown);
+        val sample   = Main.class.getResource("markdown/sample.md").toURI();
+        val markdown = Files.readString(Paths.get(sample));
+        val node     = new MDFXNode(markdown);
         node.getStylesheets().add("pl/poznan/put/css/markdown.css");
         descriptionScrollPane.setContent(node);
     }

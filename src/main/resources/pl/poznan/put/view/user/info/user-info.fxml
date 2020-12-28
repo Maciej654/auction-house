@@ -22,27 +22,25 @@
         <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" valignment="CENTER"
             vgrow="SOMETIMES" />
     </rowConstraints>
-    <children>
-        <Label text="Email:" />
-        <TextField GridPane.columnIndex="1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-            minWidth="-Infinity" prefWidth="300.0" promptText="john.doe@example.com" fx:id="emailTextField" />
-        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" maxHeight="-Infinity" maxWidth="-Infinity"
-            minHeight="-Infinity" minWidth="-Infinity" promptText="John" fx:id="firstNameTextField" />
-        <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" maxHeight="-Infinity" maxWidth="-Infinity"
-            minHeight="-Infinity" minWidth="-Infinity" promptText="Doe" fx:id="lastNameTextField" />
-        <Label GridPane.rowIndex="1" text="First name:" />
-        <Label GridPane.rowIndex="2" text="Last name:" />
-        <Label GridPane.rowIndex="3" text="Birthday:" />
-        <Label GridPane.rowIndex="4" text="Password:" />
-        <PasswordField GridPane.columnIndex="1" GridPane.rowIndex="4" maxHeight="-Infinity" maxWidth="-Infinity"
-            minHeight="-Infinity" minWidth="-Infinity" promptText="password" fx:id="passwordField" />
-        <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="3" maxHeight="-Infinity" maxWidth="-Infinity"
-            minHeight="-Infinity" minWidth="-Infinity" promptText="DD/MM/YYYY" fx:id="birthdayDatePicker" />
-        <Button GridPane.columnIndex="1" GridPane.rowIndex="5" maxHeight="-Infinity" maxWidth="-Infinity"
-            minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#saveButtonClick"
-            prefWidth="75.0" text="Save" />
-    </children>
     <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>
+    <Label text="Email:" />
+    <Label GridPane.rowIndex="1" text="First name:" />
+    <Label GridPane.rowIndex="2" text="Last name:" />
+    <Label GridPane.rowIndex="3" text="Birthday:" />
+    <Label GridPane.rowIndex="4" text="Password:" />
+    <TextField GridPane.columnIndex="1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+        minWidth="-Infinity" prefWidth="300.0" promptText="john.doe@example.com" fx:id="emailTextField" />
+    <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" maxHeight="-Infinity" maxWidth="-Infinity"
+        minHeight="-Infinity" minWidth="-Infinity" promptText="John" fx:id="firstNameTextField" />
+    <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" maxHeight="-Infinity" maxWidth="-Infinity"
+        minHeight="-Infinity" minWidth="-Infinity" promptText="Doe" fx:id="lastNameTextField" />
+    <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="3" maxHeight="-Infinity" maxWidth="-Infinity"
+        minHeight="-Infinity" minWidth="-Infinity" promptText="DD/MM/YYYY" fx:id="birthdayDatePicker" />
+    <PasswordField GridPane.columnIndex="1" GridPane.rowIndex="4" maxHeight="-Infinity" maxWidth="-Infinity"
+        minHeight="-Infinity" minWidth="-Infinity" promptText="password" fx:id="passwordField" />
+    <Button GridPane.columnIndex="1" GridPane.rowIndex="5" maxHeight="-Infinity" maxWidth="-Infinity"
+        minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#saveButtonClick"
+        prefWidth="75.0" text="Save" />
 </GridPane>

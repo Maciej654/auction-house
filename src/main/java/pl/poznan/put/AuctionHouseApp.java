@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 
 import java.io.IOException;
 
@@ -13,10 +14,10 @@ import java.io.IOException;
 public class AuctionHouseApp extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        var resource = AuctionHouseApp.class.getResource("view/user/info/user-info.fxml");
-        var root     = FXMLLoader.<Parent>load(resource);
-        var scene    = new Scene(root);
-        primaryStage.setTitle("Welcome to Auction House");
+        val resource = AuctionHouseApp.class.getResource("view/user/login/user-login.fxml");
+        val root     = FXMLLoader.<Parent>load(resource);
+        val scene    = new Scene(root);
+        primaryStage.setTitle("Auction House");
         primaryStage.setScene(scene);
         primaryStage.show();
         log.info("started");
