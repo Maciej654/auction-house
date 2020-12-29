@@ -16,159 +16,105 @@
                 <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" valignment="TOP"
                     vgrow="SOMETIMES" />
             </rowConstraints>
-            <children>
-                <HBox GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP"
-                    alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                    minWidth="-Infinity" spacing="10.0">
-                    <children>
-                        <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                            text="Wyszukaj:" />
-                        <TextField alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity"
-                            minHeight="-Infinity" minWidth="-Infinity" promptText="Nazwa aukcji" />
-                    </children>
-                </HBox>
-                <HBox GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM" maxHeight="-Infinity"
-                    maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
-                    <children>
-                        <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                            text="Użytkownik" fx:id="userLabel">
-                            <font>
-                                <Font size="24.0" />
-                            </font>
-                        </Label>
-                    </children>
-                </HBox>
-            </children>
             <BorderPane.margin>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </BorderPane.margin>
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
+            <HBox GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP"
+                alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                minWidth="-Infinity" spacing="10.0">
+                <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                    text="Wyszukaj:" />
+                <TextField alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                    minWidth="-Infinity" promptText="Nazwa aukcji" />
+            </HBox>
+            <HBox GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM" maxHeight="-Infinity" maxWidth="-Infinity"
+                minHeight="-Infinity" minWidth="-Infinity">
+                <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                    text="Użytkownik" fx:id="userLabel">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Label>
+            </HBox>
         </GridPane>
     </top>
     <center>
         <ScrollPane BorderPane.alignment="CENTER" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0"
             fx:id="auctionsScrollPane">
-            <content>
-                <FlowPane hgap="10.0" prefWidth="${auctionsScrollPane.width}" vgap="10.0">
-                    <children>
-                        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                            minWidth="-Infinity" prefHeight="150.0" prefWidth="150.0">
-                            <FlowPane.margin>
-                                <Insets />
-                            </FlowPane.margin>
-                            <children>
-                                <Label text="Aukcja #1" />
-                                <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../../../stuffed-hippo.jpg" />
-                                    </image>
-                                </ImageView>
-                            </children>
-                        </VBox>
-                        <VBox alignment="CENTER" layoutX="20.0" layoutY="20.0" maxHeight="-Infinity"
-                            maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0"
-                            prefWidth="150.0">
-                            <children>
-                                <Label text="Aukcja #2" />
-                                <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../../../stuffed-hippo.jpg" />
-                                    </image>
-                                </ImageView>
-                            </children>
-                        </VBox>
-                        <VBox alignment="CENTER" layoutX="20.0" layoutY="20.0" maxHeight="-Infinity"
-                            maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0"
-                            prefWidth="150.0">
-                            <children>
-                                <Label text="Aukcja #3" />
-                                <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../../../stuffed-hippo.jpg" />
-                                    </image>
-                                </ImageView>
-                            </children>
-                        </VBox>
-                        <VBox alignment="CENTER" layoutX="180.0" layoutY="20.0" maxHeight="-Infinity"
-                            maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0"
-                            prefWidth="150.0">
-                            <children>
-                                <Label text="Aukcja #4" />
-                                <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../../../stuffed-hippo.jpg" />
-                                    </image>
-                                </ImageView>
-                            </children>
-                        </VBox>
-                        <VBox alignment="CENTER" layoutX="20.0" layoutY="20.0" maxHeight="-Infinity"
-                            maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0"
-                            prefWidth="150.0">
-                            <children>
-                                <Label text="Aukcja #5" />
-                                <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../../../stuffed-hippo.jpg" />
-                                    </image>
-                                </ImageView>
-                            </children>
-                        </VBox>
-                        <VBox alignment="CENTER" layoutX="180.0" layoutY="20.0" maxHeight="-Infinity"
-                            maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0"
-                            prefWidth="150.0">
-                            <children>
-                                <Label text="Aukcja #6" />
-                                <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../../../stuffed-hippo.jpg" />
-                                    </image>
-                                </ImageView>
-                            </children>
-                        </VBox>
-                        <VBox alignment="CENTER" layoutX="340.0" layoutY="20.0" maxHeight="-Infinity"
-                            maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0"
-                            prefWidth="150.0">
-                            <children>
-                                <Label text="Aukcja #7" />
-                                <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../../../stuffed-hippo.jpg" />
-                                    </image>
-                                </ImageView>
-                            </children>
-                        </VBox>
-                        <VBox alignment="CENTER" layoutX="20.0" layoutY="180.0" maxHeight="-Infinity"
-                            maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0"
-                            prefWidth="150.0">
-                            <children>
-                                <Label text="Aukcja #8" />
-                                <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../../../stuffed-hippo.jpg" />
-                                    </image>
-                                </ImageView>
-                            </children>
-                        </VBox>
-                        <VBox alignment="CENTER" layoutX="20.0" layoutY="20.0" maxHeight="-Infinity"
-                            maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0"
-                            prefWidth="150.0">
-                            <children>
-                                <Label text="Aukcja #9" />
-                                <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../../../stuffed-hippo.jpg" />
-                                    </image>
-                                </ImageView>
-                            </children>
-                        </VBox>
-                    </children>
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </padding>
-                </FlowPane>
-            </content>
+            <FlowPane hgap="10.0" prefWidth="${auctionsScrollPane.width}" vgap="10.0">
+                <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </padding>
+                <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                    minWidth="-Infinity" prefHeight="150.0" prefWidth="150.0">
+                    <FlowPane.margin>
+                        <Insets />
+                    </FlowPane.margin>
+                    <Label text="Aukcja #1" />
+                    <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../../../stuffed-hippo.jpg" />
+                    </ImageView>
+                </VBox>
+                <VBox alignment="CENTER" layoutX="20.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                    minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="150.0">
+                    <Label text="Aukcja #2" />
+                    <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../../../stuffed-hippo.jpg" />
+                    </ImageView>
+                </VBox>
+                <VBox alignment="CENTER" layoutX="20.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                    minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="150.0">
+                    <Label text="Aukcja #3" />
+                    <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../../../stuffed-hippo.jpg" />
+                    </ImageView>
+                </VBox>
+                <VBox alignment="CENTER" layoutX="180.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                    minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="150.0">
+                    <Label text="Aukcja #4" />
+                    <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../../../stuffed-hippo.jpg" />
+                    </ImageView>
+                </VBox>
+                <VBox alignment="CENTER" layoutX="20.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                    minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="150.0">
+                    <Label text="Aukcja #5" />
+                    <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../../../stuffed-hippo.jpg" />
+                    </ImageView>
+                </VBox>
+                <VBox alignment="CENTER" layoutX="180.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                    minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="150.0">
+                    <Label text="Aukcja #6" />
+                    <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../../../stuffed-hippo.jpg" />
+                    </ImageView>
+                </VBox>
+                <VBox alignment="CENTER" layoutX="340.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                    minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="150.0">
+                    <Label text="Aukcja #7" />
+                    <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../../../stuffed-hippo.jpg" />
+                    </ImageView>
+                </VBox>
+                <VBox alignment="CENTER" layoutX="20.0" layoutY="180.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                    minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="150.0">
+                    <Label text="Aukcja #8" />
+                    <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../../../stuffed-hippo.jpg" />
+                    </ImageView>
+                </VBox>
+                <VBox alignment="CENTER" layoutX="20.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                    minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="150.0">
+                    <Label text="Aukcja #9" />
+                    <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../../../stuffed-hippo.jpg" />
+                    </ImageView>
+                </VBox>
+            </FlowPane>
         </ScrollPane>
     </center>
 </BorderPane>

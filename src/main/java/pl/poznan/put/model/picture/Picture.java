@@ -22,12 +22,13 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class Picture implements Serializable {
     @Id
-    @JoinColumn(name = "AUCTION")
+    @JoinColumn(name = "AUCTION", referencedColumnName = "AUCTION_ID")
     @ManyToOne
     private Auction auction;
+
     @Id
     @Column(name = "PATH")
-    private String  path;
+    private String path;
 
     @Data
     @NoArgsConstructor

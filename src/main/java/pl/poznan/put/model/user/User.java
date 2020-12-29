@@ -17,25 +17,36 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import static pl.poznan.put.model.user.User.PARAM_EMAIL;
+import static pl.poznan.put.model.user.User.PARAM_HASH;
+import static pl.poznan.put.model.user.User.QUERY_CHECK_LOGIN;
+
 @Entity
 @Table(name = "USERS")
+@NamedQuery(
+        name = QUERY_CHECK_LOGIN,
+        query = "select user from User user where user.email = :" + PARAM_EMAIL + " and user.hash = :" + PARAM_HASH
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class User implements Serializable {
+    public static final String QUERY_CHECK_LOGIN = "User.QUERY_CHECK_LOGIN";
+    public static final String PARAM_EMAIL       = "email";
+    public static final String PARAM_HASH        = "hash";
+
     @Id
     @Column(name = "EMAIL")
     private String email;
@@ -70,8 +81,8 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "actor")
     private Collection<AuctionLog> logs;
 
-//    @OneToOne(mappedBy = "recipient")
-//    private PersonalAd ad;
+    @OneToMany(mappedBy = "recipient")
+    private Collection<PersonalAd> ads;
 
     @OneToMany(mappedBy = "reviewer")
     private Collection<Rating> sentRatings;
@@ -107,11 +118,4 @@ public class User implements Serializable {
         return watchListItems.stream()
                              .collect(watchLists);
     }
-
-//    public Collection<Rating> getRatings() {
-//        return auctions.stream()
-//                       .map(Auction::getRating)
-//                       .filter(Objects::nonNull)
-//                       .collect(Collectors.toList());
-//    }
 }

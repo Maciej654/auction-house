@@ -14,6 +14,7 @@ import pl.poznan.put.model.user.User;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -45,7 +46,7 @@ public abstract class Auction implements Serializable {
     @Column(name = "ITEM_NAME")
     private String itemName;
 
-    @JoinColumn(name = "SELLER")
+    @JoinColumn(name = "SELLER", referencedColumnName = "EMAIL")
     @ManyToOne
     private User seller;
 
@@ -67,13 +68,13 @@ public abstract class Auction implements Serializable {
     @OneToMany(mappedBy = "auction")
     private Collection<AuctionLog> logs;
 
-    @OneToOne(mappedBy = "auction")
+    @OneToOne(mappedBy = "auction", fetch = FetchType.LAZY)
     private Ad ad;
 
     @OneToMany(mappedBy = "auction")
     private Collection<Picture> pictures;
 
-//    @OneToOne(mappedBy = "auction")
+//    @OneToOne(mappedBy = "auction", fetch = FetchType.LAZY)
 //    private Rating rating;
 
     public enum Status implements Serializable {

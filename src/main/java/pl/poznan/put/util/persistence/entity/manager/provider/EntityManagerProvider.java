@@ -1,6 +1,7 @@
 package pl.poznan.put.util.persistence.entity.manager.provider;
 
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -9,18 +10,21 @@ import java.util.Properties;
 
 @Slf4j
 public class EntityManagerProvider {
+    private static final String PROPERTIES  = "user.properties";
+    private static final String PERSISTENCE = "data";
+
     private static EntityManager entityManager;
 
     public static EntityManager getEntityManager() {
-        var em = entityManager;
+        val em = entityManager;
         if (em != null) return em;
         synchronized (EntityManagerProvider.class) {
             if (entityManager != null) return entityManager;
-            var url = EntityManagerProvider.class.getResource("user.properties");
-            try (var input = url.openStream()) {
-                var properties = new Properties();
+            val url = EntityManagerProvider.class.getResource(PROPERTIES);
+            try (val input = url.openStream()) {
+                val properties = new Properties();
                 properties.load(input);
-                return entityManager = Persistence.createEntityManagerFactory("data", properties)
+                return entityManager = Persistence.createEntityManagerFactory(PERSISTENCE, properties)
                                                   .createEntityManager();
             }
             catch (IOException e) {

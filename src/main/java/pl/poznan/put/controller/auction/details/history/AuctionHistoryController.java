@@ -7,6 +7,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import pl.poznan.put.model.auction.log.AuctionLog;
 
 import java.text.SimpleDateFormat;
@@ -48,7 +49,7 @@ public class AuctionHistoryController {
             super.updateItem(item, empty);
             if (empty) setText("");
             else {
-                var date = new Date(item);
+                val date = new Date(item);
                 setText(FORMAT.format(date));
             }
         }

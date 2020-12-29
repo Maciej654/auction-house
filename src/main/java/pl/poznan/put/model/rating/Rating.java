@@ -23,13 +23,14 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class Rating implements Serializable {
     @Id
-    @JoinColumn(name = "AUCTION")
+    @JoinColumn(name = "AUCTION", referencedColumnName = "AUCTION_ID")
     @OneToOne
     private Auction auction;
+
     @Id
-    @JoinColumn(name = "REVIEWER")
+    @JoinColumn(name = "REVIEWER", referencedColumnName = "EMAIL")
     @ManyToOne
-    private User    reviewer;
+    private User reviewer;
 
     @Data
     @NoArgsConstructor

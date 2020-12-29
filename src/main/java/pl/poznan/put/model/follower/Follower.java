@@ -21,11 +21,11 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class Follower implements Serializable {
     @Id
-    @JoinColumn(name = "FOLLOWER")
+    @JoinColumn(name = "FOLLOWER", referencedColumnName = "EMAIL")
     @ManyToOne
     private User follower;
     @Id
-    @JoinColumn(name = "FOLLOWEE")
+    @JoinColumn(name = "FOLLOWEE", referencedColumnName = "EMAIL")
     @ManyToOne
     private User followee;
 
