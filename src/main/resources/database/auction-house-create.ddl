@@ -167,18 +167,18 @@ ALTER TABLE defaults
 
 CREATE TABLE delivery_preferences
 (
-    "user"  VARCHAR2(64)  NOT NULL,
+    user_ref  VARCHAR2(64)  NOT NULL,
     address VARCHAR2(128) NOT NULL
 );
 
 CREATE INDEX delivery_preferences_user_idx ON
     delivery_preferences (
-                          "user"
+                          user_ref
                           ASC);
 
 ALTER TABLE delivery_preferences
     ADD CONSTRAINT delivery_preferences_pk PRIMARY KEY (address,
-                                                        "user");
+                                                        user_ref);
 
 CREATE TABLE followers
 (
@@ -349,7 +349,7 @@ ALTER TABLE defaults
         REFERENCES auctions (auction_id);
 
 ALTER TABLE delivery_preferences
-    ADD CONSTRAINT delivery_preferences_fk FOREIGN KEY ("user")
+    ADD CONSTRAINT delivery_preferences_fk FOREIGN KEY (user_ref)
         REFERENCES users (email);
 
 ALTER TABLE followers
