@@ -36,4 +36,12 @@ public class Follower implements Serializable {
         private User follower;
         private User followee;
     }
+
+    @Override
+    public String toString() {
+        return "Follower{" +
+                "follower=" + follower.getEmail() +
+                ", followee=" + followee.getEmail() +
+                '}';
+    }
 }

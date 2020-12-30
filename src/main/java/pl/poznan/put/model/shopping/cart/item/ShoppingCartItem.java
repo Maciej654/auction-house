@@ -38,4 +38,12 @@ public class ShoppingCartItem implements Serializable {
         private Auction auction;
         private User    buyer;
     }
+
+    @Override
+    public String toString() {
+        return "ShoppingCartItem{" +
+                "auction=" + auction.getId() +
+                ", buyer=" + buyer.getEmail() +
+                '}';
+    }
 }

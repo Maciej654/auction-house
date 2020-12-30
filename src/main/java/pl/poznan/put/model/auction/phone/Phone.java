@@ -41,4 +41,17 @@ public class Phone extends Auction implements Serializable {
 
     @Column(name = "OPERATING_SYSTEM")
     private String operatingSystem;
+
+    @Override
+    public String toString() {
+        return "Phone{" +
+                "Auction='" + super.toString() + '\'' +
+                "producer='" + producer + '\'' +
+                ", screenSize='" + screenSize + '\'' +
+                ", battery='" + battery + '\'' +
+                ", processor='" + processor + '\'' +
+                ", ram='" + ram + '\'' +
+                ", operatingSystem='" + operatingSystem + '\'' +
+                '}';
+    }
 }

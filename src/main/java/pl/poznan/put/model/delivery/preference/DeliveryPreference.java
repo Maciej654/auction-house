@@ -37,5 +37,13 @@ public class DeliveryPreference implements Serializable {
         private User   user;
         private String address;
     }
+
+    @Override
+    public String toString() {
+        return "DeliveryPreference{" +
+                "user=" + user.getEmail() +
+                ", address='" + address + '\'' +
+                '}';
+    }
 }
 

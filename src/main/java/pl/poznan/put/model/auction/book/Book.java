@@ -35,4 +35,14 @@ public class Book extends Auction implements Serializable {
         SOFT,
         HARD
     }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "Auction='" + super.toString() + '\'' +
+                "author='" + author + '\'' +
+                ", cover=" + cover +
+                ", genre='" + genre + '\'' +
+                '}';
+    }
 }

@@ -26,4 +26,12 @@ public class Ad implements Serializable {
 
     @Column(name = "SLOGAN")
     private String slogan;
+
+    @Override
+    public String toString() {
+        return "Ad{" +
+                "auction=" + auction.getId() +
+                ", slogan='" + slogan + '\'' +
+                '}';
+    }
 }

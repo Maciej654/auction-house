@@ -37,4 +37,12 @@ public class Picture implements Serializable {
         private Auction auction;
         private String  path;
     }
+
+    @Override
+    public String toString() {
+        return "Picture{" +
+                "auction=" + auction.getId() +
+                ", path='" + path + '\'' +
+                '}';
+    }
 }

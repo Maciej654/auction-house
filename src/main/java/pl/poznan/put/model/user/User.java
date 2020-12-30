@@ -118,4 +118,15 @@ public class User implements Serializable {
         return watchListItems.stream()
                              .collect(watchLists);
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", hash='" + hash + '\'' +
+                ", birthday=" + birthday +
+                '}';
+    }
 }

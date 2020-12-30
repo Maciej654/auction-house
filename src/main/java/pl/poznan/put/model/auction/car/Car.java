@@ -57,4 +57,18 @@ public class Car extends Auction implements Serializable {
         USED,
         CRASHED
     }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "Auction='" + super.toString() + '\'' +
+                "make='" + make + '\'' +
+                ", model='" + model + '\'' +
+                ", mileage=" + mileage +
+                ", transmission=" + transmission +
+                ", engine='" + engine + '\'' +
+                ", fuel=" + fuel +
+                ", condition=" + condition +
+                '}';
+    }
 }

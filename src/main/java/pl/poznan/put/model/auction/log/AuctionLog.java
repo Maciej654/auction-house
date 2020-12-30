@@ -46,4 +46,14 @@ public class AuctionLog implements Serializable {
         private Auction       auction;
         private LocalDateTime timestamp;
     }
+
+    @Override
+    public String toString() {
+        return "AuctionLog{" +
+                "auction=" + auction.getId() +
+                ", timestamp=" + timestamp +
+                ", description='" + description + '\'' +
+                ", actor=" + actor.getEmail() +
+                '}';
+    }
 }

@@ -44,4 +44,13 @@ public class WatchListItem implements Serializable {
         private User    follower;
         private String  name;
     }
+
+    @Override
+    public String toString() {
+        return "WatchListItem{" +
+                "auction=" + auction.getId() +
+                ", follower=" + follower.getEmail() +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

@@ -25,4 +25,12 @@ import java.io.Serializable;
 public class Default extends Auction implements Serializable {
     @Column(name = "CATEGORY")
     private String category;
+
+    @Override
+    public String toString() {
+        return "Default{" +
+                "Auction='" + super.toString() + '\'' +
+                "category='" + category + '\'' +
+                '}';
+    }
 }
