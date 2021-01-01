@@ -18,7 +18,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 @Slf4j
-public class UserLogin {
+public class UserLoginController {
     @FXML
     private Label errorLabel;
 

@@ -22,7 +22,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
 public class Phone extends Auction implements Serializable {
     @Column(name = "PRODUCER")
     private String producer;

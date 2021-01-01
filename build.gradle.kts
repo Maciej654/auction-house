@@ -51,6 +51,7 @@ dependencies {
 
     // utils
     implementation("org.apache.commons:commons-lang3:3.0")
+    implementation("commons-validator:commons-validator:1.7")
 
     // oracle driver
     implementation("com.oracle.database.jdbc:ojdbc10:19.9.0.0")

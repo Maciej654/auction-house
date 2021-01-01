@@ -21,7 +21,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
 public class Default extends Auction implements Serializable {
     @Column(name = "CATEGORY")
     private String category;

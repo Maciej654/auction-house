@@ -22,7 +22,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
 public class Book extends Auction implements Serializable {
     @Column(name = "AUTHOR")
     private String author;
