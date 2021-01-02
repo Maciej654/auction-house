@@ -20,7 +20,7 @@
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>
     <left>
-        <Button BorderPane.alignment="CENTER" mnemonicParsing="false" onMouseClicked="#prevButtonClick" text="&lt;"
+        <Button BorderPane.alignment="CENTER" mnemonicParsing="false" onAction="#prevButtonClick" text="&lt;"
             fx:id="prevButton">
             <BorderPane.margin>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -28,7 +28,7 @@
         </Button>
     </left>
     <right>
-        <Button BorderPane.alignment="CENTER" mnemonicParsing="false" onMouseClicked="#nextButtonClick" text="&gt;"
+        <Button BorderPane.alignment="CENTER" mnemonicParsing="false" onAction="#nextButtonClick" text="&gt;"
             fx:id="nextButton">
             <BorderPane.margin>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
