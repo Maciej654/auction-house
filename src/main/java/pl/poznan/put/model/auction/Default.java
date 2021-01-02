@@ -33,4 +33,8 @@ public class Default extends Auction implements Serializable {
                 "category='" + category + '\'' +
                 '}';
     }
+    @Override
+    public String getCategory(){
+        return this.category;
+    }
 }

@@ -57,6 +57,9 @@ public abstract class Auction implements Serializable {
     @Column(name = "STATUS")
     private Status status;
 
+    @Column(name = "DISCRIMINATOR")
+    private String discriminator;
+
     @OneToMany(mappedBy = "auction")
     private Collection<AuctionLog> logs;
 
@@ -100,5 +103,9 @@ public abstract class Auction implements Serializable {
                 ", ad=" + ad +
                 ", pictures=" + pictures +
                 '}';
+    }
+
+    public String getCategory(){
+        return this.discriminator;
     }
 }

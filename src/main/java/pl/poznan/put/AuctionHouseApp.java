@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import pl.poznan.put.controller.browser.BrowserController;
 import pl.poznan.put.controller.user.info.UserInfo;
 import pl.poznan.put.controller.user.info.UserInfo.Action;
 import pl.poznan.put.controller.user.login.UserLogin;
@@ -65,6 +66,14 @@ public class AuctionHouseApp extends Application {
             controller.setPassword(password);
             controller.setSaveCallback(this::runPrivateUserPage);
             controller.setBackCallback(this::runLoginPage);
+        });
+    }
+
+    private void runBrowser() {
+        log.info("register page");
+
+        this.<BrowserController>runPage("view/browser/Browser.fxml", controller -> {
+            controller.setup();
         });
     }
 
