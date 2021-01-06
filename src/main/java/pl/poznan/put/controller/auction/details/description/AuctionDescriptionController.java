@@ -23,12 +23,12 @@ public class AuctionDescriptionController {
 
         val sample   = Main.class.getResource("markdown/sample.md").toURI();
         val markdown = Files.readString(Paths.get(sample));
-        val node     = new MDFXNode(markdown);
-        node.getStylesheets().add("pl/poznan/put/css/markdown.css");
-        descriptionScrollPane.setContent(node);
+        setDescription(markdown);
     }
 
-    public void hello() {
-        log.info("hello");
+    public void setDescription(String description) {
+        val node = new MDFXNode(description);
+        node.getStylesheets().add("pl/poznan/put/css/markdown.css");
+        descriptionScrollPane.setContent(node);
     }
 }

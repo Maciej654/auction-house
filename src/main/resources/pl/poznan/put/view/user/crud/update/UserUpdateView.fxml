@@ -20,7 +20,7 @@
         <Button mnemonicParsing="false" onAction="#backButtonClick" text="Back">
             <graphic>
                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../../../../../../../icons/left-arrow-32.png" />
+                    <Image url="@../../../../../../../icons/prev-arrow-32.png" />
                 </ImageView>
             </graphic>
         </Button>

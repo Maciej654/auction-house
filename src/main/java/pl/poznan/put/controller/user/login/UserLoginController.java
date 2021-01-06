@@ -59,8 +59,6 @@ public class UserLoginController {
             return;
         }
 
-        //TODO validate user email and password
-
         val email = emailTextField.getText();
         val hash  = hasher.apply(passwordField.getText());
         passwordField.clear();

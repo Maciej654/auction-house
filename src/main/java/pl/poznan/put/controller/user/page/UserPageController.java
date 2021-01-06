@@ -1,13 +1,13 @@
 package pl.poznan.put.controller.user.page;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import pl.poznan.put.model.user.User;
@@ -22,7 +22,7 @@ public class UserPageController {
     }
 
     @FXML
-    private Button editButton;
+    private VBox privateOptionsVBox;
 
     @FXML
     private TextField searchTextField;
@@ -46,10 +46,12 @@ public class UserPageController {
     public void setType(Type type) {
         switch (type) {
             case PUBLIC:
-                editButton.setVisible(false);
+                privateOptionsVBox.setVisible(false);
+                privateOptionsVBox.setPrefWidth(0.0);
                 break;
             case PRIVATE:
-                editButton.setVisible(true);
+                privateOptionsVBox.setVisible(true);
+                privateOptionsVBox.setPrefWidth(VBox.USE_COMPUTED_SIZE);
                 break;
         }
     }
@@ -68,7 +70,7 @@ public class UserPageController {
     }
 
     @Setter
-    private Runnable auctionsCallback;
+    private Runnable auctionsCallback = () -> {};
 
     @FXML
     private void auctionsButtonClick() {
@@ -77,11 +79,20 @@ public class UserPageController {
     }
 
     @Setter
-    private Consumer<User> editCallback;
+    private Consumer<User> editCallback = (user) -> {};
 
     @FXML
-    private void editButtonClick() {
+    private void editProfileButtonClick() {
         log.info("edit");
         editCallback.accept(user);
+    }
+
+    @Setter
+    private Consumer<User> createAuctionCallback = (user) -> {};
+
+    @FXML
+    private void createAuctionButtonClick() {
+        log.info("create auction");
+        if (user != null) createAuctionCallback.accept(user);
     }
 }

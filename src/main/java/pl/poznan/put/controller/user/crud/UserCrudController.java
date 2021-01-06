@@ -1,12 +1,15 @@
 package pl.poznan.put.controller.user.crud;
 
+import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -20,6 +23,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
+import pl.poznan.put.controller.user.exception.EmailAlreadyInUseException;
 import pl.poznan.put.controller.user.validation.UserBirthdayValidator;
 import pl.poznan.put.controller.user.validation.UserConfirmPasswordValidator;
 import pl.poznan.put.controller.user.validation.UserEmailValidator;
@@ -78,11 +82,14 @@ public abstract class UserCrudController {
     @FXML
     protected Button actionButton;
 
+    @FXML
+    protected Label errorLabel;
+
     @Setter
     protected Runnable backCallback;
 
     @Setter
-    protected Consumer<User> operationCallback;
+    protected Consumer<User> operationCallback = (user) -> {};
 
     protected final EntityManager em = EntityManagerProvider.getEntityManager();
 
@@ -187,6 +194,14 @@ public abstract class UserCrudController {
         confirmPasswordField.setText(null);
     }
 
+    protected void unbindActionButton() {
+        actionButton.disableProperty().unbind();
+    }
+
+    protected void bindActionButton() {
+        actionButton.disableProperty().bind(userInfoValid.not());
+    }
+
     @FXML
     protected void initialize() {
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -195,8 +210,7 @@ public abstract class UserCrudController {
         HBox.setHgrow(spacePane, Priority.ALWAYS);
 
         initializeValidators();
-        actionButton.disableProperty().bind(userInfoValid.not());
-
+        bindActionButton();
         clearFormData();
     }
 
@@ -227,11 +241,11 @@ public abstract class UserCrudController {
                    .build();
     }
 
-    abstract protected void crudOperation(User user);
+    abstract protected void crudOperation(User user) throws Throwable;
 
     @FXML
     protected void actionButtonClick() {
-        log.info("register");
+        log.info("action");
 
         if (hasher == null) {
             log.error("hasher is null");
@@ -243,19 +257,35 @@ public abstract class UserCrudController {
             return;
         }
 
-
-        val transaction = em.getTransaction();
-        transaction.begin();
-        try {
-            val user = getUser();
-            crudOperation(user);
-            transaction.commit();
-            operationCallback.accept(user);
-        }
-        catch (Throwable t) {
-            log.error("An error occurred", t);
-            transaction.rollback();
-        }
+        new Thread(() -> {
+            val transaction = em.getTransaction();
+            transaction.begin();
+            try {
+                Platform.runLater(() -> {
+                    unbindActionButton();
+                    actionButton.setDisable(true);
+                    actionButton.setCursor(Cursor.WAIT);
+                });
+                val user = getUser();
+                crudOperation(user);
+                transaction.commit();
+                log.info("commit success");
+                Platform.runLater(() -> operationCallback.accept(user));
+            }
+            catch (EmailAlreadyInUseException e) {
+                Platform.runLater(() -> errorLabel.setText(e.getMessage()));
+            }
+            catch (Throwable t) {
+                log.error(t.getMessage(), t);
+            }
+            finally {
+                Platform.runLater(() -> {
+                    bindActionButton();
+                    actionButton.setCursor(Cursor.HAND);
+                });
+                if (transaction.isActive()) transaction.rollback();
+            }
+        }).start();
     }
 
     @FXML

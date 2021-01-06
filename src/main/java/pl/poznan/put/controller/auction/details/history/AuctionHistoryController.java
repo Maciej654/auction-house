@@ -37,10 +37,6 @@ public class AuctionHistoryController {
         });
     }
 
-    public void hello() {
-        log.info("hello");
-    }
-
     private static class SimpleDateFormatTableCell extends TableCell<AuctionLog, Long> {
         private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 

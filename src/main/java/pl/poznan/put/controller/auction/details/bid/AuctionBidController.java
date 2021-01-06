@@ -9,8 +9,4 @@ public class AuctionBidController {
     private void initialize() {
         log.info("initialize");
     }
-
-    public void hello() {
-        log.info("hello");
-    }
 }

@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import pl.poznan.put.controller.auction.crud.create.AuctionCreateController;
 import pl.poznan.put.controller.browser.BrowserController;
 import pl.poznan.put.controller.user.crud.create.UserCreateController;
 import pl.poznan.put.controller.user.crud.update.UserUpdateController;
@@ -68,6 +69,14 @@ public class AuctionHouseApp extends Application {
         updateScene();
     }
 
+    private void runAuctionCreatePage(User user) {
+        log.info("create auction page");
+
+        this.runPage(AuctionCreateController.class, controller -> {
+            controller.setOwner(user);
+        });
+    }
+
     private void runPrivateUserPage(User user) {
         log.info("private user page");
 
@@ -76,6 +85,7 @@ public class AuctionHouseApp extends Application {
             controller.setUser(user);
             controller.setEditCallback(this::runUserUpdatePage);
             controller.setAuctionsCallback(() -> {});
+            controller.setCreateAuctionCallback(this::runAuctionCreatePage);
         });
     }
 

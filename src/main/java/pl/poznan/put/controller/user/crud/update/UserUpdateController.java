@@ -36,6 +36,8 @@ public class UserUpdateController extends UserCrudController {
 
     @Override
     protected void crudOperation(User user) {
+        log.info("update");
         Objects.requireNonNull(em).merge(user);
+        log.info("User '{}' updated", user.getEmail());
     }
 }
