@@ -8,12 +8,14 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import pl.poznan.put.controller.auction.details.AuctionDetailsController;
 import pl.poznan.put.controller.browser.BrowserController;
 import pl.poznan.put.controller.user.crud.create.UserCreateController;
 import pl.poznan.put.controller.user.crud.update.UserUpdateController;
 import pl.poznan.put.controller.user.login.UserLoginController;
 import pl.poznan.put.controller.user.page.UserPageController;
 import pl.poznan.put.controller.user.page.UserPageController.Type;
+import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.user.User;
 
 import java.io.IOException;
@@ -110,13 +112,21 @@ public class AuctionHouseApp extends Application {
     }
 
     private void runBrowser() {
-        log.info("register page");
+        log.info("browser page");
 
         this.runPage(BrowserController.class, controller -> {
             controller.setup();
+            controller.setShowAuctionDetails(this::runAuctionDetails);
         });
     }
 
+    private void runAuctionDetails(Auction auction) {
+          this.runPage(AuctionDetailsController.class, controller -> {
+              controller.setAuction(auction);
+              controller.setLabels();
+              controller.setKeyCallBack(this::runPrevPage);
+        });
+    }
     @Override
     public void start(Stage primaryStage) {
         log.info("start");
