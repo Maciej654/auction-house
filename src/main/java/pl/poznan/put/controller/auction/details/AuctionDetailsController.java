@@ -46,6 +46,12 @@ public class AuctionDetailsController {
         auctionPhotosController.hello();
         auctionBidController.hello();
     }
+
+    @FXML
+    public void backButtonPressed(ActionEvent actionEvent) {
+        keyCallBack.run();
+    }
+
     public void setLabels(){
         userLabel.setText(auction.getSeller().getEmail());
         auctionNameLabel.setText(auction.getAuctionName());
@@ -54,7 +60,4 @@ public class AuctionDetailsController {
         auctionEndLabel.setText(auction.getEndDate().toString());
     }
 
-    public void backButtonPressed(ActionEvent actionEvent) {
-        keyCallBack.run();
-    }
 }
