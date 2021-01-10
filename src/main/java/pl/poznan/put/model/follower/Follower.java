@@ -40,8 +40,8 @@ public class Follower implements Serializable {
     @Override
     public String toString() {
         return "Follower{" +
-                "follower=" + follower.getEmail() +
-                ", followee=" + followee.getEmail() +
-                '}';
+               "follower=" + follower.getEmail() +
+               ", followee=" + followee.getEmail() +
+               '}';
     }
 }

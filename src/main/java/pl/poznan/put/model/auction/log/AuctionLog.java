@@ -50,10 +50,10 @@ public class AuctionLog implements Serializable {
     @Override
     public String toString() {
         return "AuctionLog{" +
-                "auction=" + auction.getId() +
-                ", timestamp=" + timestamp +
-                ", description='" + description + '\'' +
-                ", actor=" + actor.getEmail() +
-                '}';
+               "auction=" + auction.getId() +
+               ", timestamp=" + timestamp +
+               ", description='" + description + '\'' +
+               ", actor=" + actor.getEmail() +
+               '}';
     }
 }

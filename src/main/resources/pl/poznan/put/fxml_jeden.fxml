@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<AnchorPane prefHeight="527.0" prefWidth="787.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.poznan.put.controller.FxmlSample">
+<?import javafx.scene.control.Button?><?import javafx.scene.control.TableColumn?><?import javafx.scene.control.TableView?><?import javafx.scene.control.TextField?><?import javafx.scene.layout.AnchorPane?><?import javafx.scene.layout.Pane?>
+<AnchorPane prefHeight="527.0" prefWidth="787.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+    xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.poznan.put.controller.FxmlSample">
     <children>
-      <Pane disable="true" prefHeight="502.0" prefWidth="755.0" />
+        <Pane disable="true" prefHeight="502.0" prefWidth="755.0" />
         <Pane prefHeight="439.0" prefWidth="722.0">
-         <children>
-            <TableView fx:id="table1" layoutX="65.0" layoutY="95.0" prefHeight="293.0" prefWidth="592.0">
-              <columns>
-                <TableColumn prefWidth="90.0" text="auction name" />
-                <TableColumn prefWidth="73.0" text="item name" />
-                  <TableColumn prefWidth="60.0" text="end date" />
-                  <TableColumn prefWidth="59.0" text="price" />
-                  <TableColumn prefWidth="73.0" text="seller" />
-                  <TableColumn prefWidth="99.0" text="category" />
-                  <TableColumn prefWidth="137.0" text="details" />
-              </columns>
-            </TableView>
-            <TextField layoutX="47.0" layoutY="22.0" text="Nazwa aukcji" />
-            <TextField layoutX="236.0" layoutY="17.0" text="typ aukcji" />
-            <Button fx:id="button1" layoutX="406.0" layoutY="11.0" mnemonicParsing="false" onMouseClicked="#click" text="Filtruj" />
-         </children>
+            <children>
+                <TableView fx:id="table1" layoutX="65.0" layoutY="95.0" prefHeight="293.0" prefWidth="592.0">
+                    <columns>
+                        <TableColumn prefWidth="90.0" text="auction name" />
+                        <TableColumn prefWidth="73.0" text="item name" />
+                        <TableColumn prefWidth="60.0" text="end date" />
+                        <TableColumn prefWidth="59.0" text="price" />
+                        <TableColumn prefWidth="73.0" text="seller" />
+                        <TableColumn prefWidth="99.0" text="category" />
+                        <TableColumn prefWidth="137.0" text="details" />
+                    </columns>
+                </TableView>
+                <TextField layoutX="47.0" layoutY="22.0" text="Nazwa aukcji" />
+                <TextField layoutX="236.0" layoutY="17.0" text="typ aukcji" />
+                <Button fx:id="button1" layoutX="406.0" layoutY="11.0" mnemonicParsing="false" onMouseClicked="#click"
+                    text="Filtruj" />
+            </children>
         </Pane>
     </children>
 </AnchorPane>

@@ -43,8 +43,8 @@ public class Rating implements Serializable {
     @Override
     public String toString() {
         return "Rating{" +
-                "auction=" + auction.getId() +
-                ", reviewer=" + reviewer.getEmail() +
-                '}';
+               "auction=" + auction.getId() +
+               ", reviewer=" + reviewer.getEmail() +
+               '}';
     }
 }

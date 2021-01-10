@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import pl.poznan.put.model.auction.Auction;
 
@@ -38,10 +37,10 @@ public class Book extends Auction implements Serializable {
     @Override
     public String toString() {
         return "Book{" +
-                "Auction='" + super.toString() + '\'' +
-                "author='" + author + '\'' +
-                ", cover=" + cover +
-                ", genre='" + genre + '\'' +
-                '}';
+               "Auction='" + super.toString() + '\'' +
+               "author='" + author + '\'' +
+               ", cover=" + cover +
+               ", genre='" + genre + '\'' +
+               '}';
     }
 }

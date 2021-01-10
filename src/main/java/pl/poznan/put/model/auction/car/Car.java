@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import pl.poznan.put.model.auction.Auction;
 
@@ -60,14 +59,14 @@ public class Car extends Auction implements Serializable {
     @Override
     public String toString() {
         return "Car{" +
-                "Auction='" + super.toString() + '\'' +
-                "make='" + make + '\'' +
-                ", model='" + model + '\'' +
-                ", mileage=" + mileage +
-                ", transmission=" + transmission +
-                ", engine='" + engine + '\'' +
-                ", fuel=" + fuel +
-                ", condition=" + condition +
-                '}';
+               "Auction='" + super.toString() + '\'' +
+               "make='" + make + '\'' +
+               ", model='" + model + '\'' +
+               ", mileage=" + mileage +
+               ", transmission=" + transmission +
+               ", engine='" + engine + '\'' +
+               ", fuel=" + fuel +
+               ", condition=" + condition +
+               '}';
     }
 }

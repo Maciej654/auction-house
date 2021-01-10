@@ -1,12 +1,14 @@
 package pl.poznan.put.controller.auction.details;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.web.WebView;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import pl.poznan.put.controller.auction.details.bid.AuctionBidController;
-import pl.poznan.put.controller.auction.details.description.AuctionDescriptionController;
 import pl.poznan.put.controller.auction.details.history.AuctionHistoryController;
 import pl.poznan.put.controller.auction.details.photos.AuctionPhotosController;
 import pl.poznan.put.model.auction.Auction;
@@ -14,25 +16,22 @@ import pl.poznan.put.model.auction.Auction;
 @Slf4j
 public class AuctionDetailsController {
     @FXML
-    public Label userLabel;
+    private Label userLabel;
 
     @FXML
-    public Label auctionNameLabel;
+    private Label auctionNameLabel;
 
     @FXML
-    public Label itemName;
+    private Label itemNameLabel;
 
     @FXML
-    public Label auctionPriceLabel;
+    private Label auctionPriceLabel;
 
     @FXML
-    public Label auctionEndLabel;
+    private Label auctionEndLabel;
 
     @FXML
-    public Button backButton;
-
-    @FXML
-    private AuctionDescriptionController auctionDescriptionController;
+    private WebView descriptionWebView;
 
     @FXML
     private AuctionHistoryController auctionHistoryController;
@@ -44,26 +43,28 @@ public class AuctionDetailsController {
     private AuctionBidController auctionBidController;
 
     @Setter
-    private Runnable             keyCallBack;
+    private Runnable keyCallBack;
 
-    private Auction auction;
+    @Getter
+    private final ObjectProperty<Auction> auctionProperty = new SimpleObjectProperty<>();
 
-    public void setAuction(Auction auction) {
-        auctionPhotosController.setPictures(auction.getPictures());
-        this.auction = auction;
+    @FXML
+    private void initialize() {
+        auctionProperty.addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                userLabel.setText(newValue.getSeller().getEmail());
+                auctionNameLabel.setText(newValue.getAuctionName());
+                itemNameLabel.setText(newValue.getItemName());
+                auctionPriceLabel.setText(newValue.getPrice() + " PLN");
+                auctionEndLabel.setText(newValue.getEndDate().toString());
+                auctionPhotosController.setPictures(newValue.getPictures());
+                descriptionWebView.getEngine().loadContent(newValue.getItemDescription());
+            }
+        });
     }
 
     @FXML
     public void backButtonPressed() {
         keyCallBack.run();
     }
-
-    public void setLabels() {
-        userLabel.setText(auction.getSeller().getEmail());
-        auctionNameLabel.setText(auction.getAuctionName());
-        itemName.setText(auction.getItemName());
-        auctionPriceLabel.setText(auction.getPrice() + " PLN");
-        auctionEndLabel.setText(auction.getEndDate().toString());
-    }
-
 }

@@ -75,8 +75,14 @@ public class AuctionHouseApp extends Application {
         log.info("create auction page");
 
         this.runPage(AuctionCreateController.class, controller -> {
-            controller.setOwner(user);
+            controller.getUserProperty().set(user);
+            controller.setCreateAuctionCallback(this::runAuctionDetailsPage);
         });
+    }
+
+    private void standardUserPageControllerSetup(UserPageController controller, User user) {
+        controller.getUserProperty().set(user);
+        controller.setAuctionsCallback(() -> {});
     }
 
     private void runPrivateUserPage(User user) {
@@ -84,10 +90,10 @@ public class AuctionHouseApp extends Application {
 
         this.runPage(UserPageController.class, controller -> {
             controller.setType(Type.PRIVATE);
-            controller.setUser(user);
+            standardUserPageControllerSetup(controller, user);
             controller.setEditCallback(this::runUserUpdatePage);
-            controller.setAuctionsCallback(() -> {});
             controller.setCreateAuctionCallback(this::runAuctionCreatePage);
+            controller.setLogoutCallback(this::runLoginPage);
         });
     }
 
@@ -121,20 +127,19 @@ public class AuctionHouseApp extends Application {
         });
     }
 
-    private void runBrowser() {
+    private void runBrowserPage() {
         log.info("browser page");
 
         this.runPage(BrowserController.class, controller -> {
             controller.setup();
-            controller.setShowAuctionDetails(this::runAuctionDetails);
+            controller.setShowAuctionDetails(this::runAuctionDetailsPage);
         });
     }
 
-    private void runAuctionDetails(Auction auction) {
-          this.runPage(AuctionDetailsController.class, controller -> {
-              controller.setAuction(auction);
-              controller.setLabels();
-              controller.setKeyCallBack(this::runPrevPage);
+    private void runAuctionDetailsPage(Auction auction) {
+        this.runPage(AuctionDetailsController.class, controller -> {
+            controller.getAuctionProperty().set(auction);
+            controller.setKeyCallBack(this::runPrevPage);
         });
     }
 
@@ -145,7 +150,9 @@ public class AuctionHouseApp extends Application {
         primaryStage.setTitle("Auction House");
         primaryStage.getIcons().add(new Image("/icons/auction-32.png"));
         this.primaryStage = primaryStage;
+
         this.runLoginPage();
+
         primaryStage.show();
     }
 }

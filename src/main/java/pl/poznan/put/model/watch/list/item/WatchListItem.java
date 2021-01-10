@@ -48,9 +48,9 @@ public class WatchListItem implements Serializable {
     @Override
     public String toString() {
         return "WatchListItem{" +
-                "auction=" + auction.getId() +
-                ", follower=" + follower.getEmail() +
-                ", name='" + name + '\'' +
-                '}';
+               "auction=" + auction.getId() +
+               ", follower=" + follower.getEmail() +
+               ", name='" + name + '\'' +
+               '}';
     }
 }

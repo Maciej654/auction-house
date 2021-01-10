@@ -10,9 +10,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.sql.Blob;
 
 @Entity
 @Table(name = "PICTURES")
@@ -27,22 +29,26 @@ public class Picture implements Serializable {
     private Auction auction;
 
     @Id
-    @Column(name = "PATH")
-    private String path;
+    @Column(name = "NAME")
+    private String name;
+
+    @Lob
+    @Column(name = "IMAGE")
+    private Blob image;
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PictureId implements Serializable {
         private Auction auction;
-        private String  path;
+        private String  name;
     }
 
     @Override
     public String toString() {
         return "Picture{" +
-                "auction=" + auction.getId() +
-                ", path='" + path + '\'' +
-                '}';
+               "auction=" + auction.getId() +
+               ", name='" + name + '\'' +
+               '}';
     }
 }

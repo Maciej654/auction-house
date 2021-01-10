@@ -14,6 +14,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
+
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
@@ -31,18 +32,25 @@ public class BrowserController {
 
     @FXML
     private TableView<Data> table;
+
     @FXML
     private TableColumn<Data, String> category_column;
+
     @FXML
-    private TableColumn<Data, String>  seller_column;
+    private TableColumn<Data, String> seller_column;
+
     @FXML
-    private TableColumn<Data, Double>  price_column;
+    private TableColumn<Data, Double> price_column;
+
     @FXML
     private TableColumn<Data, LocalDateTime> end_date_column;
+
     @FXML
-    private TableColumn<Data, String>  item_name_column;
+    private TableColumn<Data, String> item_name_column;
+
     @FXML
-    private TableColumn<Data, String>  auction_name_column;
+    private TableColumn<Data, String> auction_name_column;
+
     @FXML
     private TableColumn<Data, Button> details_column;
 
@@ -52,17 +60,17 @@ public class BrowserController {
 
     @SuperBuilder
     @lombok.Data
-    public static class Data{
-        private String AuctionName;
-        private String itemName;
+    public static class Data {
+        private String        AuctionName;
+        private String        itemName;
         private LocalDateTime endDate;
-        private double price;
-        private String seller;
-        private String category;
-        private Button details;
+        private double        price;
+        private String        seller;
+        private String        category;
+        private Button        details;
     }
 
-    private class AuctionDetailsButton extends Button{
+    private class AuctionDetailsButton extends Button {
         @Getter
         private final Auction auction;
 
@@ -72,39 +80,40 @@ public class BrowserController {
             this.setOnAction(a -> showAuctionDetails.accept(auction));
         }
     }
+
     @FXML
     private void click(MouseEvent mouseEvent) {
         List<Auction> listofAuctions = new ArrayList<>();
         if (em != null) {
             TypedQuery<Auction> query = em.createQuery("select auction from Auction auction ", Auction.class);
             listofAuctions = query.getResultStream()
-                            .filter(auction -> auction.getStatus().equals(Auction.Status.CREATED))
-                            .filter(this::filterByName)
-                            .filter(this::filterByType)
-                            .collect(Collectors.toList());
+                                  .filter(auction -> auction.getStatus().equals(Auction.Status.CREATED))
+                                  .filter(this::filterByName)
+                                  .filter(this::filterByType)
+                                  .collect(Collectors.toList());
         }
         List<Data> list = listofAuctions.stream()
-                            .map(auction -> Data.builder()
-                                .AuctionName(auction.getAuctionName())
-                                .itemName(auction.getItemName())
-                                .endDate(auction.getEndDate())
-                                .price(auction.getPrice())
-                                .seller(auction.getSeller().getEmail())
-                                .category(auction.getCategory())
-                                .details(new AuctionDetailsButton("click here", auction))
-                                .build()).collect(Collectors.toList());
+                                        .map(auction -> Data.builder()
+                                                            .AuctionName(auction.getAuctionName())
+                                                            .itemName(auction.getItemName())
+                                                            .endDate(auction.getEndDate())
+                                                            .price(auction.getPrice())
+                                                            .seller(auction.getSeller().getEmail())
+                                                            .category(auction.getCategory())
+                                                            .details(new AuctionDetailsButton("click here", auction))
+                                                            .build()).collect(Collectors.toList());
 
         ObservableList<Data> obsList = FXCollections.observableArrayList(list);
         table.setItems(obsList);
 
     }
 
-    private boolean filterByName(Auction auction){
+    private boolean filterByName(Auction auction) {
         String name = auction_name.getCharacters().toString().toUpperCase();
-        if(name.equals("")){
+        if (name.equals("")) {
             return true;
         }
-        String regex = String.format(".*%s.*", name);
+        String regex       = String.format(".*%s.*", name);
         String auctionName = auction.getAuctionName().toUpperCase();
         return auctionName.matches(regex);
     }
@@ -118,7 +127,7 @@ public class BrowserController {
         return Objects.equals(type, auctionType);
     }
 
-    public void setup(){
+    public void setup() {
         category_column.setCellValueFactory(new PropertyValueFactory<>("category"));
         seller_column.setCellValueFactory(new PropertyValueFactory<>("seller"));
         price_column.setCellValueFactory(new PropertyValueFactory<>("price"));

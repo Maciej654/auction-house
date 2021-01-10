@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
-
-<HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.poznan.put.controller.auction.details.bid.AuctionBidController">
+<?import javafx.scene.control.Button?><?import javafx.scene.control.TextField?><?import javafx.scene.layout.HBox?>
+<HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="pl.poznan.put.controller.auction.details.bid.AuctionBidController">
     <TextField alignment="BASELINE_RIGHT" promptText="Price" />
     <Button alignment="BASELINE_LEFT" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" text="Bid" />
 </HBox>

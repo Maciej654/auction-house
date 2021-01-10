@@ -11,7 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import pl.poznan.put.model.picture.Picture;
 
+import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Objects;
 
 @Slf4j
 public class AuctionPhotosController {
@@ -28,8 +30,18 @@ public class AuctionPhotosController {
     public void setPictures(Collection<Picture> pictures) {
         new Thread(() -> {
             images = pictures.stream()
-                             .map(Picture::getPath)
-                             .map(Image::new)
+                             .map(Picture::getImage)
+                             .map(blob -> {
+                                 try {
+                                     return blob.getBinaryStream();
+                                 }
+                                 catch (SQLException e) {
+                                     log.error(e.getMessage(), e);
+                                     return null;
+                                 }
+                             })
+                             .filter(Objects::nonNull)
+                             .map(is -> new Image(is, 500, 500, true, true))
                              .toArray(Image[]::new);
             Platform.runLater(() -> {
                 currIndexProperty.set(-1);

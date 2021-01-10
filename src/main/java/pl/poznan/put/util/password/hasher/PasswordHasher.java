@@ -31,7 +31,7 @@ public class PasswordHasher implements Function<String, String> {
             if (hasher != null) return hasher;
             try {
                 val digest = MessageDigest.getInstance(algorithm);
-                hasher = new PasswordHasher(digest, new HexCodecs());
+                hasher = new PasswordHasher(digest);
                 CACHE.put(algorithm, hasher);
                 return hasher;
             }
@@ -44,8 +44,6 @@ public class PasswordHasher implements Function<String, String> {
 
     private final MessageDigest digest;
 
-    private final HexCodecs codecs;
-
     @Override
     public String apply(String raw) {
         synchronized (digest) {
@@ -53,7 +51,7 @@ public class PasswordHasher implements Function<String, String> {
             val bytes = raw.getBytes(StandardCharsets.UTF_8);
             digest.update(bytes);
             val hash = digest.digest();
-            return codecs.encode(hash);
+            return HexCodecs.encode(hash);
         }
     }
 }

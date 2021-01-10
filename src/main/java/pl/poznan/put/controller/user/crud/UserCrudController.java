@@ -89,7 +89,7 @@ public abstract class UserCrudController {
     protected Runnable backCallback;
 
     @Setter
-    protected Consumer<User> operationCallback = (user) -> {};
+    protected Consumer<User> operationCallback = user -> {};
 
     protected final EntityManager em = EntityManagerProvider.getEntityManager();
 

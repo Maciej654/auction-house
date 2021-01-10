@@ -167,8 +167,8 @@ ALTER TABLE defaults
 
 CREATE TABLE delivery_preferences
 (
-    user_ref  VARCHAR2(64)  NOT NULL,
-    address VARCHAR2(128) NOT NULL
+    user_ref VARCHAR2(64)  NOT NULL,
+    address  VARCHAR2(128) NOT NULL
 );
 
 CREATE INDEX delivery_preferences_user_idx ON
@@ -272,11 +272,12 @@ ALTER TABLE phones
 CREATE TABLE pictures
 (
     auction INTEGER       NOT NULL,
-    path    VARCHAR2(256) NOT NULL
+    name    VARCHAR2(256) NOT NULL,
+    image   BLOB
 );
 
 ALTER TABLE pictures
-    ADD CONSTRAINT pictures_pk PRIMARY KEY (path,
+    ADD CONSTRAINT pictures_pk PRIMARY KEY (name,
                                             auction);
 
 CREATE TABLE ratings

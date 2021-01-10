@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.poznan.put.controller.auction.details.AuctionDetailsController">
-   <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButtonPressed" text="BACK" />
-    <GridPane hgap="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" vgap="10.0" BorderPane.alignment="CENTER">
+<?import javafx.geometry.Insets?><?import javafx.scene.control.Label?><?import javafx.scene.control.Tab?><?import javafx.scene.control.TabPane?><?import javafx.scene.layout.BorderPane?><?import javafx.scene.layout.ColumnConstraints?><?import javafx.scene.layout.GridPane?><?import javafx.scene.layout.RowConstraints?><?import javafx.scene.layout.VBox?><?import javafx.scene.text.Font?>
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
+    xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="pl.poznan.put.controller.auction.details.AuctionDetailsController">
+    <GridPane hgap="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+        minWidth="-Infinity" vgap="10.0" BorderPane.alignment="CENTER">
         <columnConstraints>
             <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="375.0" />
             <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="225.0" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" valignment="BASELINE" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" valignment="BASELINE" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" valignment="BASELINE" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" valignment="BASELINE"
+                vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" valignment="BASELINE"
+                vgrow="SOMETIMES" />
         </rowConstraints>
         <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -23,43 +23,45 @@
         <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
         </padding>
-        <Label fx:id="userLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="\${user}" GridPane.columnIndex="1">
+        <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="\${user}">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
-        <Label fx:id="auctionNameLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="\${auction.name}" GridPane.rowIndex="1">
+        <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            text="\${auction.name}" GridPane.rowIndex="1">
             <font>
                 <Font size="24.0" />
             </font>
         </Label>
-        <Label fx:id="itemName" text="\${item.name}" GridPane.rowIndex="2">
+        <Label text="\${item.name}" GridPane.rowIndex="2">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
-        <Label fx:id="auctionPriceLabel" text="\${auction.price}" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <Label text="\${auction.price}" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
-        <Label fx:id="auctionEndLabel" text="\\${auction.end}" GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <Label text="\${auction.end}" GridPane.columnIndex="1" GridPane.rowIndex="2">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
     </GridPane>
-    <TabPane minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="100.0" tabMaxWidth="100.0" tabMinWidth="100.0" VBox.vgrow="ALWAYS">
-        <Tab closable="false" text="Opis">
-            <fx:include fx:id="auctionDescription" source="description/AuctionDescriptionView.fxml" />
+    <TabPane minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="100.0"
+        tabMaxWidth="100.0" tabMinWidth="100.0" VBox.vgrow="ALWAYS">
+        <Tab closable="false" text="Description">
+<!--            <WebView fx:id="descriptionWebView" />-->
         </Tab>
-        <Tab closable="false" text="Zdjęcia">
+        <Tab closable="false" text="Photos">
             <fx:include fx:id="auctionPhotos" source="photos/AuctionPhotosView.fxml" />
         </Tab>
-        <Tab closable="false" text="Historia">
+        <Tab closable="false" text="History">
             <fx:include fx:id="auctionHistory" source="history/AuctionHistoryView.fxml" />
         </Tab>
-        <Tab closable="false" text="Udział">
+        <Tab closable="false" text="Bid">
             <fx:include fx:id="auctionBid" source="bid/AuctionBidView.fxml" />
         </Tab>
     </TabPane>

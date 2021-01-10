@@ -33,10 +33,10 @@ public class UserLoginController {
     private TypedQuery<User> loginQuery;
 
     @Setter
-    private Consumer<User> loginCallback;
+    private Consumer<User> loginCallback = user -> {};
 
     @Setter
-    private BiConsumer<String, String> registerCallback;
+    private BiConsumer<String, String> registerCallback = (email, password) -> {};
 
     @FXML
     private void initialize() {

@@ -16,7 +16,8 @@ repositories {
 val javafxModuleNames = listOf(
     "controls",
     "graphics",
-    "fxml"
+    "fxml",
+    "web"
 )
 
 java {
@@ -43,11 +44,8 @@ dependencies {
     // hibernate
     implementation("org.hibernate:hibernate-core:5.4.26.Final")
 
-    // markdown support
-    implementation("com.sandec:mdfx:0.1.6")
-
     // logging
-    implementation("org.slf4j:slf4j-simple:1.7.30")
+    implementation("org.slf4j:slf4j-log4j12:1.7.30")
 
     // utils
     implementation("org.apache.commons:commons-lang3:3.0")

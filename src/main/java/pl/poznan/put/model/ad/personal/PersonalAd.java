@@ -42,8 +42,8 @@ public class PersonalAd implements Serializable {
     @Override
     public String toString() {
         return "PersonalAd{" +
-                "auction=" + auction.getId() +
-                ", recipient=" + recipient.getEmail() +
-                '}';
+               "auction=" + auction.getId() +
+               ", recipient=" + recipient.getEmail() +
+               '}';
     }
 }

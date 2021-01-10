@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
@@ -28,12 +27,13 @@ public class Default extends Auction implements Serializable {
     @Override
     public String toString() {
         return "Default{" +
-                "Auction='" + super.toString() + '\'' +
-                "category='" + category + '\'' +
-                '}';
+               "Auction='" + super.toString() + '\'' +
+               "category='" + category + '\'' +
+               '}';
     }
+
     @Override
-    public String getCategory(){
+    public String getCategory() {
         return this.category;
     }
 }

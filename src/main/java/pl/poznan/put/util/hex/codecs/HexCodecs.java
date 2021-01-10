@@ -1,9 +1,12 @@
 package pl.poznan.put.util.hex.codecs;
 
+import lombok.experimental.UtilityClass;
+
 import java.nio.charset.StandardCharsets;
 
+@UtilityClass
 public class HexCodecs {
-    private static final byte[] HEX = "0123456789ABCDEF".getBytes(StandardCharsets.UTF_8);
+    private final byte[] HEX = "0123456789ABCDEF".getBytes(StandardCharsets.UTF_8);
 
     public String encode(byte[] bytes) {
         byte[] chars = new byte[bytes.length << 1];

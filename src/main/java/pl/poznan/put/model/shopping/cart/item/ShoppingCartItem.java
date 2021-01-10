@@ -42,8 +42,8 @@ public class ShoppingCartItem implements Serializable {
     @Override
     public String toString() {
         return "ShoppingCartItem{" +
-                "auction=" + auction.getId() +
-                ", buyer=" + buyer.getEmail() +
-                '}';
+               "auction=" + auction.getId() +
+               ", buyer=" + buyer.getEmail() +
+               '}';
     }
 }

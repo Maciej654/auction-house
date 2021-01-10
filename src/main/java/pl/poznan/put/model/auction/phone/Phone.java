@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import pl.poznan.put.model.auction.Auction;
 
@@ -44,13 +43,13 @@ public class Phone extends Auction implements Serializable {
     @Override
     public String toString() {
         return "Phone{" +
-                "Auction='" + super.toString() + '\'' +
-                "producer='" + producer + '\'' +
-                ", screenSize='" + screenSize + '\'' +
-                ", battery='" + battery + '\'' +
-                ", processor='" + processor + '\'' +
-                ", ram='" + ram + '\'' +
-                ", operatingSystem='" + operatingSystem + '\'' +
-                '}';
+               "Auction='" + super.toString() + '\'' +
+               "producer='" + producer + '\'' +
+               ", screenSize='" + screenSize + '\'' +
+               ", battery='" + battery + '\'' +
+               ", processor='" + processor + '\'' +
+               ", ram='" + ram + '\'' +
+               ", operatingSystem='" + operatingSystem + '\'' +
+               '}';
     }
 }

@@ -8,9 +8,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import pl.poznan.put.model.auction.log.AuctionLog;
+import pl.poznan.put.util.date.ProjectDateUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Slf4j
@@ -38,15 +40,14 @@ public class AuctionHistoryController {
     }
 
     private static class SimpleDateFormatTableCell extends TableCell<AuctionLog, Long> {
-        private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
         @Override
         protected void updateItem(Long item, boolean empty) {
             super.updateItem(item, empty);
-            if (empty) setText("");
+            if (empty) setText(StringUtils.EMPTY);
             else {
                 val date = new Date(item);
-                setText(FORMAT.format(date));
+                val text = DateFormatUtils.format(date, ProjectDateUtils.PATTERN);
+                setText(text);
             }
         }
     }

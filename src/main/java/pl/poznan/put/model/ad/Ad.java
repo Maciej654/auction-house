@@ -30,8 +30,8 @@ public class Ad implements Serializable {
     @Override
     public String toString() {
         return "Ad{" +
-                "auction=" + auction.getId() +
-                ", slogan='" + slogan + '\'' +
-                '}';
+               "auction=" + auction.getId() +
+               ", slogan='" + slogan + '\'' +
+               '}';
     }
 }

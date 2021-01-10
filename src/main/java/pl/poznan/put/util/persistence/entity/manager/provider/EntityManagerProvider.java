@@ -1,5 +1,6 @@
 package pl.poznan.put.util.persistence.entity.manager.provider;
 
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
@@ -9,13 +10,14 @@ import java.io.IOException;
 import java.util.Properties;
 
 @Slf4j
+@UtilityClass
 public class EntityManagerProvider {
-    private static final String PROPERTIES  = "user.properties";
-    private static final String PERSISTENCE = "data";
+    private final String PROPERTIES  = "user.properties";
+    private final String PERSISTENCE = "data";
 
-    private static EntityManager entityManager;
+    private EntityManager entityManager;
 
-    public static EntityManager getEntityManager() {
+    public EntityManager getEntityManager() {
         val em = entityManager;
         if (em != null) return em;
         synchronized (EntityManagerProvider.class) {
@@ -28,7 +30,7 @@ public class EntityManagerProvider {
                                                   .createEntityManager();
             }
             catch (IOException e) {
-                log.error("An error occurred", e);
+                log.error(e.getMessage(), e);
                 return null;
             }
         }

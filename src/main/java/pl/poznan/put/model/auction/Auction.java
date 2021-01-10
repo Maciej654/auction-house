@@ -3,19 +3,31 @@ package pl.poznan.put.model.auction;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import lombok.val;
 import pl.poznan.put.model.ad.Ad;
 import pl.poznan.put.model.auction.log.AuctionLog;
 import pl.poznan.put.model.picture.Picture;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -79,33 +91,31 @@ public abstract class Auction implements Serializable {
         FINISHED,
         CANCELLED
     }
+
     public static List<Auction> getAuctions() {
-        EntityManager em = EntityManagerProvider.getEntityManager();
-        TypedQuery<Auction> query = null;
-        if (em != null) {
-            query = em.createQuery("SELECT auction from Auction auction", Auction.class);
-        }
-        return  query.getResultList();
+        val em = EntityManagerProvider.getEntityManager();
+        if (em != null) return em.createQuery("SELECT auction from Auction auction", Auction.class).getResultList();
+        else return Collections.emptyList();
     }
 
     @Override
     public String toString() {
         return "Auction{" +
-                "id=" + id +
-                ", auctionName='" + auctionName + '\'' +
-                ", itemName='" + itemName + '\'' +
-                ", seller=" + seller.getEmail() +
-                ", itemDescription='" + itemDescription + '\'' +
-                ", creationDate=" + creationDate +
-                ", endDate=" + endDate +
-                ", price=" + price +
-                ", status=" + status +
-                ", ad=" + ad +
-                ", pictures=" + pictures +
-                '}';
+               "id=" + id +
+               ", auctionName='" + auctionName + '\'' +
+               ", itemName='" + itemName + '\'' +
+               ", seller=" + seller.getEmail() +
+               ", itemDescription='" + itemDescription + '\'' +
+               ", creationDate=" + creationDate +
+               ", endDate=" + endDate +
+               ", price=" + price +
+               ", status=" + status +
+               ", ad=" + ad +
+               ", pictures=" + pictures +
+               '}';
     }
 
-    public String getCategory(){
+    public String getCategory() {
         return this.discriminator;
     }
 }
