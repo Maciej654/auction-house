@@ -1,6 +1,5 @@
 package pl.poznan.put.controller.browser;
 
-import antlr.StringUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,16 +9,18 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
-
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class BrowserController {
@@ -46,6 +47,8 @@ public class BrowserController {
     private TableColumn<Data, Button> details_column;
 
     private static final EntityManager em = EntityManagerProvider.getEntityManager();
+    @Setter
+    Consumer<Auction> showAuctionDetails;
 
     @SuperBuilder
     @lombok.Data
@@ -56,14 +59,22 @@ public class BrowserController {
         private double price;
         private String seller;
         private String category;
-        private String details;
+        private Button details;
     }
 
+    private class AuctionDetailsButton extends Button{
+        @Getter
+        private final Auction auction;
+
+        public AuctionDetailsButton(String text, Auction auction) {
+            super(text);
+            this.auction = auction;
+            this.setOnAction(a -> showAuctionDetails.accept(auction));
+        }
+    }
     @FXML
     private void click(MouseEvent mouseEvent) {
-        
         List<Auction> listofAuctions = new ArrayList<>();
-
         if (em != null) {
             TypedQuery<Auction> query = em.createQuery("select auction from Auction auction ", Auction.class);
             listofAuctions = query.getResultStream()
@@ -74,18 +85,18 @@ public class BrowserController {
         }
         List<Data> list = listofAuctions.stream()
                             .map(auction -> Data.builder()
-                                    .AuctionName(auction.getAuctionName())
-                                    .itemName(auction.getItemName())
-                                    .endDate(auction.getEndDate())
-                                    .price(auction.getPrice())
-                                    .seller(auction.getSeller().getEmail())
-                                    .category(auction.getCategory())
-                                    .details("click here")
-                                    .build()).collect(Collectors.toList());
+                                .AuctionName(auction.getAuctionName())
+                                .itemName(auction.getItemName())
+                                .endDate(auction.getEndDate())
+                                .price(auction.getPrice())
+                                .seller(auction.getSeller().getEmail())
+                                .category(auction.getCategory())
+                                .details(new AuctionDetailsButton("click here", auction))
+                                .build()).collect(Collectors.toList());
 
         ObservableList<Data> obsList = FXCollections.observableArrayList(list);
         table.setItems(obsList);
-        //toDo dodaać przycisk w miejsce Details pozwalający wyświetlić szczegóły aukcji
+
     }
 
     private boolean filterByName(Auction auction){
@@ -106,6 +117,7 @@ public class BrowserController {
         String auctionType = auction.getCategory().toUpperCase();
         return Objects.equals(type, auctionType);
     }
+
     public void setup(){
         category_column.setCellValueFactory(new PropertyValueFactory<>("category"));
         seller_column.setCellValueFactory(new PropertyValueFactory<>("seller"));
@@ -115,7 +127,6 @@ public class BrowserController {
         auction_name_column.setCellValueFactory(new PropertyValueFactory<>("AuctionName"));
         details_column.setCellValueFactory(new PropertyValueFactory<>("details"));
     }
-
 
 }
 
