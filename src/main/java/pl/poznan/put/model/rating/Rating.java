@@ -6,13 +6,7 @@ import lombok.NoArgsConstructor;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.user.User;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -31,6 +25,13 @@ public class Rating implements Serializable {
     @JoinColumn(name = "REVIEWER", referencedColumnName = "EMAIL")
     @ManyToOne
     private User reviewer;
+
+    @Column(name = "RATING")
+    private int rating;
+
+    @Column(name = "text_desc")
+    private String comment;
+
 
     @Data
     @NoArgsConstructor
