@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?><?import javafx.scene.control.Label?><?import javafx.scene.control.TextField?><?import javafx.scene.Cursor?><?import javafx.scene.image.Image?><?import javafx.scene.image.ImageView?><?import javafx.scene.layout.ColumnConstraints?><?import javafx.scene.layout.GridPane?><?import javafx.scene.layout.RowConstraints?>
+<?import javafx.geometry.Insets?><?import javafx.scene.control.ChoiceBox?><?import javafx.scene.control.Label?><?import javafx.scene.control.TextField?><?import javafx.scene.Cursor?><?import javafx.scene.image.Image?><?import javafx.scene.image.ImageView?><?import javafx.scene.layout.ColumnConstraints?><?import javafx.scene.layout.GridPane?><?import javafx.scene.layout.RowConstraints?>
 <GridPane hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="pl.poznan.put.controller.auction.crud.create.specifics.car.AuctionCreateCarController">
     <columnConstraints>
@@ -20,12 +20,73 @@
     <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>
-    <Label text="Category:" />
-    <TextField GridPane.columnIndex="1" />
-    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+    <Label text="Make:" />
+    <Label text="Model:" GridPane.rowIndex="1" />
+    <Label text="Mileage:" GridPane.rowIndex="2" />
+    <Label text="Transmission:" GridPane.rowIndex="3" />
+    <Label text="Engine:" GridPane.rowIndex="4" />
+    <Label text="Fuel:" GridPane.rowIndex="5" />
+    <Label text="Condition:" GridPane.rowIndex="6" />
+    <TextField fx:id="makeTextField" maxWidth="1.7976931348623157E308" minWidth="-Infinity" GridPane.columnIndex="1" />
+    <ImageView fx:id="makeWarning" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true"
+        GridPane.columnIndex="2">
         <cursor>
             <Cursor fx:constant="HAND" />
         </cursor>
         <Image url="@/icons/warning-32.png" />
     </ImageView>
+    <ImageView fx:id="modelWarning" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true"
+        GridPane.columnIndex="2" GridPane.rowIndex="1">
+        <cursor>
+            <Cursor fx:constant="HAND" />
+        </cursor>
+        <Image url="@/icons/warning-32.png" />
+    </ImageView>
+    <ImageView fx:id="mileageWarning" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true"
+        GridPane.columnIndex="2" GridPane.rowIndex="2">
+        <cursor>
+            <Cursor fx:constant="HAND" />
+        </cursor>
+        <Image url="@/icons/warning-32.png" />
+    </ImageView>
+    <ImageView fx:id="transmissionWarning" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true"
+        GridPane.columnIndex="2" GridPane.rowIndex="3">
+        <cursor>
+            <Cursor fx:constant="HAND" />
+        </cursor>
+        <Image url="@/icons/warning-32.png" />
+    </ImageView>
+    <ImageView fx:id="engineWarning" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true"
+        GridPane.columnIndex="2" GridPane.rowIndex="4">
+        <cursor>
+            <Cursor fx:constant="HAND" />
+        </cursor>
+        <Image url="@/icons/warning-32.png" />
+    </ImageView>
+    <ImageView fx:id="fuelWarning" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true"
+        GridPane.columnIndex="2" GridPane.rowIndex="5">
+        <cursor>
+            <Cursor fx:constant="HAND" />
+        </cursor>
+        <Image url="@/icons/warning-32.png" />
+    </ImageView>
+    <ImageView fx:id="conditionWarning" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true"
+        GridPane.columnIndex="2" GridPane.rowIndex="6">
+        <cursor>
+            <Cursor fx:constant="HAND" />
+        </cursor>
+        <Image url="@/icons/warning-32.png" />
+    </ImageView>
+    <TextField fx:id="modelTextField" maxWidth="1.7976931348623157E308" minWidth="-Infinity" GridPane.columnIndex="1"
+        GridPane.rowIndex="1" />
+    <TextField fx:id="mileageTextField" maxWidth="1.7976931348623157E308" minWidth="-Infinity" GridPane.columnIndex="1"
+        GridPane.rowIndex="2" />
+    <ChoiceBox fx:id="transmissionChoiceBox" maxWidth="1.7976931348623157E308" minWidth="-Infinity"
+        GridPane.columnIndex="1" GridPane.rowIndex="3" />
+    <ChoiceBox fx:id="fuelChoiceBox" maxWidth="1.7976931348623157E308" minWidth="-Infinity" GridPane.columnIndex="1"
+        GridPane.rowIndex="5" />
+    <ChoiceBox fx:id="conditionChoiceBox" maxWidth="1.7976931348623157E308" minWidth="-Infinity"
+        GridPane.columnIndex="1" GridPane.rowIndex="6" />
+    <TextField fx:id="engineTextField" maxWidth="1.7976931348623157E308" minWidth="-Infinity" GridPane.columnIndex="1"
+        GridPane.rowIndex="4" />
 </GridPane>

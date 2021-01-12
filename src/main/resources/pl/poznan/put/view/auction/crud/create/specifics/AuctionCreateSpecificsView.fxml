@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 
-<?import javafx.geometry.Insets?><?import javafx.scene.control.ChoiceBox?><?import javafx.scene.control.Label?><?import javafx.scene.layout.ColumnConstraints?><?import javafx.scene.layout.GridPane?><?import javafx.scene.layout.RowConstraints?><?import javafx.scene.layout.StackPane?><?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?><?import javafx.scene.control.ChoiceBox?><?import javafx.scene.control.Label?><?import javafx.scene.Cursor?><?import javafx.scene.image.Image?><?import javafx.scene.image.ImageView?><?import javafx.scene.layout.ColumnConstraints?><?import javafx.scene.layout.GridPane?><?import javafx.scene.layout.RowConstraints?><?import javafx.scene.layout.StackPane?><?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="pl.poznan.put.controller.auction.crud.create.specifics.AuctionCreateSpecificsController">
     <GridPane alignment="CENTER" hgap="10.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" vgap="10.0">
         <columnConstraints>
             <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="200.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="200.0" />
             <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="200.0" />
         </columnConstraints>
         <rowConstraints>
@@ -17,6 +18,13 @@
         </padding>
         <Label text="Type:" />
         <ChoiceBox fx:id="typeChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" />
+        <ImageView fx:id="typeWarning" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true"
+            GridPane.columnIndex="2">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+            <Image url="@/icons/warning-32.png" />
+        </ImageView>
     </GridPane>
     <StackPane prefHeight="150.0" prefWidth="200.0">
         <VBox fx:id="bookVBox">

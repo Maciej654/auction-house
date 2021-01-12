@@ -113,25 +113,31 @@ public class AuctionCreatePhoneController extends AbstractValidatedController {
                 ramWarning
         );
 
+        // os
         Validation.install(
                 osChoiceBox.valueProperty(),
                 new NotNullPropertyValidator<>("OS"),
                 osValid,
                 osWarning
         );
+
+        val valid = producerValid
+                .and(screenSizeValid)
+                .and(batteryValid)
+                .and(processorValid)
+                .and(ramValid)
+                .and(osValid);
+
+        informationValid.bind(valid);
     }
 
     @Override
     protected void setupInitialValues() {
-        producerTextField.setText(null);
-        screenSizeTextField.setText(null);
-        batteryTextField.setText(null);
-        processorTextField.setText(null);
-        ramTextField.setText(null);
-
-        val items = FXCollections.observableArrayList(OS.values());
-        osChoiceBox.setConverter(new EnumConverter<>(OS.class));
-        osChoiceBox.setItems(items);
-        osChoiceBox.setValue(null);
+        setupTextField(producerTextField);
+        setupTextField(screenSizeTextField);
+        setupTextField(batteryTextField);
+        setupTextField(processorTextField);
+        setupTextField(ramTextField);
+        setupChoiceBox(osChoiceBox, OS.class);
     }
 }

@@ -2,7 +2,6 @@ package pl.poznan.put.controller.auction.crud.create.specifics.book;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -14,7 +13,6 @@ import pl.poznan.put.logic.common.validation.alpha.AlphaPropertyValidator;
 import pl.poznan.put.logic.common.validation.empty.NotNullPropertyValidator;
 import pl.poznan.put.model.auction.book.Book;
 import pl.poznan.put.model.auction.book.Book.Cover;
-import pl.poznan.put.util.converter.EnumConverter;
 import pl.poznan.put.util.validation.Validation;
 
 public class AuctionCreateBookController extends AbstractValidatedController {
@@ -80,13 +78,8 @@ public class AuctionCreateBookController extends AbstractValidatedController {
 
     @Override
     protected void setupInitialValues() {
-        genreTextField.setText(null);
-
-        val items = FXCollections.observableArrayList(Cover.values());
-        coverChoiceBox.setConverter(new EnumConverter<>(Cover.class));
-        coverChoiceBox.setItems(items);
-        coverChoiceBox.setValue(null);
-
-        authorTextField.setText(null);
+        setupTextField(genreTextField);
+        setupTextField(authorTextField);
+        setupChoiceBox(coverChoiceBox, Cover.class);
     }
 }

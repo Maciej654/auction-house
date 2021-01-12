@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import lombok.Getter;
-import org.apache.commons.lang3.StringUtils;
 import pl.poznan.put.controller.auction.crud.create.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.alpha.AlphaPropertyValidator;
 import pl.poznan.put.model.auction.Default;
@@ -32,6 +31,6 @@ public class AuctionCreateDefaultController extends AbstractValidatedController 
 
     @Override
     protected void setupInitialValues() {
-        categoryTextField.setText(StringUtils.EMPTY);
+        setupTextField(categoryTextField);
     }
 }

@@ -1,18 +1,20 @@
 package pl.poznan.put.controller.auction.crud.create.specifics;
 
-import javafx.collections.FXCollections;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
-import lombok.val;
 import pl.poznan.put.controller.auction.crud.create.AbstractValidatedController;
 import pl.poznan.put.controller.auction.crud.create.specifics.book.AuctionCreateBookController;
 import pl.poznan.put.controller.auction.crud.create.specifics.car.AuctionCreateCarController;
 import pl.poznan.put.controller.auction.crud.create.specifics.phone.AuctionCreatePhoneController;
+import pl.poznan.put.logic.common.validation.empty.NotNullPropertyValidator;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.auction.Auction.Type;
-import pl.poznan.put.util.converter.EnumConverter;
+import pl.poznan.put.util.validation.Validation;
 
 public class AuctionCreateSpecificsController extends AbstractValidatedController {
     @FXML
@@ -42,12 +44,35 @@ public class AuctionCreateSpecificsController extends AbstractValidatedControlle
     @FXML
     private ChoiceBox<Auction.Type> typeChoiceBox;
 
+    @FXML
+    private ImageView typeWarning;
+
+    private final BooleanProperty typeValid = new SimpleBooleanProperty();
+
     @Getter
     private Auction.AuctionBuilder<?, ?> auctionBuilder;
 
     @Override
     protected void installValidation() {
-        typeChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        Validation.install(
+                typeChoiceBox.valueProperty(),
+                new NotNullPropertyValidator<>("Type"),
+                typeValid,
+                typeWarning
+        );
+    }
+
+    @Override
+    protected void setupInitialValues() {
+        setupChoiceBox(typeChoiceBox, Type.class);
+    }
+
+    @Override
+    @FXML
+    protected void initialize() {
+        super.initialize();
+
+        typeChoiceBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) switch (newValue) {
                 case BOOK:
                     auctionBuilder = auctionCreateBookController.getBookBuilder();
@@ -103,13 +128,5 @@ public class AuctionCreateSpecificsController extends AbstractValidatedControlle
                     break;
             }
         });
-    }
-
-    @Override
-    protected void setupInitialValues() {
-        val items = FXCollections.observableArrayList(Auction.Type.values());
-        typeChoiceBox.setConverter(new EnumConverter<>(Auction.Type.class));
-        typeChoiceBox.setItems(items);
-        typeChoiceBox.setValue(Type.DEFAULT);
     }
 }

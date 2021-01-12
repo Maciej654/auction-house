@@ -98,7 +98,5 @@ public class AuctionCreateController extends AbstractValidatedController {
     }
 
     @Override
-    protected void setupInitialValues() {
-
-    }
+    protected void setupInitialValues() {}
 }
