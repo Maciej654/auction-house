@@ -63,5 +63,8 @@
         <Tab closable="false" text="Photos">
             <fx:include fx:id="auctionCreatePhotos" source="photos/AuctionCreatePhotosView.fxml" />
         </Tab>
+        <Tab closable="false" text="Specifics">
+            <fx:include fx:id="auctionCreateSpecifics" source="specifics/AuctionCreateSpecificsView.fxml" />
+        </Tab>
     </TabPane>
 </VBox>
