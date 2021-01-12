@@ -1,19 +1,17 @@
 package pl.poznan.put.logic.user.validation;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
-import pl.poznan.put.logic.common.validation.PropertyValidator;
+import pl.poznan.put.logic.common.validation.AbstractPropertyValidator;
 
-public class UserEmailValidator implements PropertyValidator<String> {
+public class UserEmailValidator extends AbstractPropertyValidator<String> {
     private final EmailValidator emailValidator = EmailValidator.getInstance();
 
-    @Override
-    public boolean test(String s) {
-        return StringUtils.isNotBlank(s) && emailValidator.isValid(s);
+    public UserEmailValidator() {
+        super("Email");
     }
 
     @Override
-    public String getErrorMessage() {
-        return "Email is not valid";
+    public boolean test(String s) {
+        return emailValidator.isValid(s);
     }
 }

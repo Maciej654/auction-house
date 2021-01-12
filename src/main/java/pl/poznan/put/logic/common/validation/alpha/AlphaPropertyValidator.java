@@ -1,13 +1,11 @@
 package pl.poznan.put.logic.common.validation.alpha;
 
 import org.apache.commons.lang3.StringUtils;
-import pl.poznan.put.logic.common.validation.PropertyValidator;
+import pl.poznan.put.logic.common.validation.AbstractPropertyValidator;
 
-public class AlphaPropertyValidator implements PropertyValidator<String> {
-    private final String field;
-
+public class AlphaPropertyValidator extends AbstractPropertyValidator<String> {
     public AlphaPropertyValidator(String field) {
-        this.field = field;
+        super(field);
     }
 
     @Override

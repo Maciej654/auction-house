@@ -1,17 +1,8 @@
 package pl.poznan.put.logic.common.validation.empty;
 
-import pl.poznan.put.logic.common.validation.PropertyValidator;
-
-public class NotNullPropertyValidator<T> implements PropertyValidator<T> {
-    private final String field;
-
+public class NotNullPropertyValidator<T> extends AbstractNotEmptyPropertyValidator<T> {
     public NotNullPropertyValidator(String field) {
-        this.field = field;
-    }
-
-    @Override
-    public String getErrorMessage() {
-        return field + " cannot be empty";
+        super(field);
     }
 
     @Override
