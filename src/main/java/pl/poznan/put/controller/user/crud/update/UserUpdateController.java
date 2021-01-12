@@ -4,8 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import pl.poznan.put.controller.user.crud.UserCrudController;
-import pl.poznan.put.controller.user.validation.UserPropertyValidator;
-import pl.poznan.put.controller.user.validation.UserUpdatePasswordValidator;
+import pl.poznan.put.logic.common.validation.PropertyValidator;
+import pl.poznan.put.logic.user.validation.UserUpdatePasswordValidator;
 import pl.poznan.put.model.user.User;
 
 import java.util.Objects;
@@ -15,7 +15,7 @@ public class UserUpdateController extends UserCrudController {
     private User user;
 
     @Override
-    protected UserPropertyValidator<String> getPasswordValidator() {
+    protected PropertyValidator<String> getPasswordValidator() {
         return new UserUpdatePasswordValidator();
     }
 

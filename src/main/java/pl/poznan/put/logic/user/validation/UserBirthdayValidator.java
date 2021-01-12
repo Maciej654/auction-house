@@ -1,11 +1,12 @@
-package pl.poznan.put.controller.user.validation;
+package pl.poznan.put.logic.user.validation;
 
 import lombok.val;
+import pl.poznan.put.logic.common.validation.PropertyValidator;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class UserBirthdayValidator implements UserPropertyValidator<LocalDate> {
+public class UserBirthdayValidator implements PropertyValidator<LocalDate> {
     @Override
     public boolean test(LocalDate localDate) {
         val today = LocalDate.now();

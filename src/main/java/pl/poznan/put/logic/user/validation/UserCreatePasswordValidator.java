@@ -1,8 +1,9 @@
-package pl.poznan.put.controller.user.validation;
+package pl.poznan.put.logic.user.validation;
 
 import org.apache.commons.lang3.StringUtils;
+import pl.poznan.put.logic.common.validation.PropertyValidator;
 
-public class UserCreatePasswordValidator implements UserPropertyValidator<String> {
+public class UserCreatePasswordValidator implements PropertyValidator<String> {
     private boolean containsLowerCaseLetter(String s) {
         return s.matches(".*[a-z].*");
     }

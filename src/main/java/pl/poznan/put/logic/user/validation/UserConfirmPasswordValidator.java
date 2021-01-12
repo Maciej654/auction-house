@@ -1,9 +1,10 @@
-package pl.poznan.put.controller.user.validation;
+package pl.poznan.put.logic.user.validation;
 
 import javafx.beans.property.StringProperty;
 import org.apache.commons.lang3.StringUtils;
+import pl.poznan.put.logic.common.validation.PropertyValidator;
 
-public class UserConfirmPasswordValidator implements UserPropertyValidator<String> {
+public class UserConfirmPasswordValidator implements PropertyValidator<String> {
     private final StringProperty reference;
 
     public UserConfirmPasswordValidator(StringProperty reference) {

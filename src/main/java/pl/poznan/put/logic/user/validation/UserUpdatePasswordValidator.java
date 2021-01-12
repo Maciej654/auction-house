@@ -1,4 +1,4 @@
-package pl.poznan.put.controller.user.validation;
+package pl.poznan.put.logic.user.validation;
 
 import org.apache.commons.lang3.StringUtils;
 

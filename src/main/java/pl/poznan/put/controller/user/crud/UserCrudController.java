@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
@@ -12,7 +11,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -23,15 +21,16 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
-import pl.poznan.put.controller.user.exception.EmailAlreadyInUseException;
-import pl.poznan.put.controller.user.validation.UserBirthdayValidator;
-import pl.poznan.put.controller.user.validation.UserConfirmPasswordValidator;
-import pl.poznan.put.controller.user.validation.UserEmailValidator;
-import pl.poznan.put.controller.user.validation.UserNameValidator;
-import pl.poznan.put.controller.user.validation.UserPropertyValidator;
+import pl.poznan.put.logic.common.validation.PropertyValidator;
+import pl.poznan.put.logic.common.validation.alpha.AlphaPropertyValidator;
+import pl.poznan.put.logic.user.exception.EmailAlreadyInUseException;
+import pl.poznan.put.logic.user.validation.UserBirthdayValidator;
+import pl.poznan.put.logic.user.validation.UserConfirmPasswordValidator;
+import pl.poznan.put.logic.user.validation.UserEmailValidator;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.util.password.hasher.PasswordHasher;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
+import pl.poznan.put.util.validation.Validation;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
@@ -102,7 +101,7 @@ public abstract class UserCrudController {
     private final BooleanProperty passwordValid        = new SimpleBooleanProperty(true);
     private final BooleanProperty confirmPasswordValid = new SimpleBooleanProperty(true);
 
-    protected abstract UserPropertyValidator<String> getPasswordValidator();
+    protected abstract PropertyValidator<String> getPasswordValidator();
 
     private final BooleanBinding userInfoValid = emailValid.and(firstNameValid)
                                                            .and(lastNameValid)
@@ -110,26 +109,10 @@ public abstract class UserCrudController {
                                                            .and(passwordValid)
                                                            .and(confirmPasswordValid);
 
-    private <R> void initializeValidation(
-            ObservableValue<R> value,
-            UserPropertyValidator<R> validator,
-            BooleanProperty property,
-            ImageView warning) {
-        value.addListener((observable, oldValue, newValue) -> {
-            val valid = validator.test(newValue);
-            warning.setVisible(!valid);
-            property.set(valid);
-        });
-        val message = validator.getErrorMessage();
-        val tooltip = new Tooltip(message);
-        tooltip.setPrefWidth(200);
-        tooltip.setWrapText(true);
-        Tooltip.install(warning, tooltip);
-    }
 
     private void initializeValidators() {
         // email
-        initializeValidation(
+        Validation.install(
                 emailTextField.textProperty(),
                 new UserEmailValidator(),
                 emailValid,
@@ -137,23 +120,23 @@ public abstract class UserCrudController {
         );
 
         // first name
-        initializeValidation(
+        Validation.install(
                 firstNameTextField.textProperty(),
-                new UserNameValidator("First name"),
+                new AlphaPropertyValidator("First name"),
                 firstNameValid,
                 firstNameWarning
         );
 
         // last name
-        initializeValidation(
+        Validation.install(
                 lastNameTextField.textProperty(),
-                new UserNameValidator("Last name"),
+                new AlphaPropertyValidator("Last name"),
                 lastNameValid,
                 lastNameWarning
         );
 
         // birthday
-        initializeValidation(
+        Validation.install(
                 birthdayDatePicker.valueProperty(),
                 new UserBirthdayValidator(),
                 birthdayValid,
@@ -161,7 +144,7 @@ public abstract class UserCrudController {
         );
 
         // password
-        initializeValidation(
+        Validation.install(
                 passwordField.textProperty(),
                 this.getPasswordValidator(),
                 passwordValid,
@@ -169,7 +152,7 @@ public abstract class UserCrudController {
         );
 
         // confirm password (1)
-        initializeValidation(
+        Validation.install(
                 confirmPasswordField.textProperty(),
                 new UserConfirmPasswordValidator(passwordField.textProperty()),
                 confirmPasswordValid,
@@ -177,7 +160,7 @@ public abstract class UserCrudController {
         );
 
         // confirm password (2)
-        initializeValidation(
+        Validation.install(
                 passwordField.textProperty(),
                 new UserConfirmPasswordValidator(confirmPasswordField.textProperty()),
                 confirmPasswordValid,

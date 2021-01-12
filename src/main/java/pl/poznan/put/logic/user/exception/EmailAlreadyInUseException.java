@@ -1,4 +1,4 @@
-package pl.poznan.put.controller.user.exception;
+package pl.poznan.put.logic.user.exception;
 
 public class EmailAlreadyInUseException extends RuntimeException {
     @Override

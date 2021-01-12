@@ -1,9 +1,10 @@
-package pl.poznan.put.controller.user.validation;
+package pl.poznan.put.logic.user.validation;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
+import pl.poznan.put.logic.common.validation.PropertyValidator;
 
-public class UserEmailValidator implements UserPropertyValidator<String> {
+public class UserEmailValidator implements PropertyValidator<String> {
     private final EmailValidator emailValidator = EmailValidator.getInstance();
 
     @Override

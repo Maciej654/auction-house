@@ -1,11 +1,12 @@
-package pl.poznan.put.controller.user.validation;
+package pl.poznan.put.logic.common.validation.alpha;
 
 import org.apache.commons.lang3.StringUtils;
+import pl.poznan.put.logic.common.validation.PropertyValidator;
 
-public class UserNameValidator implements UserPropertyValidator<String> {
+public class AlphaPropertyValidator implements PropertyValidator<String> {
     private final String field;
 
-    public UserNameValidator(String field) {
+    public AlphaPropertyValidator(String field) {
         this.field = field;
     }
 

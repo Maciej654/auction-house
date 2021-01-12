@@ -70,7 +70,7 @@ public abstract class Auction implements Serializable {
     private Status status;
 
     @Column(name = "DISCRIMINATOR")
-    private String discriminator;
+    private Type type;
 
     @OneToMany(mappedBy = "auction")
     private Collection<AuctionLog> logs;
@@ -83,6 +83,13 @@ public abstract class Auction implements Serializable {
 
 //    @OneToOne(mappedBy = "auction", fetch = FetchType.LAZY)
 //    private Rating rating;
+
+    public enum Type {
+        BOOK,
+        CAR,
+        DEFAULT,
+        PHONE
+    }
 
     public enum Status implements Serializable {
         PLANNED,
@@ -116,6 +123,6 @@ public abstract class Auction implements Serializable {
     }
 
     public String getCategory() {
-        return this.discriminator;
+        return this.type.name();
     }
 }
