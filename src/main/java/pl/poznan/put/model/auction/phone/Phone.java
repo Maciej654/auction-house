@@ -38,7 +38,14 @@ public class Phone extends Auction implements Serializable {
     private String ram;
 
     @Column(name = "OPERATING_SYSTEM")
-    private String operatingSystem;
+    private OS operatingSystem;
+
+    public enum OS {
+        ANDROID,
+        IOS,
+        WINDOWS_PHONE,
+        LINUX
+    }
 
     @Override
     public String toString() {

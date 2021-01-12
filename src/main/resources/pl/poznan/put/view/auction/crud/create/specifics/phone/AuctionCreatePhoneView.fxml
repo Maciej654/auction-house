@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?><?import javafx.scene.control.Label?><?import javafx.scene.control.TextField?><?import javafx.scene.Cursor?><?import javafx.scene.image.Image?><?import javafx.scene.image.ImageView?><?import javafx.scene.layout.ColumnConstraints?><?import javafx.scene.layout.GridPane?><?import javafx.scene.layout.RowConstraints?>
+<?import javafx.geometry.Insets?><?import javafx.scene.control.ChoiceBox?><?import javafx.scene.control.Label?><?import javafx.scene.control.TextField?><?import javafx.scene.Cursor?><?import javafx.scene.image.Image?><?import javafx.scene.image.ImageView?><?import javafx.scene.layout.ColumnConstraints?><?import javafx.scene.layout.GridPane?><?import javafx.scene.layout.RowConstraints?>
 <GridPane hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="pl.poznan.put.controller.auction.crud.create.specifics.phone.AuctionCreatePhoneController">
     <columnConstraints>
@@ -9,17 +9,74 @@
         <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="200.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>
-    <Label text="Category:" />
-    <TextField GridPane.columnIndex="1" />
-    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+    <Label text="Producer:" />
+    <TextField fx:id="producerTextField" maxWidth="1.7976931348623157E308" minWidth="-Infinity"
+        GridPane.columnIndex="1" />
+    <ImageView fx:id="producerWarning" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true"
+        GridPane.columnIndex="2">
         <cursor>
             <Cursor fx:constant="HAND" />
         </cursor>
         <Image url="@/icons/warning-32.png" />
     </ImageView>
+    <ImageView fx:id="screenSizeWarning" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true"
+        GridPane.columnIndex="2" GridPane.rowIndex="1">
+        <cursor>
+            <Cursor fx:constant="HAND" />
+        </cursor>
+        <Image url="@/icons/warning-32.png" />
+    </ImageView>
+    <ImageView fx:id="batteryWarning" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true"
+        GridPane.columnIndex="2" GridPane.rowIndex="2">
+        <cursor>
+            <Cursor fx:constant="HAND" />
+        </cursor>
+        <Image url="@/icons/warning-32.png" />
+    </ImageView>
+    <ImageView fx:id="processorWarning" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true"
+        GridPane.columnIndex="2" GridPane.rowIndex="3">
+        <cursor>
+            <Cursor fx:constant="HAND" />
+        </cursor>
+        <Image url="@/icons/warning-32.png" />
+    </ImageView>
+    <ImageView fx:id="ramWarning" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true"
+        GridPane.columnIndex="2" GridPane.rowIndex="4">
+        <cursor>
+            <Cursor fx:constant="HAND" />
+        </cursor>
+        <Image url="@/icons/warning-32.png" />
+    </ImageView>
+    <ImageView fx:id="osWarning" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true"
+        GridPane.columnIndex="2" GridPane.rowIndex="5">
+        <cursor>
+            <Cursor fx:constant="HAND" />
+        </cursor>
+        <Image url="@/icons/warning-32.png" />
+    </ImageView>
+    <Label text="Screen size:" GridPane.rowIndex="1" />
+    <Label text="Battery:" GridPane.rowIndex="2" />
+    <Label text="Processor:" GridPane.rowIndex="3" />
+    <Label text="RAM:" GridPane.rowIndex="4" />
+    <Label text="Operating System:" GridPane.rowIndex="5" />
+    <TextField fx:id="screenSizeTextField" maxWidth="1.7976931348623157E308" minWidth="-Infinity"
+        GridPane.columnIndex="1" GridPane.rowIndex="1" />
+    <TextField fx:id="batteryTextField" maxWidth="1.7976931348623157E308" minWidth="-Infinity" GridPane.columnIndex="1"
+        GridPane.rowIndex="2" />
+    <TextField fx:id="processorTextField" maxWidth="1.7976931348623157E308" minWidth="-Infinity"
+        GridPane.columnIndex="1" GridPane.rowIndex="3" />
+    <TextField fx:id="ramTextField" maxWidth="1.7976931348623157E308" minWidth="-Infinity" GridPane.columnIndex="1"
+        GridPane.rowIndex="4" />
+    <ChoiceBox fx:id="osChoiceBox" maxWidth="1.7976931348623157E308" minWidth="-Infinity" GridPane.columnIndex="1"
+        GridPane.rowIndex="5" />
 </GridPane>

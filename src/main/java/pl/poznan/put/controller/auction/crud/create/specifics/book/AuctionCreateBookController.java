@@ -9,7 +9,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import lombok.Getter;
 import lombok.val;
-import org.apache.commons.lang3.StringUtils;
 import pl.poznan.put.controller.auction.crud.create.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.alpha.AlphaPropertyValidator;
 import pl.poznan.put.logic.common.validation.empty.NotNullPropertyValidator;
@@ -71,17 +70,23 @@ public class AuctionCreateBookController extends AbstractValidatedController {
                 authorValid,
                 authorWarning
         );
+
+        val valid = genreValid
+                .and(coverValid)
+                .and(authorValid);
+
+        informationValid.bind(valid);
     }
 
     @Override
     protected void setupInitialValues() {
-        genreTextField.setText(StringUtils.EMPTY);
+        genreTextField.setText(null);
 
         val items = FXCollections.observableArrayList(Cover.values());
         coverChoiceBox.setConverter(new EnumConverter<>(Cover.class));
         coverChoiceBox.setItems(items);
         coverChoiceBox.setValue(null);
 
-        authorTextField.setText(StringUtils.EMPTY);
+        authorTextField.setText(null);
     }
 }
