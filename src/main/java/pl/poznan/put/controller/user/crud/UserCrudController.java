@@ -21,6 +21,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
+import pl.poznan.put.controller.auction.crud.create.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.PropertyValidator;
 import pl.poznan.put.logic.common.validation.alpha.AlphaPropertyValidator;
 import pl.poznan.put.logic.user.exception.EmailAlreadyInUseException;
@@ -38,7 +39,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
 @Slf4j
-public abstract class UserCrudController {
+public abstract class UserCrudController extends AbstractValidatedController {
     @FXML
     protected ImageView emailWarning;
 
@@ -109,8 +110,8 @@ public abstract class UserCrudController {
                                                            .and(passwordValid)
                                                            .and(confirmPasswordValid);
 
-
-    private void initializeValidators() {
+    @Override
+    protected void installValidation() {
         // email
         Validation.install(
                 emailTextField.textProperty(),
@@ -168,7 +169,8 @@ public abstract class UserCrudController {
         );
     }
 
-    private void clearFormData() {
+    @Override
+    protected void setupInitialValues() {
         emailTextField.setText(null);
         firstNameTextField.setText(null);
         lastNameTextField.setText(null);
@@ -185,16 +187,17 @@ public abstract class UserCrudController {
         actionButton.disableProperty().bind(userInfoValid.not());
     }
 
+    @Override
     @FXML
     protected void initialize() {
+        super.initialize();
+
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         birthdayDatePicker.setConverter(new UserCrudController.SimpleDateConverter(formatter));
 
         HBox.setHgrow(spacePane, Priority.ALWAYS);
 
-        initializeValidators();
         bindActionButton();
-        clearFormData();
     }
 
     public void setEmail(String email) {

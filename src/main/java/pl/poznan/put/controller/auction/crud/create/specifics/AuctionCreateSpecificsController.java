@@ -4,19 +4,17 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.VBox;
-import javafx.util.StringConverter;
 import lombok.Getter;
 import lombok.val;
-import org.apache.commons.lang3.StringUtils;
+import pl.poznan.put.controller.auction.crud.create.AbstractValidatedController;
 import pl.poznan.put.controller.auction.crud.create.specifics.book.AuctionCreateBookController;
 import pl.poznan.put.controller.auction.crud.create.specifics.car.AuctionCreateCarController;
 import pl.poznan.put.controller.auction.crud.create.specifics.phone.AuctionCreatePhoneController;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.auction.Auction.Type;
+import pl.poznan.put.util.converter.EnumConverter;
 
-import java.util.Locale;
-
-public class AuctionCreateSpecificsController {
+public class AuctionCreateSpecificsController extends AbstractValidatedController {
     @FXML
     private VBox bookVBox;
 
@@ -47,60 +45,71 @@ public class AuctionCreateSpecificsController {
     @Getter
     private Auction.AuctionBuilder<?, ?> auctionBuilder;
 
-    @FXML
-    private void initialize() {
-        typeChoiceBox.setConverter(new AuctionTypeConverter());
-        val items = FXCollections.observableArrayList(Auction.Type.values());
-        typeChoiceBox.setItems(items);
-        typeChoiceBox.setValue(Type.DEFAULT);
+    @Override
+    protected void installValidation() {
         typeChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) switch (newValue) {
                 case BOOK:
                     auctionBuilder = auctionCreateBookController.getBookBuilder();
+
+                    informationValid.unbind();
+                    informationValid.bind(auctionCreateBookController.getInformationValid());
+
                     bookVBox.setVisible(true);
-                    bookVBox.toFront();
                     carVBox.setVisible(false);
                     defaultVBox.setVisible(false);
                     phoneVBox.setVisible(false);
+
+                    bookVBox.toFront();
                     break;
                 case CAR:
                     auctionBuilder = auctionCreateCarController.getCarBuilder();
+
+                    informationValid.unbind();
+                    informationValid.bind(auctionCreateCarController.getInformationValid());
+
                     bookVBox.setVisible(false);
                     carVBox.setVisible(true);
-                    carVBox.toFront();
                     defaultVBox.setVisible(false);
                     phoneVBox.setVisible(false);
+
+                    carVBox.toFront();
                     break;
                 case DEFAULT:
                     auctionBuilder = auctionCreateDefaultController.getDefaultBuilder();
+
+                    informationValid.unbind();
+                    informationValid.bind(auctionCreateDefaultController.getInformationValid());
+
                     bookVBox.setVisible(false);
                     carVBox.setVisible(false);
                     defaultVBox.setVisible(true);
-                    defaultVBox.toFront();
                     phoneVBox.setVisible(false);
+
+                    defaultVBox.toFront();
                     break;
                 case PHONE:
                     auctionBuilder = auctionCreatePhoneController.getPhoneBuilder();
+
+                    informationValid.unbind();
+                    informationValid.bind(auctionCreatePhoneController.getInformationValid());
+
                     bookVBox.setVisible(false);
                     carVBox.setVisible(false);
                     defaultVBox.setVisible(false);
                     phoneVBox.setVisible(true);
+
                     phoneVBox.toFront();
                     break;
             }
         });
     }
 
-    private static class AuctionTypeConverter extends StringConverter<Auction.Type> {
-
-        @Override
-        public String toString(Type object) {
-            return StringUtils.capitalize(object.name());
-        }
-
-        @Override
-        public Type fromString(String string) {
-            return Type.valueOf(string.toUpperCase(Locale.ROOT));
-        }
+    @Override
+    protected void setupInitialValues() {
+        val items = FXCollections.observableArrayList(Auction.Type.values());
+        typeChoiceBox.setConverter(new EnumConverter<>(Auction.Type.class));
+        typeChoiceBox.setItems(items);
+        typeChoiceBox.setValue(Type.DEFAULT);
     }
 }

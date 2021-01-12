@@ -19,11 +19,18 @@
         <ChoiceBox fx:id="typeChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" />
     </GridPane>
     <StackPane prefHeight="150.0" prefWidth="200.0">
-        <VBox fx:id="defaultVBox">
-            <fx:include fx:id="auctionCreateDefault" source="AuctionCreateDefaultView.fxml" />
-        </VBox>
         <VBox fx:id="bookVBox">
             <fx:include fx:id="auctionCreateBook" source="book/AuctionCreateBookView.fxml" />
+        </VBox>
+        <VBox fx:id="carVBox">
+            <fx:include fx:id="auctionCreateCar" source="car/AuctionCreateCarView.fxml" />
+        </VBox>
+        <VBox fx:id="defaultVBox">
+            <!--suppress JavaFxUnresolvedFxIdReference -->
+            <fx:include fx:id="auctionCreateDefault" source="AuctionCreateDefaultView.fxml" />
+        </VBox>
+        <VBox fx:id="phoneVBox">
+            <fx:include fx:id="auctionCreatePhone" source="phone/AuctionCreatePhoneView.fxml" />
         </VBox>
     </StackPane>
 </VBox>
