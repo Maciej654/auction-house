@@ -12,10 +12,13 @@ import pl.poznan.put.model.picture.Picture;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -24,6 +27,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -32,7 +36,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "AUCTIONS")
+@Table(name = "AUCTIONS", uniqueConstraints = @UniqueConstraint(columnNames = {"AUCTION_NAME", "ITEM_NAME", "SELLER"}))
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
 @SuperBuilder
@@ -41,6 +45,7 @@ import java.util.List;
 @DiscriminatorColumn(name = "DISCRIMINATOR")
 public abstract class Auction implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "AUCTION_ID")
     private long id;
 
@@ -78,7 +83,7 @@ public abstract class Auction implements Serializable {
     @OneToOne(mappedBy = "auction", fetch = FetchType.LAZY)
     private Ad ad;
 
-    @OneToMany(mappedBy = "auction")
+    @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL)
     private Collection<Picture> pictures;
 
 //    @OneToOne(mappedBy = "auction", fetch = FetchType.LAZY)

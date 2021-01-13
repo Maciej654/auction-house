@@ -7,16 +7,16 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
-import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.controller.auction.crud.create.specifics.book.AuctionCreateBookController;
 import pl.poznan.put.controller.auction.crud.create.specifics.car.AuctionCreateCarController;
 import pl.poznan.put.controller.auction.crud.create.specifics.phone.AuctionCreatePhoneController;
+import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.empty.NotNullPropertyValidator;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.auction.Auction.Type;
 import pl.poznan.put.util.validation.Validation;
 
-public class AuctionCreateSpecificsController extends AbstractValidatedController {
+public class AuctionCreateSpecificsController extends AbstractValidatedController implements AuctionBuilderController {
     @FXML
     private VBox bookVBox;
 
@@ -68,6 +68,24 @@ public class AuctionCreateSpecificsController extends AbstractValidatedControlle
         setupChoiceBox(typeChoiceBox, Type.class);
     }
 
+    private <T extends AbstractValidatedController & AuctionBuilderController> void switchTypeContext(
+            T controller,
+            VBox view
+    ) {
+        auctionBuilder = controller.getAuctionBuilder();
+
+        informationValid.unbind();
+        informationValid.bind(controller.getInformationValid());
+
+        bookVBox.setVisible(false);
+        carVBox.setVisible(false);
+        defaultVBox.setVisible(false);
+        phoneVBox.setVisible(false);
+
+        view.setVisible(true);
+        view.toFront();
+    }
+
     @Override
     @FXML
     protected void initialize() {
@@ -76,56 +94,16 @@ public class AuctionCreateSpecificsController extends AbstractValidatedControlle
         typeChoiceBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) switch (newValue) {
                 case BOOK:
-                    auctionBuilder = auctionCreateBookController.getAuctionBuilder();
-
-                    informationValid.unbind();
-                    informationValid.bind(auctionCreateBookController.getInformationValid());
-
-                    bookVBox.setVisible(true);
-                    carVBox.setVisible(false);
-                    defaultVBox.setVisible(false);
-                    phoneVBox.setVisible(false);
-
-                    bookVBox.toFront();
+                    switchTypeContext(auctionCreateBookController, bookVBox);
                     break;
                 case CAR:
-                    auctionBuilder = auctionCreateCarController.getAuctionBuilder();
-
-                    informationValid.unbind();
-                    informationValid.bind(auctionCreateCarController.getInformationValid());
-
-                    bookVBox.setVisible(false);
-                    carVBox.setVisible(true);
-                    defaultVBox.setVisible(false);
-                    phoneVBox.setVisible(false);
-
-                    carVBox.toFront();
+                    switchTypeContext(auctionCreateCarController, carVBox);
                     break;
                 case DEFAULT:
-                    auctionBuilder = auctionCreateDefaultController.getAuctionBuilder();
-
-                    informationValid.unbind();
-                    informationValid.bind(auctionCreateDefaultController.getInformationValid());
-
-                    bookVBox.setVisible(false);
-                    carVBox.setVisible(false);
-                    defaultVBox.setVisible(true);
-                    phoneVBox.setVisible(false);
-
-                    defaultVBox.toFront();
+                    switchTypeContext(auctionCreateDefaultController, defaultVBox);
                     break;
                 case PHONE:
-                    auctionBuilder = auctionCreatePhoneController.getAuctionBuilder();
-
-                    informationValid.unbind();
-                    informationValid.bind(auctionCreatePhoneController.getInformationValid());
-
-                    bookVBox.setVisible(false);
-                    carVBox.setVisible(false);
-                    defaultVBox.setVisible(false);
-                    phoneVBox.setVisible(true);
-
-                    phoneVBox.toFront();
+                    switchTypeContext(auctionCreatePhoneController, phoneVBox);
                     break;
             }
         });

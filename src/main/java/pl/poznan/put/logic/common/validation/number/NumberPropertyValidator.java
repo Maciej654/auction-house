@@ -13,7 +13,7 @@ public class NumberPropertyValidator extends AbstractPropertyValidator<String> {
             Double.parseDouble(s);
             return true;
         }
-        catch (NumberFormatException ignored) {
+        catch (Exception ignored) {
             return false;
         }
     }

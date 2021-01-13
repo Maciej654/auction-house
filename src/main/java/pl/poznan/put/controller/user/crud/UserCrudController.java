@@ -227,7 +227,7 @@ public abstract class UserCrudController extends AbstractValidatedController {
                    .build();
     }
 
-    abstract protected void crudOperation(User user) throws Throwable;
+    abstract protected void crudOperation(User user) throws Exception;
 
     @FXML
     protected void actionButtonClick() {
@@ -261,8 +261,8 @@ public abstract class UserCrudController extends AbstractValidatedController {
             catch (EmailAlreadyInUseException e) {
                 Platform.runLater(() -> errorLabel.setText(e.getMessage()));
             }
-            catch (Throwable t) {
-                log.error(t.getMessage(), t);
+            catch (Exception e) {
+                log.error(e.getMessage(), e);
             }
             finally {
                 Platform.runLater(() -> {

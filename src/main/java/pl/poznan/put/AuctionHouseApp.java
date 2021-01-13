@@ -1,8 +1,6 @@
 package pl.poznan.put;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -18,8 +16,8 @@ import pl.poznan.put.controller.user.page.UserPageController;
 import pl.poznan.put.controller.user.page.UserPageController.Type;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.user.User;
+import pl.poznan.put.util.view.loader.ViewLoader;
 
-import java.io.IOException;
 import java.util.function.Consumer;
 
 @Slf4j
@@ -28,40 +26,15 @@ public class AuctionHouseApp extends Application {
     private Scene prevScene;
     private Scene currScene;
 
-    private <T> String getViewName(Class<T> clazz) {
-        return clazz.getSimpleName().replace("Controller", "View") + ".fxml";
-    }
-
-    private <T> String getViewDirectory(Class<T> clazz) {
-        return clazz.getPackageName()
-                    .replace('.', '/')
-                    .replace("/controller/", "/view/");
-    }
-
-    private <T> String getViewResourcePath(Class<T> clazz) {
-        return '/' + getViewDirectory(clazz) + '/' + getViewName(clazz);
-    }
-
     private void updateScene() {
         primaryStage.setScene(currScene);
     }
 
     private <T> void runPage(Class<T> clazz, Consumer<T> setup) {
-        val path     = getViewResourcePath(clazz);
-        val resource = AuctionHouseApp.class.getResource(path);
-        try (val stream = resource.openStream()) {
-            val loader     = new FXMLLoader(resource);
-            val root       = loader.<Parent>load(stream);
-            val controller = loader.<T>getController();
-            setup.accept(controller);
-            val scene = new Scene(root);
-            prevScene = currScene;
-            currScene = scene;
-            updateScene();
-        }
-        catch (NullPointerException | IOException e) {
-            log.error("An error occurred", e);
-        }
+        val root = ViewLoader.getParent(clazz, setup);
+        prevScene = currScene;
+        currScene = new Scene(root);
+        updateScene();
     }
 
     private void runPrevPage() {

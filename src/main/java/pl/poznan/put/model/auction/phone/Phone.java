@@ -10,6 +10,8 @@ import pl.poznan.put.model.auction.Auction;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -37,6 +39,7 @@ public class Phone extends Auction implements Serializable {
     @Column(name = "RAM")
     private String ram;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "OPERATING_SYSTEM")
     private OS operatingSystem;
 

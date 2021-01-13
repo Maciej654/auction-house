@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import lombok.Getter;
 import lombok.val;
+import pl.poznan.put.controller.auction.crud.create.specifics.AuctionBuilderController;
 import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.empty.NotBlankPropertyValidator;
 import pl.poznan.put.logic.common.validation.empty.NotNullPropertyValidator;
@@ -18,7 +19,7 @@ import pl.poznan.put.model.auction.phone.Phone.OS;
 import pl.poznan.put.util.validation.Validation;
 
 
-public class AuctionCreatePhoneController extends AbstractValidatedController {
+public class AuctionCreatePhoneController extends AbstractValidatedController implements AuctionBuilderController {
     @SuppressWarnings("rawtypes")
     @Getter
     private final Auction.AuctionBuilder auctionBuilder = Phone.builder();

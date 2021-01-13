@@ -10,7 +10,7 @@ import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.auction.Default;
 import pl.poznan.put.util.validation.Validation;
 
-public class AuctionCreateDefaultController extends AbstractValidatedController {
+public class AuctionCreateDefaultController extends AbstractValidatedController implements AuctionBuilderController {
     @SuppressWarnings("rawtypes")
     @Getter
     private final Auction.AuctionBuilder auctionBuilder = Default.builder();

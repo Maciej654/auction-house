@@ -10,6 +10,8 @@ import pl.poznan.put.model.auction.Auction;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -23,19 +25,29 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 public class Car extends Auction implements Serializable {
     @Column(name = "MAKE")
-    private String       make;
+    private String make;
+
     @Column(name = "MODEL")
-    private String       model;
+    private String model;
+
     @Column(name = "MILEAGE")
-    private int          mileage;
+    private int mileage;
+
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "TRANSMISSION")
     private Transmission transmission;
+
     @Column(name = "ENGINE")
-    private String       engine;
+    private String engine;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "FUEL")
-    private Fuel         fuel;
+    private Fuel fuel;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "CONDITION")
-    private Condition    condition;
+    private Condition condition;
 
     public enum Transmission {
         MANUAL,

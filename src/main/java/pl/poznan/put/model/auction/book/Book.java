@@ -10,6 +10,8 @@ import pl.poznan.put.model.auction.Auction;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -24,6 +26,8 @@ import java.io.Serializable;
 public class Book extends Auction implements Serializable {
     @Column(name = "AUTHOR")
     private String author;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "COVER")
     private Cover  cover;
     @Column(name = "GENRE")

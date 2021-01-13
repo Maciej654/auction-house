@@ -15,7 +15,7 @@ ALTER TABLE ads
 
 CREATE TABLE auctions
 (
-    auction_id       INTEGER          NOT NULL,
+    auction_id       INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1),
     auction_name     VARCHAR2(128)    NOT NULL,
     item_name        VARCHAR2(64)     NOT NULL,
     item_description VARCHAR2(1024)   NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE books
 (
     auction_id INTEGER      NOT NULL,
     author     VARCHAR2(64) NOT NULL,
-    cover      INTEGER      NOT NULL,
+    cover      VARCHAR2(64) NOT NULL,
     genre      VARCHAR2(64) NOT NULL
 );
 
@@ -107,10 +107,10 @@ CREATE TABLE cars
     make         VARCHAR2(64) NOT NULL,
     model        VARCHAR2(64) NOT NULL,
     mileage      INTEGER      NOT NULL,
-    transmission INTEGER      NOT NULL,
+    transmission VARCHAR2(64) NOT NULL,
     engine       VARCHAR2(64) NOT NULL,
-    fuel         INTEGER      NOT NULL,
-    condition    INTEGER      NOT NULL
+    fuel         VARCHAR2(64) NOT NULL,
+    condition    VARCHAR2(64) NOT NULL
 );
 
 CREATE INDEX cars_make_idx ON
