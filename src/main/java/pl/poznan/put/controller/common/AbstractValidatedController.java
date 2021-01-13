@@ -1,4 +1,4 @@
-package pl.poznan.put.controller.auction.crud.create;
+package pl.poznan.put.controller.common;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;

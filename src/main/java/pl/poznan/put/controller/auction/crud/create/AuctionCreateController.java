@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
 import pl.poznan.put.controller.auction.crud.create.specifics.AuctionCreateSpecificsController;
+import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.empty.NotBlankPropertyValidator;
 import pl.poznan.put.logic.common.validation.number.NumberPropertyValidator;
 import pl.poznan.put.model.auction.Auction;
@@ -142,7 +143,7 @@ public class AuctionCreateController extends AbstractValidatedController {
         val valid = initialPriceValid
                 .and(itemNameValid)
                 .and(auctionNameValid)
-                .and(auctionCreateSpecificsController.informationValid);
+                .and(auctionCreateSpecificsController.getInformationValid());
 
         informationValid.bind(valid);
     }

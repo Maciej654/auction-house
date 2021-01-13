@@ -21,7 +21,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
-import pl.poznan.put.controller.auction.crud.create.AbstractValidatedController;
+import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.PropertyValidator;
 import pl.poznan.put.logic.common.validation.alpha.AlphaPropertyValidator;
 import pl.poznan.put.logic.user.exception.EmailAlreadyInUseException;

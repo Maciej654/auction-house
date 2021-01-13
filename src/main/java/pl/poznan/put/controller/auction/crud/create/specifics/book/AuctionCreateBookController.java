@@ -8,16 +8,18 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import lombok.Getter;
 import lombok.val;
-import pl.poznan.put.controller.auction.crud.create.AbstractValidatedController;
+import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.alpha.AlphaPropertyValidator;
 import pl.poznan.put.logic.common.validation.empty.NotNullPropertyValidator;
+import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.auction.book.Book;
 import pl.poznan.put.model.auction.book.Book.Cover;
 import pl.poznan.put.util.validation.Validation;
 
 public class AuctionCreateBookController extends AbstractValidatedController {
+    @SuppressWarnings("rawtypes")
     @Getter
-    private final Book.BookBuilder<?, ?> bookBuilder = Book.builder();
+    private final Auction.AuctionBuilder auctionBuilder = Book.builder();
 
     @FXML
     private ImageView genreWarning;

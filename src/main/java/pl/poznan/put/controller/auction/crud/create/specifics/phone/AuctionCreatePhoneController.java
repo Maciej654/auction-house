@@ -2,26 +2,26 @@ package pl.poznan.put.controller.auction.crud.create.specifics.phone;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import lombok.Getter;
 import lombok.val;
-import pl.poznan.put.controller.auction.crud.create.AbstractValidatedController;
+import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.empty.NotBlankPropertyValidator;
 import pl.poznan.put.logic.common.validation.empty.NotNullPropertyValidator;
 import pl.poznan.put.logic.common.validation.number.NumberPropertyValidator;
+import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.auction.phone.Phone;
 import pl.poznan.put.model.auction.phone.Phone.OS;
-import pl.poznan.put.util.converter.EnumConverter;
 import pl.poznan.put.util.validation.Validation;
 
 
 public class AuctionCreatePhoneController extends AbstractValidatedController {
+    @SuppressWarnings("rawtypes")
     @Getter
-    private final Phone.PhoneBuilder<?, ?> phoneBuilder = Phone.builder();
+    private final Auction.AuctionBuilder auctionBuilder = Phone.builder();
 
     @FXML
     private TextField producerTextField;

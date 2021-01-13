@@ -7,7 +7,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
-import pl.poznan.put.controller.auction.crud.create.AbstractValidatedController;
+import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.controller.auction.crud.create.specifics.book.AuctionCreateBookController;
 import pl.poznan.put.controller.auction.crud.create.specifics.car.AuctionCreateCarController;
 import pl.poznan.put.controller.auction.crud.create.specifics.phone.AuctionCreatePhoneController;
@@ -49,8 +49,9 @@ public class AuctionCreateSpecificsController extends AbstractValidatedControlle
 
     private final BooleanProperty typeValid = new SimpleBooleanProperty();
 
+    @SuppressWarnings("rawtypes")
     @Getter
-    private Auction.AuctionBuilder<?, ?> auctionBuilder;
+    private Auction.AuctionBuilder auctionBuilder;
 
     @Override
     protected void installValidation() {
@@ -75,7 +76,7 @@ public class AuctionCreateSpecificsController extends AbstractValidatedControlle
         typeChoiceBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) switch (newValue) {
                 case BOOK:
-                    auctionBuilder = auctionCreateBookController.getBookBuilder();
+                    auctionBuilder = auctionCreateBookController.getAuctionBuilder();
 
                     informationValid.unbind();
                     informationValid.bind(auctionCreateBookController.getInformationValid());
@@ -88,7 +89,7 @@ public class AuctionCreateSpecificsController extends AbstractValidatedControlle
                     bookVBox.toFront();
                     break;
                 case CAR:
-                    auctionBuilder = auctionCreateCarController.getCarBuilder();
+                    auctionBuilder = auctionCreateCarController.getAuctionBuilder();
 
                     informationValid.unbind();
                     informationValid.bind(auctionCreateCarController.getInformationValid());
@@ -101,7 +102,7 @@ public class AuctionCreateSpecificsController extends AbstractValidatedControlle
                     carVBox.toFront();
                     break;
                 case DEFAULT:
-                    auctionBuilder = auctionCreateDefaultController.getDefaultBuilder();
+                    auctionBuilder = auctionCreateDefaultController.getAuctionBuilder();
 
                     informationValid.unbind();
                     informationValid.bind(auctionCreateDefaultController.getInformationValid());
@@ -114,7 +115,7 @@ public class AuctionCreateSpecificsController extends AbstractValidatedControlle
                     defaultVBox.toFront();
                     break;
                 case PHONE:
-                    auctionBuilder = auctionCreatePhoneController.getPhoneBuilder();
+                    auctionBuilder = auctionCreatePhoneController.getAuctionBuilder();
 
                     informationValid.unbind();
                     informationValid.bind(auctionCreatePhoneController.getInformationValid());
