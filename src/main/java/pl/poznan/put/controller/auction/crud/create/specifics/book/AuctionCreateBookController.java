@@ -51,25 +51,25 @@ public class AuctionCreateBookController extends AbstractValidatedController imp
         // genre
         Validation.install(
                 genreTextField.textProperty(),
-                new AlphaPropertyValidator("Genre"),
                 genreValid,
-                genreWarning
+                genreWarning,
+                new AlphaPropertyValidator("Genre")
         );
 
         // cover
         Validation.install(
                 coverChoiceBox.valueProperty(),
-                new NotNullPropertyValidator<>("Cover"),
                 coverValid,
-                coverWarning
+                coverWarning,
+                new NotNullPropertyValidator<>("Cover")
         );
 
         // author
         Validation.install(
                 authorTextField.textProperty(),
-                new AlphaPropertyValidator("Author"),
                 authorValid,
-                authorWarning
+                authorWarning,
+                new AlphaPropertyValidator("Author")
         );
 
         val valid = genreValid

@@ -1,16 +1,23 @@
 package pl.poznan.put.logic.user.validation;
 
 import lombok.val;
-import pl.poznan.put.logic.common.validation.PropertyValidator;
+import org.apache.commons.lang3.StringUtils;
+import pl.poznan.put.logic.common.validation.empty.NotNullPropertyValidator;
 
 import java.time.LocalDate;
-import java.util.Objects;
+import java.util.function.Predicate;
 
-public class UserBirthdayValidator implements PropertyValidator<LocalDate> {
+public class UserBirthdayValidator extends NotNullPropertyValidator<LocalDate> {
+    public UserBirthdayValidator() {
+        super(StringUtils.EMPTY);
+    }
+
     @Override
-    public boolean test(LocalDate localDate) {
-        val today = LocalDate.now();
-        return Objects.nonNull(localDate) && localDate.plusYears(18).isBefore(today);
+    public Predicate<LocalDate> getPredicate() {
+        return super.getPredicate().and(date -> {
+            val today = LocalDate.now();
+            return date.plusYears(18).isBefore(today);
+        });
     }
 
     @Override

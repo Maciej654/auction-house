@@ -1,17 +1,20 @@
 package pl.poznan.put.logic.user.validation;
 
+import lombok.val;
 import org.apache.commons.validator.routines.EmailValidator;
 import pl.poznan.put.logic.common.validation.AbstractPropertyValidator;
 
+import java.util.function.Predicate;
+
 public class UserEmailValidator extends AbstractPropertyValidator<String> {
-    private final EmailValidator emailValidator = EmailValidator.getInstance();
 
     public UserEmailValidator() {
         super("Email");
     }
 
     @Override
-    public boolean test(String s) {
-        return emailValidator.isValid(s);
+    public Predicate<String> getPredicate() {
+        val emailValidator = EmailValidator.getInstance();
+        return emailValidator::isValid;
     }
 }

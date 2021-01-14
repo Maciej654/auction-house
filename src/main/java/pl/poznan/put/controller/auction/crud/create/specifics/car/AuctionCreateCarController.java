@@ -6,14 +6,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import lombok.Getter;
 import lombok.val;
 import pl.poznan.put.controller.auction.crud.create.specifics.AuctionBuilderController;
 import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.empty.NotBlankPropertyValidator;
 import pl.poznan.put.logic.common.validation.empty.NotNullPropertyValidator;
-import pl.poznan.put.logic.common.validation.number.NumberPropertyValidator;
-import pl.poznan.put.model.auction.Auction;
+import pl.poznan.put.logic.common.validation.number.PositiveIntegerPropertyValidator;
+import pl.poznan.put.model.auction.Auction.AuctionBuilder;
 import pl.poznan.put.model.auction.car.Car;
 import pl.poznan.put.model.auction.car.Car.Condition;
 import pl.poznan.put.model.auction.car.Car.Fuel;
@@ -21,10 +20,6 @@ import pl.poznan.put.model.auction.car.Car.Transmission;
 import pl.poznan.put.util.validation.Validation;
 
 public class AuctionCreateCarController extends AbstractValidatedController implements AuctionBuilderController {
-    @SuppressWarnings("rawtypes")
-    @Getter
-    private final Auction.AuctionBuilder auctionBuilder = Car.builder();
-
     @FXML
     private TextField makeTextField;
 
@@ -86,57 +81,57 @@ public class AuctionCreateCarController extends AbstractValidatedController impl
         // make
         Validation.install(
                 makeTextField.textProperty(),
-                new NotBlankPropertyValidator("Make"),
                 makeValid,
-                makeWarning
+                makeWarning,
+                new NotBlankPropertyValidator("Make")
         );
 
         // model
         Validation.install(
                 modelTextField.textProperty(),
-                new NotBlankPropertyValidator("Model"),
                 modelValid,
-                modelWarning
+                modelWarning,
+                new NotBlankPropertyValidator("Model")
         );
 
         // mileage
         Validation.install(
                 mileageTextField.textProperty(),
-                new NumberPropertyValidator("Mileage") /*TODO change to integer number validator*/,
                 mileageValid,
-                mileageWarning
+                mileageWarning,
+                new PositiveIntegerPropertyValidator("Mileage")
         );
 
         // transmission
         Validation.install(
                 transmissionChoiceBox.valueProperty(),
-                new NotNullPropertyValidator<>("Transmission"),
                 transmissionValid,
-                transmissionWarning
+                transmissionWarning,
+                new NotNullPropertyValidator<>("Transmission")
         );
 
         // engine
         Validation.install(
                 engineTextField.textProperty(),
-                new NotBlankPropertyValidator("Engine"),
                 engineValid,
-                engineWarning
+                engineWarning,
+                new NotBlankPropertyValidator("Engine")
         );
 
         // fuel
         Validation.install(
                 fuelChoiceBox.valueProperty(),
-                new NotNullPropertyValidator<>("Fuel"),
                 fuelValid,
-                fuelWarning
+                fuelWarning,
+                new NotNullPropertyValidator<>("Fuel")
         );
 
         // condition
         Validation.install(
                 conditionChoiceBox.valueProperty(),
-                new NotNullPropertyValidator<>("Condition"),
                 conditionValid,
-                conditionWarning
+                conditionWarning,
+                new NotNullPropertyValidator<>("Condition")
         );
 
         val valid = makeValid
@@ -158,5 +153,14 @@ public class AuctionCreateCarController extends AbstractValidatedController impl
         setupTextField(engineTextField);
         setupChoiceBox(fuelChoiceBox, Fuel.class);
         setupChoiceBox(conditionChoiceBox, Condition.class);
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    public AuctionBuilder getAuctionBuilder() {
+        return Car.builder()
+                  .make(makeTextField.getText())
+                  .model(modelTextField.getText())
+                  .mileage(Integer.parseInt(mileageTextField.getText()));
     }
 }

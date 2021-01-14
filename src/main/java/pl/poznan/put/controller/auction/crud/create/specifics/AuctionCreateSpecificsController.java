@@ -6,15 +6,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import lombok.Getter;
 import pl.poznan.put.controller.auction.crud.create.specifics.book.AuctionCreateBookController;
 import pl.poznan.put.controller.auction.crud.create.specifics.car.AuctionCreateCarController;
 import pl.poznan.put.controller.auction.crud.create.specifics.phone.AuctionCreatePhoneController;
 import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.empty.NotNullPropertyValidator;
 import pl.poznan.put.model.auction.Auction;
+import pl.poznan.put.model.auction.Auction.AuctionBuilder;
 import pl.poznan.put.model.auction.Auction.Type;
 import pl.poznan.put.util.validation.Validation;
+
+import java.util.function.Supplier;
 
 public class AuctionCreateSpecificsController extends AbstractValidatedController implements AuctionBuilderController {
     @FXML
@@ -50,16 +52,21 @@ public class AuctionCreateSpecificsController extends AbstractValidatedControlle
     private final BooleanProperty typeValid = new SimpleBooleanProperty();
 
     @SuppressWarnings("rawtypes")
-    @Getter
-    private Auction.AuctionBuilder auctionBuilder;
+    private Supplier<Auction.AuctionBuilder> auctionBuilderSupplier;
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    public AuctionBuilder getAuctionBuilder() {
+        return auctionBuilderSupplier == null ? null : auctionBuilderSupplier.get();
+    }
 
     @Override
     protected void installValidation() {
         Validation.install(
                 typeChoiceBox.valueProperty(),
-                new NotNullPropertyValidator<>("Type"),
                 typeValid,
-                typeWarning
+                typeWarning,
+                new NotNullPropertyValidator<>("Type")
         );
     }
 
@@ -72,7 +79,7 @@ public class AuctionCreateSpecificsController extends AbstractValidatedControlle
             T controller,
             VBox view
     ) {
-        auctionBuilder = controller.getAuctionBuilder();
+        auctionBuilderSupplier = controller::getAuctionBuilder;
 
         informationValid.unbind();
         informationValid.bind(controller.getInformationValid());

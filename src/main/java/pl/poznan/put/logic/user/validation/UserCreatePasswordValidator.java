@@ -1,9 +1,15 @@
 package pl.poznan.put.logic.user.validation;
 
 import org.apache.commons.lang3.StringUtils;
-import pl.poznan.put.logic.common.validation.PropertyValidator;
+import pl.poznan.put.logic.common.validation.empty.NotBlankPropertyValidator;
 
-public class UserCreatePasswordValidator implements PropertyValidator<String> {
+import java.util.function.Predicate;
+
+public class UserCreatePasswordValidator extends NotBlankPropertyValidator {
+    public UserCreatePasswordValidator() {
+        super(StringUtils.EMPTY);
+    }
+
     private boolean containsLowerCaseLetter(String s) {
         return s.matches(".*[a-z].*");
     }
@@ -25,13 +31,13 @@ public class UserCreatePasswordValidator implements PropertyValidator<String> {
     }
 
     @Override
-    public boolean test(String s) {
-        return StringUtils.isNotBlank(s) &&
-               isLongEnough(s) &&
-               containsOnlyAlphaNumericCharacters(s) &&
-               containsLowerCaseLetter(s) &&
-               containsUpperCaseLetter(s) &&
-               containsDigit(s);
+    public Predicate<String> getPredicate() {
+        return super.getPredicate().and(s -> isLongEnough(s) &&
+                                             containsOnlyAlphaNumericCharacters(s) &&
+                                             containsLowerCaseLetter(s) &&
+                                             containsUpperCaseLetter(s) &&
+                                             containsDigit(s)
+        );
     }
 
     @Override

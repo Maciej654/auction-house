@@ -6,24 +6,19 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import lombok.Getter;
 import lombok.val;
 import pl.poznan.put.controller.auction.crud.create.specifics.AuctionBuilderController;
 import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.empty.NotBlankPropertyValidator;
 import pl.poznan.put.logic.common.validation.empty.NotNullPropertyValidator;
 import pl.poznan.put.logic.common.validation.number.NumberPropertyValidator;
-import pl.poznan.put.model.auction.Auction;
+import pl.poznan.put.model.auction.Auction.AuctionBuilder;
 import pl.poznan.put.model.auction.phone.Phone;
 import pl.poznan.put.model.auction.phone.Phone.OS;
 import pl.poznan.put.util.validation.Validation;
 
 
 public class AuctionCreatePhoneController extends AbstractValidatedController implements AuctionBuilderController {
-    @SuppressWarnings("rawtypes")
-    @Getter
-    private final Auction.AuctionBuilder auctionBuilder = Phone.builder();
-
     @FXML
     private TextField producerTextField;
 
@@ -77,49 +72,49 @@ public class AuctionCreatePhoneController extends AbstractValidatedController im
         // producer
         Validation.install(
                 producerTextField.textProperty(),
-                new NotBlankPropertyValidator("Producer"),
                 producerValid,
-                producerWarning
+                producerWarning,
+                new NotBlankPropertyValidator("Producer")
         );
 
         // screen size
         Validation.install(
                 screenSizeTextField.textProperty(),
-                new NumberPropertyValidator("Screen size"),
                 screenSizeValid,
-                screenSizeWarning
+                screenSizeWarning,
+                new NumberPropertyValidator("Screen size")
         );
 
         // battery
         Validation.install(
                 batteryTextField.textProperty(),
-                new NumberPropertyValidator("Battery"),
                 batteryValid,
-                batteryWarning
+                batteryWarning,
+                new NumberPropertyValidator("Battery")
         );
 
         // processor
         Validation.install(
                 processorTextField.textProperty(),
-                new NotBlankPropertyValidator("Processor"),
                 processorValid,
-                processorWarning
+                processorWarning,
+                new NotBlankPropertyValidator("Processor")
         );
 
         // ram
         Validation.install(
                 ramTextField.textProperty(),
-                new NumberPropertyValidator("RAM"),
                 ramValid,
-                ramWarning
+                ramWarning,
+                new NumberPropertyValidator("RAM")
         );
 
         // os
         Validation.install(
                 osChoiceBox.valueProperty(),
-                new NotNullPropertyValidator<>("OS"),
                 osValid,
-                osWarning
+                osWarning,
+                new NotNullPropertyValidator<>("OS")
         );
 
         val valid = producerValid
@@ -140,5 +135,17 @@ public class AuctionCreatePhoneController extends AbstractValidatedController im
         setupTextField(processorTextField);
         setupTextField(ramTextField);
         setupChoiceBox(osChoiceBox, OS.class);
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    public AuctionBuilder getAuctionBuilder() {
+        return Phone.builder()
+                    .producer(producerTextField.getText())
+                    .screenSize(screenSizeTextField.getText())
+                    .battery(batteryTextField.getText())
+                    .processor(processorTextField.getText())
+                    .ram(ramTextField.getText())
+                    .operatingSystem(osChoiceBox.getValue());
     }
 }

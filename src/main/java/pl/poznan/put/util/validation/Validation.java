@@ -8,24 +8,38 @@ import lombok.experimental.UtilityClass;
 import lombok.val;
 import pl.poznan.put.logic.common.validation.PropertyValidator;
 
+import java.util.function.Predicate;
+
 @UtilityClass
 public class Validation {
     public <R> void install(
             ObservableValue<R> value,
-            PropertyValidator<R> validator,
             BooleanProperty property,
-            ImageView warning) {
+            ImageView warning,
+            PropertyValidator<R> validator) {
+        install(
+                value,
+                property,
+                warning,
+                validator.getErrorMessage(),
+                validator.getPredicate()
+        );
+    }
+
+    public <R> void install(
+            ObservableValue<R> value,
+            BooleanProperty property,
+            ImageView warning,
+            String message,
+            Predicate<R> validator) {
         value.addListener((observable, oldValue, newValue) -> {
             val valid = validator.test(newValue);
             warning.setVisible(!valid);
             property.set(valid);
         });
-        val message = validator.getErrorMessage();
         val tooltip = new Tooltip(message);
-        if (tooltip.getWidth() > 200) {
-            tooltip.setPrefWidth(200);
-            tooltip.setWrapText(true);
-        }
+        tooltip.setPrefWidth(200);
+        tooltip.setWrapText(true);
         Tooltip.install(warning, tooltip);
     }
 }

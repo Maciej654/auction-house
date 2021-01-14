@@ -1,12 +1,14 @@
 package pl.poznan.put.logic.common.validation;
 
+import java.util.function.Predicate;
+
 public class AbstractNotTruePropertyValidator extends AbstractPropertyValidator<Boolean> {
     protected AbstractNotTruePropertyValidator(String field) {
         super(field);
     }
 
     @Override
-    public boolean test(Boolean value) {
-        return !value;
+    public Predicate<Boolean> getPredicate() {
+        return b -> !b;
     }
 }

@@ -33,9 +33,9 @@ public class AuctionCreatePhotosController extends AbstractValidatedController {
     protected void installValidation() {
         Validation.install(
                 auctionCreatePhotosListController.getPhotosListEmptyProperty(),
-                new PhotosListNotEmptyPropertyValidator(),
                 informationValid,
-                warning
+                warning,
+                new PhotosListNotEmptyPropertyValidator()
         );
     }
 

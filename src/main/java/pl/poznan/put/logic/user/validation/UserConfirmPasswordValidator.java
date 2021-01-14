@@ -4,6 +4,8 @@ import javafx.beans.property.StringProperty;
 import org.apache.commons.lang3.StringUtils;
 import pl.poznan.put.logic.common.validation.PropertyValidator;
 
+import java.util.function.Predicate;
+
 public class UserConfirmPasswordValidator implements PropertyValidator<String> {
     private final StringProperty reference;
 
@@ -12,12 +14,12 @@ public class UserConfirmPasswordValidator implements PropertyValidator<String> {
     }
 
     @Override
-    public String getErrorMessage() {
-        return "Passwords don't match";
+    public Predicate<String> getPredicate() {
+        return s -> StringUtils.equals(reference.getValue(), s);
     }
 
     @Override
-    public boolean test(String s) {
-        return StringUtils.equals(reference.getValue(), s);
+    public String getErrorMessage() {
+        return "Passwords don't match";
     }
 }

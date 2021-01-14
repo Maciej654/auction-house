@@ -115,57 +115,57 @@ public abstract class UserCrudController extends AbstractValidatedController {
         // email
         Validation.install(
                 emailTextField.textProperty(),
-                new UserEmailValidator(),
                 emailValid,
-                emailWarning
+                emailWarning,
+                new UserEmailValidator()
         );
 
         // first name
         Validation.install(
                 firstNameTextField.textProperty(),
-                new AlphaPropertyValidator("First name"),
                 firstNameValid,
-                firstNameWarning
+                firstNameWarning,
+                new AlphaPropertyValidator("First name")
         );
 
         // last name
         Validation.install(
                 lastNameTextField.textProperty(),
-                new AlphaPropertyValidator("Last name"),
                 lastNameValid,
-                lastNameWarning
+                lastNameWarning,
+                new AlphaPropertyValidator("Last name")
         );
 
         // birthday
         Validation.install(
                 birthdayDatePicker.valueProperty(),
-                new UserBirthdayValidator(),
                 birthdayValid,
-                birthdayWarning
+                birthdayWarning,
+                new UserBirthdayValidator()
         );
 
         // password
         Validation.install(
                 passwordField.textProperty(),
-                this.getPasswordValidator(),
                 passwordValid,
-                passwordWarning
+                passwordWarning,
+                this.getPasswordValidator()
         );
 
         // confirm password (1)
         Validation.install(
                 confirmPasswordField.textProperty(),
-                new UserConfirmPasswordValidator(passwordField.textProperty()),
                 confirmPasswordValid,
-                confirmPasswordWarning
+                confirmPasswordWarning,
+                new UserConfirmPasswordValidator(passwordField.textProperty())
         );
 
         // confirm password (2)
         Validation.install(
                 passwordField.textProperty(),
-                new UserConfirmPasswordValidator(confirmPasswordField.textProperty()),
                 confirmPasswordValid,
-                confirmPasswordWarning
+                confirmPasswordWarning,
+                new UserConfirmPasswordValidator(confirmPasswordField.textProperty())
         );
     }
 

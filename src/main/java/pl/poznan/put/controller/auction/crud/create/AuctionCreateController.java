@@ -149,25 +149,25 @@ public class AuctionCreateController extends AbstractValidatedController {
         // initial price
         Validation.install(
                 initialPriceTextField.textProperty(),
-                new NumberPropertyValidator("Initial price"),
                 initialPriceValid,
-                initialPriceWarning
+                initialPriceWarning,
+                new NumberPropertyValidator("Initial price")
         );
 
         // item name
         Validation.install(
                 itemNameTextField.textProperty(),
-                new NotBlankPropertyValidator("Item name"),
                 itemNameValid,
-                itemNameWarning
+                itemNameWarning,
+                new NotBlankPropertyValidator("Item name")
         );
 
         // auction name
         Validation.install(
                 auctionNameTextField.textProperty(),
-                new NotBlankPropertyValidator("Auction name"),
                 auctionNameValid,
-                auctionNameWarning
+                auctionNameWarning,
+                new NotBlankPropertyValidator("Auction name")
         );
 
         val valid = initialPriceValid
