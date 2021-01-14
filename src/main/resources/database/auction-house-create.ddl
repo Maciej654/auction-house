@@ -23,7 +23,7 @@ CREATE TABLE auctions
     end_date         DATE             NOT NULL,
     price            DOUBLE PRECISION NOT NULL,
     seller           VARCHAR2(64)     NOT NULL,
-    status           INTEGER          NOT NULL,
+    status           VARCHAR2(64)     NOT NULL,
     discriminator    VARCHAR2(64)     NOT NULL
 );
 

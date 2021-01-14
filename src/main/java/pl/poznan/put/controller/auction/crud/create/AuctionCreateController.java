@@ -19,7 +19,7 @@ import pl.poznan.put.controller.auction.crud.create.specifics.AuctionCreateSpeci
 import pl.poznan.put.controller.auction.crud.create.task.AuctionCreateTask;
 import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.empty.NotBlankPropertyValidator;
-import pl.poznan.put.logic.common.validation.number.NumberPropertyValidator;
+import pl.poznan.put.logic.common.validation.number.PositiveDoublePropertyValidator;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.auction.Auction.Status;
 import pl.poznan.put.model.user.User;
@@ -151,7 +151,7 @@ public class AuctionCreateController extends AbstractValidatedController {
                 initialPriceTextField.textProperty(),
                 initialPriceValid,
                 initialPriceWarning,
-                new NumberPropertyValidator("Initial price")
+                new PositiveDoublePropertyValidator("Initial price")
         );
 
         // item name

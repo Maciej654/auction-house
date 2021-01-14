@@ -161,6 +161,10 @@ public class AuctionCreateCarController extends AbstractValidatedController impl
         return Car.builder()
                   .make(makeTextField.getText())
                   .model(modelTextField.getText())
-                  .mileage(Integer.parseInt(mileageTextField.getText()));
+                  .mileage(Integer.parseInt(mileageTextField.getText()))
+                  .transmission(transmissionChoiceBox.getValue())
+                  .engine(engineTextField.getText())
+                  .fuel(fuelChoiceBox.getValue())
+                  .condition(conditionChoiceBox.getValue());
     }
 }

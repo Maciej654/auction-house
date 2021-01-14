@@ -11,7 +11,7 @@ import pl.poznan.put.controller.auction.crud.create.specifics.AuctionBuilderCont
 import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.empty.NotBlankPropertyValidator;
 import pl.poznan.put.logic.common.validation.empty.NotNullPropertyValidator;
-import pl.poznan.put.logic.common.validation.number.NumberPropertyValidator;
+import pl.poznan.put.logic.common.validation.number.PositiveDoublePropertyValidator;
 import pl.poznan.put.model.auction.Auction.AuctionBuilder;
 import pl.poznan.put.model.auction.phone.Phone;
 import pl.poznan.put.model.auction.phone.Phone.OS;
@@ -82,7 +82,7 @@ public class AuctionCreatePhoneController extends AbstractValidatedController im
                 screenSizeTextField.textProperty(),
                 screenSizeValid,
                 screenSizeWarning,
-                new NumberPropertyValidator("Screen size")
+                new PositiveDoublePropertyValidator("Screen size")
         );
 
         // battery
@@ -90,7 +90,7 @@ public class AuctionCreatePhoneController extends AbstractValidatedController im
                 batteryTextField.textProperty(),
                 batteryValid,
                 batteryWarning,
-                new NumberPropertyValidator("Battery")
+                new PositiveDoublePropertyValidator("Battery")
         );
 
         // processor
@@ -106,7 +106,7 @@ public class AuctionCreatePhoneController extends AbstractValidatedController im
                 ramTextField.textProperty(),
                 ramValid,
                 ramWarning,
-                new NumberPropertyValidator("RAM")
+                new PositiveDoublePropertyValidator("RAM")
         );
 
         // os

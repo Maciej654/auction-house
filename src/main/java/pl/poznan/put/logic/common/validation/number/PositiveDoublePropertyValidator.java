@@ -4,8 +4,8 @@ import pl.poznan.put.logic.common.validation.AbstractPropertyValidator;
 
 import java.util.function.Predicate;
 
-public class NumberPropertyValidator extends AbstractPropertyValidator<String> {
-    public NumberPropertyValidator(String field) {
+public class PositiveDoublePropertyValidator extends AbstractPropertyValidator<String> {
+    public PositiveDoublePropertyValidator(String field) {
         super(field);
     }
 
@@ -13,10 +13,9 @@ public class NumberPropertyValidator extends AbstractPropertyValidator<String> {
     public Predicate<String> getPredicate() {
         return s -> {
             try {
-                Double.parseDouble(s);
-                return true;
+                return Double.parseDouble(s) > 0;
             }
-            catch (Exception ignored) {
+            catch (Exception e) {
                 return false;
             }
         };
@@ -24,6 +23,6 @@ public class NumberPropertyValidator extends AbstractPropertyValidator<String> {
 
     @Override
     public String getErrorMessage() {
-        return field + " must be a number";
+        return field + " has to be a positive number";
     }
 }

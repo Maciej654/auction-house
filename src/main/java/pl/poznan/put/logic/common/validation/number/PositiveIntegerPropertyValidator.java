@@ -23,6 +23,6 @@ public class PositiveIntegerPropertyValidator extends AbstractPropertyValidator<
 
     @Override
     public String getErrorMessage() {
-        return field + " has to be a positive integer number";
+        return field + " has to be a positive integer";
     }
 }

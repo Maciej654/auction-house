@@ -77,20 +77,18 @@ public class AuctionCreateSpecificsController extends AbstractValidatedControlle
 
     private <T extends AbstractValidatedController & AuctionBuilderController> void switchTypeContext(
             T controller,
-            VBox view
+            VBox activeVBox
     ) {
         auctionBuilderSupplier = controller::getAuctionBuilder;
 
         informationValid.unbind();
         informationValid.bind(controller.getInformationValid());
 
-        bookVBox.setVisible(false);
-        carVBox.setVisible(false);
-        defaultVBox.setVisible(false);
-        phoneVBox.setVisible(false);
-
-        view.setVisible(true);
-        view.toFront();
+        bookVBox.setVisible(bookVBox == activeVBox);
+        carVBox.setVisible(carVBox == activeVBox);
+        defaultVBox.setVisible(defaultVBox == activeVBox);
+        phoneVBox.setVisible(phoneVBox == activeVBox);
+//        activeVBox.toFront();
     }
 
     @Override
