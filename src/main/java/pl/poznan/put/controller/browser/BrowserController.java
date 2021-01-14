@@ -126,6 +126,7 @@ public class BrowserController {
         item_name_column.setCellValueFactory(new PropertyValueFactory<>("itemName"));
         auction_name_column.setCellValueFactory(new PropertyValueFactory<>("AuctionName"));
         details_column.setCellValueFactory(new PropertyValueFactory<>("details"));
+        click(null);
     }
 
 }
