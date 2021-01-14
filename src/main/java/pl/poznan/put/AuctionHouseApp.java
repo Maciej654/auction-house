@@ -1,6 +1,7 @@
 package pl.poznan.put;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -27,7 +28,7 @@ public class AuctionHouseApp extends Application {
     private Scene currScene;
 
     private void updateScene() {
-        primaryStage.setScene(currScene);
+        Platform.runLater(() -> primaryStage.setScene(currScene));
     }
 
     private <T> void runPage(Class<T> clazz, Consumer<T> setup) {

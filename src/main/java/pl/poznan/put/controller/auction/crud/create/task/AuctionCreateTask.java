@@ -1,6 +1,5 @@
 package pl.poznan.put.controller.auction.crud.create.task;
 
-import javafx.application.Platform;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -27,13 +26,13 @@ public class AuctionCreateTask extends TimerTask {
         try {
             em.persist(auction);
             transaction.commit();
-            Platform.runLater(() -> onSuccessCallback.accept(auction));
+            onSuccessCallback.accept(auction);
 
         }
         catch (Exception e) {
             log.error(e.getMessage(), e);
             if (transaction.isActive()) transaction.rollback();
-            Platform.runLater(() -> onFailureCallback.accept(e));
+            onFailureCallback.accept(e);
         }
     }
 }
