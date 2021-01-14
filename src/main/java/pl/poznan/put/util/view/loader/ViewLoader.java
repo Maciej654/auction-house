@@ -26,7 +26,7 @@ public class ViewLoader {
     }
 
     private <T> FXMLLoader getFxmlViewLoader(Class<T> clazz) {
-        val path     = getViewResourcePath(clazz);
+        val path = getViewResourcePath(clazz);
         log.info("Loader of {}@{}", clazz.getSimpleName(), path);
         val resource = ViewLoader.class.getResource(path);
         return new FXMLLoader(resource);
