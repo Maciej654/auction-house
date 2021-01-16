@@ -11,7 +11,6 @@ import lombok.val;
 import pl.poznan.put.controller.auction.details.AuctionDetailsController;
 import pl.poznan.put.controller.browser.BrowserController;
 import pl.poznan.put.controller.rating.RatingBrowser;
-import pl.poznan.put.controller.rating.RatingCreator;
 import pl.poznan.put.controller.user.crud.create.UserCreateController;
 import pl.poznan.put.controller.user.crud.update.UserUpdateController;
 import pl.poznan.put.controller.user.login.UserLoginController;
@@ -134,10 +133,6 @@ public class AuctionHouseApp extends Application {
         });
     }
 
-    private void runRatingCreator() {
-        this.runPage(RatingCreator.class, controller -> {
-        });
-    }
     @Override
     public void start(Stage primaryStage) {
         log.info("start");
@@ -145,9 +140,7 @@ public class AuctionHouseApp extends Application {
         primaryStage.setTitle("Auction House");
         primaryStage.getIcons().add(new Image("/icons/auction-32.png"));
         this.primaryStage = primaryStage;
-        //this.runLoginPage();
-       ///runRatingCreator();
-        runBrowser();
+        this.runLoginPage();
         primaryStage.show();
     }
 }

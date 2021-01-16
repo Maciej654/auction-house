@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import pl.poznan.put.model.rating.Rating;
+import pl.poznan.put.popup.PopUpWindow;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
 import javax.persistence.*;
@@ -56,11 +57,16 @@ public class RatingBrowser {
     public void userEntered(ActionEvent actionEvent) {
         String user = userEntry.getText();
 
-        double avg = calculateAvg(user);
-        ObservableList<ReviewData> reviewsList = reviewsList(user);
 
+        try {
+            double avg = calculateAvg(user);
+            avgLabel.setText("average: " + avg);
+        }catch (NullPointerException e){
+            PopUpWindow.display("no reviews matching this user");
+            return;
+        }
+        ObservableList<ReviewData> reviewsList = reviewsList(user);
         tableview.setItems(reviewsList);
-        avgLabel.setText("average: " + avg);
     }
 
     @FXML

@@ -15,6 +15,7 @@ import lombok.experimental.SuperBuilder;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -99,6 +100,17 @@ public class BrowserController {
 
     }
 
+    public void setup(){
+        category_column.setCellValueFactory(new PropertyValueFactory<>("category"));
+        seller_column.setCellValueFactory(new PropertyValueFactory<>("seller"));
+        price_column.setCellValueFactory(new PropertyValueFactory<>("price"));
+        end_date_column.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        item_name_column.setCellValueFactory(new PropertyValueFactory<>("itemName"));
+        auction_name_column.setCellValueFactory(new PropertyValueFactory<>("AuctionName"));
+        details_column.setCellValueFactory(new PropertyValueFactory<>("details"));
+        click(null);
+    }
+
     private boolean filterByName(Auction auction){
         String name = auction_name.getCharacters().toString().toUpperCase();
         if(name.equals("")){
@@ -118,16 +130,7 @@ public class BrowserController {
         return Objects.equals(type, auctionType);
     }
 
-    public void setup(){
-        category_column.setCellValueFactory(new PropertyValueFactory<>("category"));
-        seller_column.setCellValueFactory(new PropertyValueFactory<>("seller"));
-        price_column.setCellValueFactory(new PropertyValueFactory<>("price"));
-        end_date_column.setCellValueFactory(new PropertyValueFactory<>("endDate"));
-        item_name_column.setCellValueFactory(new PropertyValueFactory<>("itemName"));
-        auction_name_column.setCellValueFactory(new PropertyValueFactory<>("AuctionName"));
-        details_column.setCellValueFactory(new PropertyValueFactory<>("details"));
-        click(null);
-    }
+
 
 }
 
