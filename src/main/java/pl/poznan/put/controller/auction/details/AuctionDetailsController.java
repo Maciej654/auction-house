@@ -52,12 +52,26 @@ public class AuctionDetailsController {
         keyCallBack.run();
     }
 
-    public void setLabels(){
+    public void setUp(){
+        updateLabels();
+        setUpSubviews();
+    }
+
+    private void setUpSubviews(){
+        auctionBidController.setAuction(auction);
+        auctionBidController.setAuctionDetailsController(this);
+        auctionHistoryController.setAuction(auction);
+        auctionHistoryController.updateHistory();
+    }
+
+    public void updateLabels(){
         userLabel.setText(auction.getSeller().getEmail());
         auctionNameLabel.setText(auction.getAuctionName());
         itemName.setText(auction.getItemName());
         auctionPriceLabel.setText(auction.getPrice() + " PLN");
         auctionEndLabel.setText(auction.getEndDate().toString());
     }
-
+    public void updateHistory(){
+        auctionHistoryController.updateHistory();
+    }
 }
