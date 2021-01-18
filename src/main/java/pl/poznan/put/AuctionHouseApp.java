@@ -11,6 +11,7 @@ import lombok.val;
 import pl.poznan.put.controller.auction.details.AuctionDetailsController;
 import pl.poznan.put.controller.browser.BrowserController;
 import pl.poznan.put.controller.rating.RatingBrowser;
+import pl.poznan.put.controller.rating.RatingCreator;
 import pl.poznan.put.controller.user.crud.create.UserCreateController;
 import pl.poznan.put.controller.user.crud.update.UserUpdateController;
 import pl.poznan.put.controller.user.login.UserLoginController;
@@ -130,6 +131,11 @@ public class AuctionHouseApp extends Application {
     }
     private void runRatingBrowser() {
         this.runPage(RatingBrowser.class, controller -> {
+        });
+    }
+
+    private void runRatingCreator() {
+        this.runPage(RatingCreator.class, controller -> {
         });
     }
 
