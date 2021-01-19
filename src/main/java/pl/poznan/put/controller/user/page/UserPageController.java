@@ -20,6 +20,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
+import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.user.User;
 
@@ -123,12 +124,9 @@ public class UserPageController {
         if (user != null) createAuctionCallback.accept(user);
     }
 
-    @Setter
-    private Runnable logoutCallback = () -> {};
-
     @FXML
     private void logoutButtonClick() {
         log.info("logout");
-        logoutCallback.run();
+        CurrentUser.setLoggedInUser(null);
     }
 }

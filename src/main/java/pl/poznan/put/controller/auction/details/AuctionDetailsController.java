@@ -50,6 +50,14 @@ public class AuctionDetailsController {
 
     @FXML
     private void initialize() {
+        auctionBidController.getAuctionProperty().bind(auctionProperty);
+        auctionBidController.setAfterBidCallback(() -> {
+            updateLabels();
+            updateHistory();
+        });
+
+        auctionHistoryController.getAuctionProperty().bind(auctionProperty);
+
         auctionProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 userLabel.setText(newValue.getSeller().getEmail());
@@ -59,11 +67,6 @@ public class AuctionDetailsController {
                 auctionEndLabel.setText(newValue.getEndDate().toString());
                 auctionPhotosController.setPictures(newValue.getPictures());
                 descriptionWebView.getEngine().loadContent(newValue.getItemDescription());
-
-                auctionBidController.setAuction(newValue);
-                auctionBidController.setAuctionDetailsController(this);
-                auctionHistoryController.setAuction(newValue);
-                auctionHistoryController.updateHistory();
             }
         });
     }
@@ -73,7 +76,11 @@ public class AuctionDetailsController {
         keyCallBack.run();
     }
 
-    public void updateHistory(){
+    public void updateLabels() {
+
+    }
+
+    public void updateHistory() {
         auctionHistoryController.updateHistory();
     }
 }

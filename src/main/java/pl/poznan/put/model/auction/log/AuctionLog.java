@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -22,7 +23,15 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@NamedQuery(
+        name = AuctionLog.QUERY_SELECT_ALL_BY_AUCTION,
+        query = "select auctionLog from AuctionLog auctionLog where auction = :" + AuctionLog.PARAM_AUCTION
+)
 public class AuctionLog implements Serializable {
+    public static final String QUERY_SELECT_ALL_BY_AUCTION = "AuctionLog.QUERY_SELECT_ALL_BY_AUCTION";
+
+    public static final String PARAM_AUCTION = "auction";
+
     @Id
     @JoinColumn(name = "AUCTION", referencedColumnName = "AUCTION_ID")
     @ManyToOne

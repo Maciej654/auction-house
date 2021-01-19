@@ -28,15 +28,11 @@ import java.util.Map;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import static pl.poznan.put.model.user.User.PARAM_EMAIL;
-import static pl.poznan.put.model.user.User.PARAM_HASH;
-import static pl.poznan.put.model.user.User.QUERY_CHECK_LOGIN;
-
 @Entity
 @Table(name = "USERS")
 @NamedQuery(
-        name = QUERY_CHECK_LOGIN,
-        query = "select user from User user where user.email = :" + PARAM_EMAIL + " and user.hash = :" + PARAM_HASH
+        name = User.QUERY_CHECK_LOGIN,
+        query = "select user from User user where user.email = :" + User.PARAM_EMAIL + " and user.hash = :" + User.PARAM_HASH
 )
 @Data
 @NoArgsConstructor

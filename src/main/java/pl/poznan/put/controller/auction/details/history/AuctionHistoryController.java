@@ -1,29 +1,22 @@
 package pl.poznan.put.controller.auction.details.history;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.AllArgsConstructor;
-import lombok.Setter;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.auction.log.AuctionLog;
-import pl.poznan.put.util.date.ProjectDateUtils;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
-import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -37,34 +30,23 @@ public class AuctionHistoryController {
     @FXML
     private TableColumn<AuctionLog, String> descriptionTableColumn;
 
-    @Setter
-    private       Auction       auction;
-    private final EntityManager entityManager = EntityManagerProvider.getEntityManager();
+    private TypedQuery<AuctionLog> selectQuery;
+
+    @Getter
+    private final ObjectProperty<Auction> auctionProperty = new SimpleObjectProperty<>();
+
 
     @FXML
     private void initialize() {
         log.info("initialize");
 
-        //dateTableColumn.setCellFactory(column -> new SimpleDateFormatTableCell());
+        val em = EntityManagerProvider.getEntityManager();
+        if (em != null) selectQuery = em.createNamedQuery(AuctionLog.QUERY_SELECT_ALL_BY_AUCTION, AuctionLog.class);
+
+        auctionProperty.addListener((observable, oldValue, newValue) -> updateHistory());
+
         dateTableColumn.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
         descriptionTableColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-       /* historyTableView.getSortOrder().add(dateTableColumn);
-        historyTableView.getItems().addListener((ListChangeListener<? super AuctionLog>) change -> {
-            if (change.next() && change.getAddedSize() > 0) historyTableView.sort();
-        });*/
-    }
-
-    private static class SimpleDateFormatTableCell extends TableCell<AuctionLog, Long> {
-        @Override
-        protected void updateItem(Long item, boolean empty) {
-            super.updateItem(item, empty);
-            if (empty) setText(StringUtils.EMPTY);
-            else {
-                val date = new Date(item);
-                val text = DateFormatUtils.format(date, ProjectDateUtils.PATTERN);
-                setText(text);
-            }
-        }
     }
 
     @lombok.Data
@@ -75,14 +57,22 @@ public class AuctionHistoryController {
     }
 
     public void updateHistory() {
-        TypedQuery<AuctionLog> query = Objects.requireNonNull(entityManager)
-                                              .createQuery("select auctionlog from AuctionLog auctionlog where " +
-                                                           "auctionlog.auction = :auction ", AuctionLog.class);
-        query.setParameter("auction", auction);
-        List<Data>           resultList  = query.getResultStream()
-                                                .map(r -> new Data(r.getTimestamp(), r.getDescription()))
-                                                .collect(Collectors.toList());
-        ObservableList<Data> auctionLogs = FXCollections.observableArrayList(resultList);
+        val auction = auctionProperty.get();
+        if (auction == null) {
+            log.warn("auction is null");
+            return;
+        }
+
+        if (selectQuery == null) {
+            log.warn("query is null");
+            return;
+        }
+
+        selectQuery.setParameter(AuctionLog.PARAM_AUCTION, auction);
+        val resultList = selectQuery.getResultStream()
+                                    .map(r -> new Data(r.getTimestamp(), r.getDescription()))
+                                    .collect(Collectors.toList());
+        val auctionLogs = FXCollections.observableArrayList(resultList);
         historyTableView.setItems(auctionLogs);
     }
 }

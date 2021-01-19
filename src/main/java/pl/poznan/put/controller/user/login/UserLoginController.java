@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
+import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.util.password.hasher.PasswordHasher;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
@@ -15,7 +16,6 @@ import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvi
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 @Slf4j
 public class UserLoginController {
@@ -31,9 +31,6 @@ public class UserLoginController {
     private final PasswordHasher hasher = PasswordHasher.defaultInstance();
 
     private TypedQuery<User> loginQuery;
-
-    @Setter
-    private Consumer<User> loginCallback = user -> {};
 
     @Setter
     private BiConsumer<String, String> registerCallback = (email, password) -> {};
@@ -69,7 +66,7 @@ public class UserLoginController {
         try {
             errorLabel.setText(StringUtils.EMPTY);
             val user = loginQuery.getSingleResult();
-            loginCallback.accept(user);
+            CurrentUser.setLoggedInUser(user);
         }
         catch (NoResultException e) {
             errorLabel.setText("Invalid email or password");

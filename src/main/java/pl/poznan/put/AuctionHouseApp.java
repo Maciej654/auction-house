@@ -17,6 +17,7 @@ import pl.poznan.put.controller.user.crud.update.UserUpdateController;
 import pl.poznan.put.controller.user.login.UserLoginController;
 import pl.poznan.put.controller.user.page.UserPageController;
 import pl.poznan.put.controller.user.page.UserPageController.Type;
+import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.util.view.loader.ViewLoader;
@@ -69,17 +70,13 @@ public class AuctionHouseApp extends Application {
             standardUserPageControllerSetup(controller, user);
             controller.setEditCallback(this::runUserUpdatePage);
             controller.setCreateAuctionCallback(this::runAuctionCreatePage);
-            controller.setLogoutCallback(this::runLoginPage);
         });
     }
 
     private void runLoginPage() {
         log.info("login page");
 
-        this.runPage(UserLoginController.class, controller -> {
-            controller.setLoginCallback(this::runPrivateUserPage);
-            controller.setRegisterCallback(this::runUserCreatePage);
-        });
+        this.runPage(UserLoginController.class, controller -> controller.setRegisterCallback(this::runUserCreatePage));
     }
 
     private void runUserUpdatePage(User user) {
@@ -106,15 +103,14 @@ public class AuctionHouseApp extends Application {
     private void runBrowserPage() {
         log.info("browser page");
 
-        this.runPage(BrowserController.class, controller -> {
-            controller.setShowAuctionDetails(this::runAuctionDetailsPage);
-        });
+        this.runPage(BrowserController.class,
+                     controller -> controller.setShowAuctionDetails(this::runAuctionDetailsPage));
     }
 
     private void runAuctionDetailsPage(Auction auction) {
-          this.runPage(AuctionDetailsController.class, controller -> {
-              controller.getAuctionProperty().set(auction);
-              controller.setKeyCallBack(this::runPrevPage);
+        this.runPage(AuctionDetailsController.class, controller -> {
+            controller.getAuctionProperty().set(auction);
+            controller.setKeyCallBack(this::runPrevPage);
         });
     }
 
@@ -135,6 +131,11 @@ public class AuctionHouseApp extends Application {
         primaryStage.setTitle("Auction House");
         primaryStage.getIcons().add(new Image("/icons/auction-32.png"));
         this.primaryStage = primaryStage;
+
+        CurrentUser.getLoggedInUserProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) runLoginPage();
+            else runPrivateUserPage(newValue);
+        });
 
         this.runLoginPage();
 
