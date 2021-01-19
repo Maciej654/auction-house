@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?><?import javafx.scene.control.Label?><?import javafx.scene.control.Tab?><?import javafx.scene.control.TabPane?><?import javafx.scene.layout.BorderPane?><?import javafx.scene.layout.ColumnConstraints?><?import javafx.scene.layout.GridPane?><?import javafx.scene.layout.RowConstraints?><?import javafx.scene.layout.VBox?><?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?><?import javafx.scene.control.Label?><?import javafx.scene.control.Tab?><?import javafx.scene.control.TabPane?><?import javafx.scene.layout.BorderPane?><?import javafx.scene.layout.ColumnConstraints?><?import javafx.scene.layout.GridPane?><?import javafx.scene.layout.RowConstraints?><?import javafx.scene.layout.VBox?><?import javafx.scene.text.Font?><?import javafx.scene.web.WebView?>
 <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
     xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="pl.poznan.put.controller.auction.details.AuctionDetailsController">
@@ -23,28 +23,29 @@
         <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
         </padding>
-        <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="\${user}">
+        <Label fx:id="userLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            text="\${user}">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
-        <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            text="\${auction.name}" GridPane.rowIndex="1">
+        <Label fx:id="auctionNameLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" text="\${auction.name}" GridPane.rowIndex="1">
             <font>
                 <Font size="24.0" />
             </font>
         </Label>
-        <Label text="\${item.name}" GridPane.rowIndex="2">
+        <Label fx:id="itemNameLabel" text="\${item.name}" GridPane.rowIndex="2">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
-        <Label text="\${auction.price}" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <Label fx:id="auctionPriceLabel" text="\${auction.price}" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
-        <Label text="\${auction.end}" GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <Label fx:id="auctionEndLabel" text="\${auction.end}" GridPane.columnIndex="1" GridPane.rowIndex="2">
             <font>
                 <Font size="18.0" />
             </font>
@@ -53,7 +54,7 @@
     <TabPane minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="100.0"
         tabMaxWidth="100.0" tabMinWidth="100.0" VBox.vgrow="ALWAYS">
         <Tab closable="false" text="Description">
-<!--            <WebView fx:id="descriptionWebView" />-->
+            <WebView fx:id="descriptionWebView" />
         </Tab>
         <Tab closable="false" text="Photos">
             <fx:include fx:id="auctionPhotos" source="photos/AuctionPhotosView.fxml" />

@@ -30,17 +30,19 @@ public class AuctionHouseApp extends Application {
     private void updateScene(Scene nextScene) {
         prevScene = currScene;
         currScene = nextScene;
-        Platform.runLater(() -> primaryStage.setScene(nextScene));
+        primaryStage.setScene(nextScene);
     }
 
     private <T> void runPage(Class<T> clazz, Consumer<T> setup) {
-        val root      = ViewLoader.getParent(clazz, setup);
-        val nextScene = new Scene(root);
-        updateScene(nextScene);
+        Platform.runLater(() -> {
+            val root      = ViewLoader.getParent(clazz, setup);
+            val nextScene = new Scene(root);
+            updateScene(nextScene);
+        });
     }
 
     private void runPrevPage() {
-        updateScene(prevScene);
+        Platform.runLater(() -> updateScene(prevScene));
     }
 
     private void runAuctionCreatePage(User user) {

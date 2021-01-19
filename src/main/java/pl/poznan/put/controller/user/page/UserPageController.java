@@ -1,6 +1,8 @@
 package pl.poznan.put.controller.user.page;
 
+import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -49,7 +51,7 @@ public class UserPageController {
     @Getter
     private final ObjectProperty<User> userProperty = new SimpleObjectProperty<>();
 
-    private final ObservableList<Auction> auctionObservableList = FXCollections.observableArrayList();
+    private final ListProperty<Auction> auctionObservableList = new SimpleListProperty<>(FXCollections.observableArrayList());
 
     private final FilteredList<Auction> auctionFilteredList = new FilteredList<>(auctionObservableList);
 
