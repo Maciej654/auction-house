@@ -1,5 +1,6 @@
 package pl.poznan.put.controller.auction.details.bid;
 
+import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -26,7 +27,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureQuery;
 import java.time.LocalDateTime;
-import java.util.function.Consumer;
 
 
 @Slf4j
@@ -86,6 +86,9 @@ public class AuctionBidController extends AbstractValidatedController {
     protected void installValidation() {
         bidButton.disableProperty().bind(bidWarning.visibleProperty());
         currentPriceProperty.addListener((observable, oldValue, newValue) -> installCurrentValidation((Double) newValue));
+        auctionProperty.addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) currentPriceProperty.set(newValue.getPrice());
+        });
     }
 
     @Override
@@ -97,13 +100,14 @@ public class AuctionBidController extends AbstractValidatedController {
         val auction = auctionProperty.get();
         if (auction != null && em != null) {
             em.refresh(auction);
-            currentPriceProperty.set(auction.getPrice());
+            Platform.runLater(() -> currentPriceProperty.set(auction.getPrice()));
         }
     }
 
     @FXML
     public void bidButtonClick() {
-        refreshCurrentPrice();
+        log.info("bid");
+//        refreshCurrentPrice();
         val auction = auctionProperty.get();
         if (auction != null && em != null && !bidButton.isDisable()) {
             val transaction = em.getTransaction();
@@ -116,6 +120,7 @@ public class AuctionBidController extends AbstractValidatedController {
                 delayAuction();
                 insertAuctionLog();
                 transaction.commit();
+                currentPriceProperty.set(value);
                 afterBidCallback.run();
             }
             catch (NumberFormatException ignored) {}
@@ -140,7 +145,7 @@ public class AuctionBidController extends AbstractValidatedController {
         val auction = auctionProperty.get();
         if (auction != null && em != null) {
             AuctionLog auctionLog = new AuctionLog(auction, LocalDateTime.now(),
-                                                   "auction bid to " + priceEntry.getText() + " PLN",
+                                                   "Auction bid to " + priceEntry.getText() + " PLN",
                                                    CurrentUser.getLoggedInUser());
             em.persist(auctionLog);
         }

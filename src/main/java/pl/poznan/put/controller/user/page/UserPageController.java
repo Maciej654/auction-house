@@ -89,7 +89,7 @@ public class UserPageController {
         userProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 userLabel.setText(newValue.getFullName());
-                if (newValue.getAuctions() != null) auctionObservableList.setAll(newValue.getAuctions());
+//                if (newValue.getAuctions() != null) auctionObservableList.setAll(newValue.getAuctions());
                 searchTextField.setText(StringUtils.EMPTY);
             }
         });

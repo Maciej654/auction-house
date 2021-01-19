@@ -20,7 +20,7 @@ abstract public class AbstractDoublePropertyValidator extends AbstractPropertyVa
                 val value = Double.parseDouble(s);
                 return check.test(value);
             }
-            catch (NumberFormatException ignored) {
+            catch (NumberFormatException | NullPointerException ignored) {
                 return false;
             }
         };

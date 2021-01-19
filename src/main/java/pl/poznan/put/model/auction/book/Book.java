@@ -29,7 +29,8 @@ public class Book extends Auction implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "COVER")
-    private Cover  cover;
+    private Cover cover;
+
     @Column(name = "GENRE")
     private String genre;
 

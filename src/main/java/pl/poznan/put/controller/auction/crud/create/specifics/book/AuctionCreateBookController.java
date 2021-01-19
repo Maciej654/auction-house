@@ -12,6 +12,7 @@ import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.alpha.AlphaPropertyValidator;
 import pl.poznan.put.logic.common.validation.empty.NotNullPropertyValidator;
 import pl.poznan.put.model.auction.Auction.AuctionBuilder;
+import pl.poznan.put.model.auction.Auction.Type;
 import pl.poznan.put.model.auction.book.Book;
 import pl.poznan.put.model.auction.book.Book.Cover;
 import pl.poznan.put.util.validation.Validation;
@@ -87,6 +88,7 @@ public class AuctionCreateBookController extends AbstractValidatedController imp
         return Book.builder()
                    .author(authorTextField.getText())
                    .cover(coverChoiceBox.getValue())
-                   .genre(genreTextField.getText());
+                   .genre(genreTextField.getText())
+                   .type(Type.BOOK);
     }
 }

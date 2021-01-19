@@ -13,6 +13,7 @@ import pl.poznan.put.logic.common.validation.empty.NotBlankPropertyValidator;
 import pl.poznan.put.logic.common.validation.empty.NotNullPropertyValidator;
 import pl.poznan.put.logic.common.validation.number.PositiveDoublePropertyValidator;
 import pl.poznan.put.model.auction.Auction.AuctionBuilder;
+import pl.poznan.put.model.auction.Auction.Type;
 import pl.poznan.put.model.auction.phone.Phone;
 import pl.poznan.put.model.auction.phone.Phone.OS;
 import pl.poznan.put.util.validation.Validation;
@@ -146,6 +147,7 @@ public class AuctionCreatePhoneController extends AbstractValidatedController im
                     .battery(batteryTextField.getText())
                     .processor(processorTextField.getText())
                     .ram(ramTextField.getText())
-                    .operatingSystem(osChoiceBox.getValue());
+                    .operatingSystem(osChoiceBox.getValue())
+                    .type(Type.PHONE);
     }
 }

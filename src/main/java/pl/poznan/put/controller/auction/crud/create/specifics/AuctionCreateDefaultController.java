@@ -6,6 +6,7 @@ import javafx.scene.image.ImageView;
 import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.alpha.AlphaPropertyValidator;
 import pl.poznan.put.model.auction.Auction.AuctionBuilder;
+import pl.poznan.put.model.auction.Auction.Type;
 import pl.poznan.put.model.auction.Default;
 import pl.poznan.put.util.validation.Validation;
 
@@ -34,6 +35,8 @@ public class AuctionCreateDefaultController extends AbstractValidatedController 
     @SuppressWarnings("rawtypes")
     @Override
     public AuctionBuilder getAuctionBuilder() {
-        return Default.builder().category(categoryTextField.getText());
+        return Default.builder()
+                      .category(categoryTextField.getText())
+                      .type(Type.DEFAULT);
     }
 }

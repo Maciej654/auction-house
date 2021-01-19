@@ -8,6 +8,7 @@ import javafx.scene.web.WebView;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import pl.poznan.put.controller.auction.details.bid.AuctionBidController;
 import pl.poznan.put.controller.auction.details.history.AuctionHistoryController;
 import pl.poznan.put.controller.auction.details.photos.AuctionPhotosController;
@@ -77,7 +78,11 @@ public class AuctionDetailsController {
     }
 
     public void updateLabels() {
-
+        val auction = auctionProperty.get();
+        if (auction != null) {
+            auctionPriceLabel.setText(auction.getPrice() + " PLN");
+            auctionEndLabel.setText(auction.getEndDate().toString());
+        }
     }
 
     public void updateHistory() {

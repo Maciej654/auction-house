@@ -13,6 +13,7 @@ import pl.poznan.put.logic.common.validation.empty.NotBlankPropertyValidator;
 import pl.poznan.put.logic.common.validation.empty.NotNullPropertyValidator;
 import pl.poznan.put.logic.common.validation.number.PositiveIntegerPropertyValidator;
 import pl.poznan.put.model.auction.Auction.AuctionBuilder;
+import pl.poznan.put.model.auction.Auction.Type;
 import pl.poznan.put.model.auction.car.Car;
 import pl.poznan.put.model.auction.car.Car.Condition;
 import pl.poznan.put.model.auction.car.Car.Fuel;
@@ -165,6 +166,7 @@ public class AuctionCreateCarController extends AbstractValidatedController impl
                   .transmission(transmissionChoiceBox.getValue())
                   .engine(engineTextField.getText())
                   .fuel(fuelChoiceBox.getValue())
-                  .condition(conditionChoiceBox.getValue());
+                  .condition(conditionChoiceBox.getValue())
+                  .type(Type.CAR);
     }
 }

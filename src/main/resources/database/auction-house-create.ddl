@@ -27,14 +27,6 @@ CREATE TABLE auctions
     discriminator    VARCHAR2(64)     NOT NULL
 );
 
-ALTER TABLE auctions
-    ADD CHECK ( discriminator IN (
-                                  'BOOK',
-                                  'CAR',
-                                  'DEFAULT',
-                                  'PHONE'
-        ) );
-
 CREATE INDEX auctions_seller_idx ON
     auctions (
               seller
@@ -285,7 +277,7 @@ CREATE TABLE ratings
     auction   INTEGER      NOT NULL,
     reviewer  VARCHAR2(64) NOT NULL,
     rating    INTEGER      NOT NULL,
-    "comment" VARCHAR2(512)
+    text_desc VARCHAR2(512)
 );
 
 ALTER TABLE ratings
@@ -399,55 +391,32 @@ ALTER TABLE watch_lists
     ADD CONSTRAINT watch_lists_follower_fk FOREIGN KEY (follower)
         REFERENCES users (email);
 
---  ERROR: No Discriminator Column found in Arc FKArc_1 - constraint trigger for Arc cannot be generated 
+CREATE OR REPLACE PACKAGE Subprograms IS
 
---  ERROR: No Discriminator Column found in Arc FKArc_1 - constraint trigger for Arc cannot be generated 
+    FUNCTION calculateRating(p_reviewee VARCHAR) RETURN number ;
 
---  ERROR: No Discriminator Column found in Arc FKArc_1 - constraint trigger for Arc cannot be generated 
+    PROCEDURE delayAuctionsEnd(p_id NUMBER);
 
---  ERROR: No Discriminator Column found in Arc FKArc_1 - constraint trigger for Arc cannot be generated
+END Subprograms;
 
+CREATE OR REPLACE PACKAGE BODY Subprograms IS
 
--- Oracle SQL Developer Data Modeler Summary Report:
--- 
--- CREATE TABLE                            15
--- CREATE INDEX                            26
--- ALTER TABLE                             36
--- CREATE VIEW                              0
--- ALTER VIEW                               0
--- CREATE PACKAGE                           0
--- CREATE PACKAGE BODY                      0
--- CREATE PROCEDURE                         0
--- CREATE FUNCTION                          0
--- CREATE TRIGGER                           0
--- ALTER TRIGGER                            0
--- CREATE COLLECTION TYPE                   0
--- CREATE STRUCTURED TYPE                   0
--- CREATE STRUCTURED TYPE BODY              0
--- CREATE CLUSTER                           0
--- CREATE CONTEXT                           0
--- CREATE DATABASE                          0
--- CREATE DIMENSION                         0
--- CREATE DIRECTORY                         0
--- CREATE DISK GROUP                        0
--- CREATE ROLE                              0
--- CREATE ROLLBACK SEGMENT                  0
--- CREATE SEQUENCE                          0
--- CREATE MATERIALIZED VIEW                 0
--- CREATE MATERIALIZED VIEW LOG             0
--- CREATE SYNONYM                           0
--- CREATE TABLESPACE                        0
--- CREATE USER                              0
--- 
--- DROP TABLESPACE                          0
--- DROP DATABASE                            0
--- 
--- REDACTION POLICY                         0
--- TSDP POLICY                              0
--- 
--- ORDS DROP SCHEMA                         0
--- ORDS ENABLE SCHEMA                       0
--- ORDS ENABLE OBJECT                       0
--- 
--- ERRORS                                   4
--- WARNINGS                                 0
+    FUNCTION calculateRating(p_reviewee VARCHAR) RETURN number is
+        reviewee_rating number;
+    begin
+        select avg(r.rating)
+        into reviewee_rating
+        from ratings r
+                 join auctions a on r.auction = a.auction_id
+        where a.seller = p_reviewee;
+        return reviewee_rating;
+    end calculateRating;
+
+    PROCEDURE delayAuctionsEnd(p_id number) IS
+    BEGIN
+        update auctions
+        set end_date = end_date + interval '1' day
+        where auction_id = p_id;
+    END delayAuctionsEnd;
+
+END Subprograms;
