@@ -3,7 +3,9 @@ package pl.poznan.put.controller.auction.crud.create.task;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import pl.poznan.put.logic.auction.exception.AuctionAlreadyExistsException;
 import pl.poznan.put.model.auction.Auction;
+import pl.poznan.put.model.auction.log.AuctionLog;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
 import java.util.TimerTask;
@@ -24,10 +26,28 @@ public class AuctionCreateTask extends TimerTask {
         val transaction = em.getTransaction();
         transaction.begin();
         try {
+            val query = em.createNamedQuery(Auction.QUERY_FIND_BY_UNIQUE_KEY, Auction.class);
+            query.setParameter(Auction.PARAM_AUCTION_NAME, auction.getAuctionName());
+            query.setParameter(Auction.PARAM_ITEM_NAME, auction.getItemName());
+            query.setParameter(Auction.PARAM_SELLER, auction.getSeller());
+            val other = query.getSingleResult();
+            if (other != null) {
+                onFailureCallback.accept(
+                        new AuctionAlreadyExistsException(auction.getAuctionName(), auction.getItemName())
+                );
+                return;
+            }
+
+            val auctionCreated = new AuctionLog(
+                    auction,
+                    auction.getCreationDate(),
+                    "Auction created",
+                    auction.getSeller()
+            );
+            auction.addLog(auctionCreated);
             em.persist(auction);
             transaction.commit();
             onSuccessCallback.accept(auction);
-
         }
         catch (Exception e) {
             log.error(e.getMessage(), e);

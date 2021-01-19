@@ -41,7 +41,7 @@ public class AuctionHistoryController {
         log.info("initialize");
 
         val em = EntityManagerProvider.getEntityManager();
-        if (em != null) selectQuery = em.createNamedQuery(AuctionLog.QUERY_SELECT_ALL_BY_AUCTION, AuctionLog.class);
+        if (em != null) selectQuery = em.createNamedQuery(AuctionLog.QUERY_FIND_ALL_BY_AUCTION, AuctionLog.class);
 
         auctionProperty.addListener((observable, oldValue, newValue) -> updateHistory());
 

@@ -24,11 +24,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @NamedQuery(
-        name = AuctionLog.QUERY_SELECT_ALL_BY_AUCTION,
+        name = AuctionLog.QUERY_FIND_ALL_BY_AUCTION,
         query = "select auctionLog from AuctionLog auctionLog where auction = :" + AuctionLog.PARAM_AUCTION
 )
 public class AuctionLog implements Serializable {
-    public static final String QUERY_SELECT_ALL_BY_AUCTION = "AuctionLog.QUERY_SELECT_ALL_BY_AUCTION";
+    public static final String QUERY_FIND_ALL_BY_AUCTION = "AuctionLog.QUERY_FIND_ALL_BY_AUCTION";
 
     public static final String PARAM_AUCTION = "auction";
 

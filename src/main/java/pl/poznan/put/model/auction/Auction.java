@@ -26,12 +26,14 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -45,7 +47,19 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @DiscriminatorColumn(name = "DISCRIMINATOR")
+@NamedQuery(
+        name = Auction.QUERY_FIND_BY_UNIQUE_KEY,
+        query = "select auction from Auction auction where auctionName = :" + Auction.PARAM_AUCTION_NAME + " and itemName = :" + Auction.PARAM_ITEM_NAME + " and seller = :" + Auction.PARAM_SELLER
+)
 public abstract class Auction implements Serializable {
+    public static final String QUERY_FIND_BY_UNIQUE_KEY = "Auction.QUERY_FIND_BY_UNIQUE_KEY";
+
+    public static final String PARAM_AUCTION_NAME = "auctionName";
+
+    public static final String PARAM_ITEM_NAME = "itemName";
+
+    public static final String PARAM_SELLER = "seller";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "AUCTION_ID")
@@ -80,8 +94,13 @@ public abstract class Auction implements Serializable {
     @Column(name = "DISCRIMINATOR")
     private Type type;
 
-    @OneToMany(mappedBy = "auction")
+    @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL)
     private Collection<AuctionLog> logs;
+
+    public void addLog(AuctionLog log) {
+        if (logs == null) logs = new ArrayList<>();
+        logs.add(log);
+    }
 
     @OneToOne(mappedBy = "auction", fetch = FetchType.LAZY)
     private Ad ad;

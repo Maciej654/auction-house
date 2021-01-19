@@ -15,18 +15,16 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import pl.poznan.put.controller.auction.crud.update.task.AuctionBidUpdateTask;
 import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.number.GreaterThanOrEqualDoublePropertyValidator;
 import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.model.auction.Auction;
-import pl.poznan.put.model.auction.Auction.Status;
-import pl.poznan.put.model.auction.log.AuctionLog;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
+import pl.poznan.put.util.task.ProjectTaskUtils;
 
 import javax.persistence.EntityManager;
-import javax.persistence.ParameterMode;
-import javax.persistence.StoredProcedureQuery;
-import java.time.LocalDateTime;
+import java.util.Timer;
 
 
 @Slf4j
@@ -52,13 +50,15 @@ public class AuctionBidController extends AbstractValidatedController {
 
     private ChangeListener<? super String> currentListener;
 
-    private Tooltip currentTooltip;
+    private Tooltip warningTooltip;
+
+    private Tooltip bidTooltip;
 
     protected void uninstallCurrentValidation() {
         if (currentListener != null) priceEntry.textProperty().removeListener(currentListener);
-        if (currentTooltip != null) Tooltip.uninstall(bidWarning, currentTooltip);
+        if (warningTooltip != null) Tooltip.uninstall(bidWarning, warningTooltip);
         currentListener = null;
-        currentTooltip = null;
+        warningTooltip = null;
     }
 
     protected void installCurrentValidation(Double currentPrice) {
@@ -74,18 +74,37 @@ public class AuctionBidController extends AbstractValidatedController {
         priceEntry.textProperty().addListener(currentListener);
 
         val message = validator.getErrorMessage();
-        currentTooltip = new Tooltip(message);
-        currentTooltip.setPrefWidth(200);
-        currentTooltip.setWrapText(true);
-        Tooltip.install(bidWarning, currentTooltip);
+        warningTooltip = new Tooltip(message);
+        warningTooltip.setPrefWidth(200);
+        warningTooltip.setWrapText(true);
+        Tooltip.install(bidWarning, warningTooltip);
 
         currentListener.changed(priceEntry.textProperty(), null, priceEntry.getText());
     }
 
+    private void unbindBidButton() {
+        bidButton.disableProperty().unbind();
+        bidButton.setDisable(true);
+        if (bidTooltip != null) Tooltip.uninstall(bidButton, bidTooltip);
+        bidTooltip = new Tooltip("Task running in background");
+    }
+
+    private void bindBidButton() {
+        bidButton.disableProperty().bind(bidWarning.visibleProperty());
+        if (bidTooltip != null) Tooltip.uninstall(bidButton, bidTooltip);
+        bidTooltip = new Tooltip("Place your bid");
+        Tooltip.install(bidButton, bidTooltip);
+    }
+
     @Override
     protected void installValidation() {
-        bidButton.disableProperty().bind(bidWarning.visibleProperty());
         currentPriceProperty.addListener((observable, oldValue, newValue) -> installCurrentValidation((Double) newValue));
+    }
+
+    @Override
+    protected void initialize() {
+        super.initialize();
+        bindBidButton();
         auctionProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) currentPriceProperty.set(newValue.getPrice());
         });
@@ -96,7 +115,7 @@ public class AuctionBidController extends AbstractValidatedController {
         setupTextField(priceEntry);
     }
 
-    protected void refreshCurrentPrice() {
+    private void refreshCurrentPrice() {
         val auction = auctionProperty.get();
         if (auction != null && em != null) {
             em.refresh(auction);
@@ -104,50 +123,32 @@ public class AuctionBidController extends AbstractValidatedController {
         }
     }
 
+    private final Timer timer = new Timer();
+
     @FXML
     public void bidButtonClick() {
         log.info("bid");
-//        refreshCurrentPrice();
         val auction = auctionProperty.get();
-        if (auction != null && em != null && !bidButton.isDisable()) {
-            val transaction = em.getTransaction();
-            transaction.begin();
-            try {
-                val value = Double.parseDouble(priceEntry.getText());
-                auction.setPrice(value);
-                auction.setStatus(Status.BIDDING);
-                em.merge(auction);
-                delayAuction();
-                insertAuctionLog();
-                transaction.commit();
-                currentPriceProperty.set(value);
-                afterBidCallback.run();
-            }
-            catch (NumberFormatException ignored) {}
-            catch (Exception e) {
-                log.error(e.getMessage(), e);
-                if (transaction.isActive()) transaction.rollback();
-            }
+        if (auction != null) try {
+            val price = Double.parseDouble(priceEntry.getText());
+            unbindBidButton();
+            timer.schedule(
+                    new AuctionBidUpdateTask(
+                            auction,
+                            CurrentUser.getLoggedInUser(),
+                            price,
+                            () -> Platform.runLater(() -> {
+                                currentPriceProperty.set(price);
+                                afterBidCallback.run();
+                            }),
+                            exception -> {},
+                            () -> Platform.runLater(this::bindBidButton)
+                    ),
+                    ProjectTaskUtils.IMMEDIATE
+            );
         }
-    }
-
-    private void delayAuction() {
-        val auction = auctionProperty.get();
-        if (auction != null && em != null) {
-            StoredProcedureQuery query = em.createStoredProcedureQuery("subprograms.delayAuctionsEnd");
-            query.registerStoredProcedureParameter("p_id", Long.class, ParameterMode.IN);
-            query.setParameter("p_id", auction.getId());
-            query.execute();
-        }
-    }
-
-    private void insertAuctionLog() {
-        val auction = auctionProperty.get();
-        if (auction != null && em != null) {
-            AuctionLog auctionLog = new AuctionLog(auction, LocalDateTime.now(),
-                                                   "Auction bid to " + priceEntry.getText() + " PLN",
-                                                   CurrentUser.getLoggedInUser());
-            em.persist(auctionLog);
+        catch (NumberFormatException e) {
+            log.error(e.getMessage(), e);
         }
     }
 }
