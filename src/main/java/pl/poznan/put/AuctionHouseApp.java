@@ -10,6 +10,8 @@ import lombok.val;
 import pl.poznan.put.controller.auction.crud.create.AuctionCreateController;
 import pl.poznan.put.controller.auction.details.AuctionDetailsController;
 import pl.poznan.put.controller.browser.BrowserController;
+import pl.poznan.put.controller.rating.RatingBrowser;
+import pl.poznan.put.controller.rating.RatingCreator;
 import pl.poznan.put.controller.user.crud.create.UserCreateController;
 import pl.poznan.put.controller.user.crud.update.UserUpdateController;
 import pl.poznan.put.controller.user.login.UserLoginController;
@@ -105,15 +107,24 @@ public class AuctionHouseApp extends Application {
         log.info("browser page");
 
         this.runPage(BrowserController.class, controller -> {
-            controller.setup();
             controller.setShowAuctionDetails(this::runAuctionDetailsPage);
         });
     }
 
     private void runAuctionDetailsPage(Auction auction) {
-        this.runPage(AuctionDetailsController.class, controller -> {
-            controller.getAuctionProperty().set(auction);
-            controller.setKeyCallBack(this::runPrevPage);
+          this.runPage(AuctionDetailsController.class, controller -> {
+              controller.getAuctionProperty().set(auction);
+              controller.setKeyCallBack(this::runPrevPage);
+        });
+    }
+
+    private void runRatingBrowser() {
+        this.runPage(RatingBrowser.class, controller -> {
+        });
+    }
+
+    private void runRatingCreator() {
+        this.runPage(RatingCreator.class, controller -> {
         });
     }
 

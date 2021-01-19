@@ -59,6 +59,11 @@ public class AuctionDetailsController {
                 auctionEndLabel.setText(newValue.getEndDate().toString());
                 auctionPhotosController.setPictures(newValue.getPictures());
                 descriptionWebView.getEngine().loadContent(newValue.getItemDescription());
+
+                auctionBidController.setAuction(newValue);
+                auctionBidController.setAuctionDetailsController(this);
+                auctionHistoryController.setAuction(newValue);
+                auctionHistoryController.updateHistory();
             }
         });
     }
@@ -66,5 +71,9 @@ public class AuctionDetailsController {
     @FXML
     public void backButtonPressed() {
         keyCallBack.run();
+    }
+
+    public void updateHistory(){
+        auctionHistoryController.updateHistory();
     }
 }

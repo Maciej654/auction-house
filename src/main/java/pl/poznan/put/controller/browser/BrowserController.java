@@ -8,10 +8,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.apache.commons.lang3.StringUtils;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
@@ -82,7 +82,7 @@ public class BrowserController {
     }
 
     @FXML
-    private void click(MouseEvent mouseEvent) {
+    private void click() {
         List<Auction> listofAuctions = new ArrayList<>();
         if (em != null) {
             TypedQuery<Auction> query = em.createQuery("select auction from Auction auction ", Auction.class);
@@ -108,26 +108,8 @@ public class BrowserController {
 
     }
 
-    private boolean filterByName(Auction auction) {
-        String name = auction_name.getCharacters().toString().toUpperCase();
-        if (name.equals("")) {
-            return true;
-        }
-        String regex       = String.format(".*%s.*", name);
-        String auctionName = auction.getAuctionName().toUpperCase();
-        return auctionName.matches(regex);
-    }
-
-    private boolean filterByType(Auction auction) {
-        String type = auction_type.getCharacters().toString().toUpperCase();
-        if (type.equals("")) {
-            return true;
-        }
-        String auctionType = auction.getCategory().toUpperCase();
-        return Objects.equals(type, auctionType);
-    }
-
-    public void setup() {
+    @FXML
+    private void initialize() {
         category_column.setCellValueFactory(new PropertyValueFactory<>("category"));
         seller_column.setCellValueFactory(new PropertyValueFactory<>("seller"));
         price_column.setCellValueFactory(new PropertyValueFactory<>("price"));
@@ -135,7 +117,22 @@ public class BrowserController {
         item_name_column.setCellValueFactory(new PropertyValueFactory<>("itemName"));
         auction_name_column.setCellValueFactory(new PropertyValueFactory<>("AuctionName"));
         details_column.setCellValueFactory(new PropertyValueFactory<>("details"));
+        click();
     }
 
+    private boolean filterByName(Auction auction) {
+        String name = auction_name.getCharacters().toString().toUpperCase();
+        if (StringUtils.isEmpty(name)) return true;
+        String regex       = String.format(".*%s.*", name);
+        String auctionName = auction.getAuctionName().toUpperCase();
+        return auctionName.matches(regex);
+    }
+
+    private boolean filterByType(Auction auction) {
+        String type = auction_type.getCharacters().toString().toUpperCase();
+        if (StringUtils.isEmpty(type)) return true;
+        String auctionType = auction.getCategory().toUpperCase();
+        return Objects.equals(type, auctionType);
+    }
 }
 

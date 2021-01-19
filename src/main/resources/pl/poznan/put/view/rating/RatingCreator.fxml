@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.poznan.put.controller.rating.RatingCreator">
+   <children>
+      <Pane layoutX="41.0" layoutY="22.0" prefHeight="356.0" prefWidth="537.0">
+         <children>
+            <Button fx:id="confirmButton" layoutX="223.0" layoutY="301.0" mnemonicParsing="false" onAction="#buttonClicked" text="Confirm" />
+            <TextField fx:id="ratingEntry" layoutX="28.0" layoutY="252.0" />
+            <TextField fx:id="commentEntry" layoutX="318.0" layoutY="252.0" />
+            <ChoiceBox fx:id="choiceBox" layoutX="14.0" layoutY="62.0" prefHeight="25.0" prefWidth="508.0" />
+            <Label layoutX="66.0" layoutY="211.0" prefWidth="92.0" text="Rating(0-100)" />
+            <Label layoutX="337.0" layoutY="211.0" text="Additional Comment" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
