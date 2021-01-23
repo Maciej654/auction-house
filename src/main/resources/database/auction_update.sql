@@ -36,10 +36,9 @@ BEGIN
             repeat_interval      => 'FREQ=HOURLY;INTERVAL=1;',
             auto_drop          =>   FALSE,
             comments           =>  'My new job');
-
-exec DBMS_SCHEDULER.enable('update_auctions_job');
-
 END;
+                            
+exec DBMS_SCHEDULER.enable('update_auctions_job');
 
 
 --to drop
