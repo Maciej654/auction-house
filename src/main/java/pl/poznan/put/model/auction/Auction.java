@@ -103,6 +103,7 @@ public abstract class Auction implements Serializable {
         PLANNED,
         CREATED,
         BIDDING,
+        IN_SHOPPING_CART,
         FINISHED,
         CANCELLED
     }
