@@ -3,6 +3,7 @@ package pl.poznan.put.controller.auction.details;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.web.WebView;
 import lombok.Getter;
@@ -13,11 +14,15 @@ import pl.poznan.put.controller.auction.details.bid.AuctionBidController;
 import pl.poznan.put.controller.auction.details.history.AuctionHistoryController;
 import pl.poznan.put.controller.auction.details.photos.AuctionPhotosController;
 import pl.poznan.put.model.auction.Auction;
+import pl.poznan.put.model.user.User;
+import pl.poznan.put.util.callback.Callbacks;
+
+import java.util.function.Consumer;
 
 @Slf4j
 public class AuctionDetailsController {
     @FXML
-    private Label userLabel;
+    private Hyperlink userHyperlink;
 
     @FXML
     private Label auctionNameLabel;
@@ -44,7 +49,7 @@ public class AuctionDetailsController {
     private AuctionBidController auctionBidController;
 
     @Setter
-    private Runnable keyCallBack;
+    private Runnable backCallback;
 
     @Getter
     private final ObjectProperty<Auction> auctionProperty = new SimpleObjectProperty<>();
@@ -61,7 +66,7 @@ public class AuctionDetailsController {
 
         auctionProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                userLabel.setText(newValue.getSeller().getEmail());
+                userHyperlink.setText(newValue.getSeller().getFullName());
                 auctionNameLabel.setText(newValue.getAuctionName());
                 itemNameLabel.setText(newValue.getItemName());
                 auctionPriceLabel.setText(newValue.getPrice() + " PLN");
@@ -70,11 +75,13 @@ public class AuctionDetailsController {
                 descriptionWebView.getEngine().loadContent(newValue.getItemDescription());
             }
         });
+
+        userHyperlink.setVisited(true);
     }
 
     @FXML
     private void backButtonClick() {
-        keyCallBack.run();
+        backCallback.run();
     }
 
     public void updateLabels() {
@@ -87,5 +94,18 @@ public class AuctionDetailsController {
 
     public void updateHistory() {
         auctionHistoryController.updateHistory();
+    }
+
+    @Setter
+    private Consumer<User> userHyperlinkCallback = Callbacks::noop;
+
+    @FXML
+    private void userHyperlinkClick() {
+        val auction = auctionProperty.get();
+        if (auction == null) return;
+        val user = auction.getSeller();
+        if (user == null) return;
+        log.info("user hyperlink click: '{}'", user.getEmail());
+        userHyperlinkCallback.accept(user);
     }
 }

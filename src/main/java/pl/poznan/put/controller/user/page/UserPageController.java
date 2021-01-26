@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -23,12 +24,16 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
+import pl.poznan.put.controller.auction.thumbnail.AuctionThumbnailController;
 import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.util.callback.Callbacks;
+import pl.poznan.put.util.view.loader.ViewLoader;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.function.Consumer;
 
 @Slf4j
@@ -82,12 +87,23 @@ public class UserPageController {
     @Setter
     private Consumer<Auction> thumbnailCallback = Callbacks::noop;
 
+    private final Map<Long, Parent> thumbnailCache = new HashMap<>();
+
     @FXML
     private void initialize() {
         HBox.setHgrow(spacePane, Priority.ALWAYS);
 
         auctionFilteredList.addListener((ListChangeListener<Auction>) change -> {
-
+            while (change.next()) {
+                if (change.wasAdded()) change.getAddedSubList().forEach(auction -> {
+                    val thumbnail = thumbnailCache.get(auction.getId());
+                    if (thumbnail != null) thumbnailsFlowPane.getChildren().add(thumbnail);
+                });
+                if (change.wasRemoved()) change.getRemoved().forEach(auction -> {
+                    val thumbnail = thumbnailCache.get(auction.getId());
+                    if (thumbnail != null) thumbnailsFlowPane.getChildren().remove(thumbnail);
+                });
+            }
         });
 
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -107,12 +123,31 @@ public class UserPageController {
             else setType(Type.PUBLIC);
         });
 
+        auctionObservableList.addListener((ListChangeListener<Auction>) change -> {
+            while (change.next()) {
+                if (change.wasAdded()) change.getAddedSubList().forEach(auction -> {
+                    val thumbnail = ViewLoader.getParent(AuctionThumbnailController.class, controller -> {
+                        controller.setClickCallback(thumbnailCallback);
+                        controller.getAuctionProperty().set(auction);
+                    });
+                    if (thumbnail != null) thumbnailCache.put(auction.getId(), thumbnail);
+                });
+                if (change.wasRemoved()) change.getRemoved()
+                                               .stream()
+                                               .map(Auction::getId)
+                                               .forEach(thumbnailCache::remove);
+            }
+        });
+
         userProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 userLabel.setText(newValue.getFullName());
                 if (newValue.getAuctions() != null) auctionObservableList.setAll(newValue.getAuctions());
                 searchTextField.setText(StringUtils.EMPTY);
                 privateUserPageProperty.set(newValue == CurrentUser.getLoggedInUser());
+            }
+            else {
+                auctionObservableList.clear();
             }
         });
     }

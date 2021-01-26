@@ -97,7 +97,8 @@ public class AuctionHouseApp extends Application {
     private void runAuctionDetailsPage(Auction auction, Runnable backCallback) {
         this.runPage(AuctionDetailsController.class, controller -> {
             controller.getAuctionProperty().set(auction);
-            controller.setKeyCallBack(backCallback);
+            controller.setBackCallback(backCallback);
+            controller.setUserHyperlinkCallback(this::runUserPage);
         });
     }
 
