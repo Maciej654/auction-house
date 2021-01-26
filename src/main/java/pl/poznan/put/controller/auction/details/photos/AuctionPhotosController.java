@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import pl.poznan.put.model.picture.Picture;
 
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -30,16 +29,15 @@ public class AuctionPhotosController {
         images = pictures.stream()
                          .map(Picture::getImage)
                          .map(blob -> {
-                             try {
-                                 return blob.getBinaryStream();
+                             try (val input = blob.getBinaryStream()) {
+                                 return new Image(input, 500, 500, true, true);
                              }
-                             catch (SQLException e) {
+                             catch (Exception e) {
                                  log.error(e.getMessage(), e);
                                  return null;
                              }
                          })
                          .filter(Objects::nonNull)
-                         .map(is -> new Image(is, 500, 500, true, true))
                          .toArray(Image[]::new);
         currIndexProperty.set(-1);
         currIndexProperty.set(0);

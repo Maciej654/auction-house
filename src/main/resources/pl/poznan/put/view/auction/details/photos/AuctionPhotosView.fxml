@@ -7,7 +7,6 @@
     <center>
         <ImageView fx:id="currImageView" fitHeight="500.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true"
             BorderPane.alignment="CENTER">
-            <Image url="@../../../../stuffed-hippo.jpg" />
             <BorderPane.margin>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </BorderPane.margin>
@@ -29,29 +28,25 @@
     <left>
         <ImageView fitHeight="32.0" fitWidth="32.0" onMouseClicked="#prevImageViewClick" pickOnBounds="true"
             preserveRatio="true" BorderPane.alignment="CENTER">
-            <image>
-                <Image url="@../../../../../../../icons/prev-arrow-32.png" />
-            </image>
             <BorderPane.margin>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </BorderPane.margin>
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor>
+            <Image url="@/icons/prev-arrow-32.png" />
         </ImageView>
     </left>
     <right>
         <ImageView fitHeight="32.0" fitWidth="32.0" onMouseClicked="#nextImageViewClick" pickOnBounds="true"
             preserveRatio="true" BorderPane.alignment="CENTER">
-            <image>
-                <Image url="@../../../../../../../icons/next-arrow-32.png" />
-            </image>
             <BorderPane.margin>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </BorderPane.margin>
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor>
+            <Image url="@/icons/next-arrow-32.png" />
         </ImageView>
     </right>
 </BorderPane>

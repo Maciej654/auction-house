@@ -38,8 +38,7 @@ public class AuctionThumbnailController {
             if (newValue != null) {
                 auctionNameLabel.setText(newValue.getAuctionName());
                 itemNameLabel.setText(newValue.getItemName());
-                try {
-                    val input = newValue.getPictures().get(0).getImage().getBinaryStream();
+                try (val input = newValue.getPictures().get(0).getImage().getBinaryStream()) {
                     val image = new Image(input, 128, 128, true, true);
                     auctionThumbnail.setImage(image);
                 }
