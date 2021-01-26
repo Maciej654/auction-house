@@ -106,10 +106,7 @@ public abstract class Auction implements Serializable {
     private Ad ad;
 
     @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL)
-    private Collection<Picture> pictures;
-
-//    @OneToOne(mappedBy = "auction", fetch = FetchType.LAZY)
-//    private Rating rating;
+    private List<Picture> pictures;
 
     public enum Type {
         BOOK,
@@ -119,7 +116,6 @@ public abstract class Auction implements Serializable {
     }
 
     public enum Status implements Serializable {
-        PLANNED,
         CREATED,
         BIDDING,
         IN_SHOPPING_CART,

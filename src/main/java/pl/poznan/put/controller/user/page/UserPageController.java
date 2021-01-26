@@ -7,11 +7,13 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -35,6 +37,9 @@ public class UserPageController {
         PUBLIC,
         PRIVATE
     }
+
+    @FXML
+    private FlowPane thumbnailsFlowPane;
 
     @FXML
     private VBox privateOptionsVBox;
@@ -74,9 +79,16 @@ public class UserPageController {
         }
     }
 
+    @Setter
+    private Consumer<Auction> thumbnailCallback = Callbacks::noop;
+
     @FXML
     private void initialize() {
         HBox.setHgrow(spacePane, Priority.ALWAYS);
+
+        auctionFilteredList.addListener((ListChangeListener<Auction>) change -> {
+
+        });
 
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (StringUtils.isBlank(newValue)) auctionFilteredList.setPredicate(null);
@@ -90,6 +102,11 @@ public class UserPageController {
             }
         });
 
+        privateUserPageProperty.addListener((observable, oldValue, newValue) -> {
+            if (newValue) setType(Type.PRIVATE);
+            else setType(Type.PUBLIC);
+        });
+
         userProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 userLabel.setText(newValue.getFullName());
@@ -97,11 +114,6 @@ public class UserPageController {
                 searchTextField.setText(StringUtils.EMPTY);
                 privateUserPageProperty.set(newValue == CurrentUser.getLoggedInUser());
             }
-        });
-
-        privateUserPageProperty.addListener((observable, oldValue, newValue) -> {
-            if (newValue) setType(Type.PRIVATE);
-            else setType(Type.PUBLIC);
         });
     }
 

@@ -73,7 +73,7 @@ public class AuctionDetailsController {
     }
 
     @FXML
-    public void backButtonPressed() {
+    private void backButtonClick() {
         keyCallBack.run();
     }
 

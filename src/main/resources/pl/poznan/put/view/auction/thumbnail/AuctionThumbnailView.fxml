@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?><?import java.util.*?><?import javafx.scene.*?><?import javafx.scene.control.*?><?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-    fx:controller="pl.poznan.put.controller.auction.thumbnail.AuctionThumbnailController" prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.poznan.put.controller.auction.thumbnail.AuctionThumbnailController">
+    <top>
+        <Label fx:id="auctionNameLabel" text="\${auction.name}" BorderPane.alignment="CENTER" />
+    </top>
+    <bottom>
+        <Label fx:id="itemNameLabel" text="\${item.name}" BorderPane.alignment="CENTER" />
+    </bottom>
+    <center>
+        <ImageView fx:id="auctionThumbnail" fitHeight="128.0" fitWidth="128.0" onMouseClicked="#thumbnailClick" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+    </center>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+</BorderPane>

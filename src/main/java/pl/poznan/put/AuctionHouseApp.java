@@ -38,7 +38,9 @@ public class AuctionHouseApp extends Application {
 
         this.runPage(AuctionCreateController.class, controller -> {
             controller.getUserProperty().set(user);
-            controller.setCreateAuctionCallback(this::runAuctionDetailsPage);
+            Runnable          backCallback          = () -> runUserPage(user);
+            Consumer<Auction> createAuctionCallback = auction -> runAuctionDetailsPage(auction, backCallback);
+            controller.setCreateAuctionCallback(createAuctionCallback);
         });
     }
 
@@ -50,6 +52,9 @@ public class AuctionHouseApp extends Application {
             controller.setAuctionsCallback(this::runBrowserPage);
             controller.setEditCallback(this::runUserUpdatePage);
             controller.setCreateAuctionCallback(this::runAuctionCreatePage);
+            Runnable          backCallback      = () -> runUserPage(user);
+            Consumer<Auction> thumbnailCallback = auction -> runAuctionDetailsPage(auction, backCallback);
+            controller.setThumbnailCallback(thumbnailCallback);
         });
     }
 
@@ -82,15 +87,17 @@ public class AuctionHouseApp extends Application {
 
     private void runBrowserPage() {
         log.info("browser page");
-
-        this.runPage(BrowserController.class,
-                     controller -> controller.setShowAuctionDetails(this::runAuctionDetailsPage));
+        Runnable          backCallback       = this::runBrowserPage;
+        Consumer<Auction> showAuctionDetails = auction -> runAuctionDetailsPage(auction, backCallback);
+        Consumer<BrowserController> setup =
+                controller -> controller.setShowAuctionDetails(showAuctionDetails);
+        this.runPage(BrowserController.class, setup);
     }
 
-    private void runAuctionDetailsPage(Auction auction) {
+    private void runAuctionDetailsPage(Auction auction, Runnable backCallback) {
         this.runPage(AuctionDetailsController.class, controller -> {
             controller.getAuctionProperty().set(auction);
-            controller.setKeyCallBack(this::runBrowserPage);
+            controller.setKeyCallBack(backCallback);
         });
     }
 
