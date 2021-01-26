@@ -17,7 +17,7 @@ import pl.poznan.put.util.validation.Validation;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -55,7 +55,7 @@ public class AuctionCreatePhotosController extends AbstractValidatedController {
         if (files != null && !files.isEmpty()) auctionCreatePhotosListController.addPhotos(files);
     }
 
-    public Collection<Picture> getPictures(Auction auction) {
+    public List<Picture> getPictures(Auction auction) {
         return auctionCreatePhotosListController
                 .getPhotos()
                 .stream()
