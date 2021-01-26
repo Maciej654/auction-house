@@ -9,9 +9,13 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import pl.poznan.put.controller.auction.crud.create.AuctionCreateController;
 import pl.poznan.put.controller.auction.details.AuctionDetailsController;
+import pl.poznan.put.controller.auction.shoppingHistory.ShoppingHistoryController;
 import pl.poznan.put.controller.browser.BrowserController;
+import pl.poznan.put.controller.delivery.DeliveryCreatorController;
+import pl.poznan.put.controller.followers.FollowersController;
 import pl.poznan.put.controller.rating.RatingBrowser;
 import pl.poznan.put.controller.rating.RatingCreator;
+import pl.poznan.put.controller.shoppingCart.ShoppingCartController;
 import pl.poznan.put.controller.user.crud.create.UserCreateController;
 import pl.poznan.put.controller.user.crud.update.UserUpdateController;
 import pl.poznan.put.controller.user.login.UserLoginController;
@@ -112,6 +116,22 @@ public class AuctionHouseApp extends Application {
     private void runRatingCreator() {
         this.runPage(RatingCreator.class, controller -> {
         });
+    }
+
+    private void runDeliveryPreferencesCreator() {
+        this.runPage(DeliveryCreatorController.class, DeliveryCreatorController::setup);
+    }
+
+    private void runShoppingCart() {
+        this.runPage(ShoppingCartController.class, ShoppingCartController::setup);
+    }
+
+    private void runShoppingHistory(){
+        this.runPage(ShoppingHistoryController.class, ShoppingHistoryController::setup);
+    }
+
+    private void runFollowerCreator(){
+        this.runPage(FollowersController.class, FollowersController::setUp);
     }
 
     @Override
