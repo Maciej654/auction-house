@@ -10,6 +10,7 @@ import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.model.user.User;
+import pl.poznan.put.util.callback.Callbacks;
 import pl.poznan.put.util.password.hasher.PasswordHasher;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
@@ -33,7 +34,7 @@ public class UserLoginController {
     private TypedQuery<User> loginQuery;
 
     @Setter
-    private BiConsumer<String, String> registerCallback = (email, password) -> {};
+    private BiConsumer<String, String> registerCallback = Callbacks::noop;
 
     @FXML
     private void initialize() {

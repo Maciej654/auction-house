@@ -29,6 +29,7 @@ import pl.poznan.put.logic.user.validation.UserBirthdayValidator;
 import pl.poznan.put.logic.user.validation.UserConfirmPasswordValidator;
 import pl.poznan.put.logic.user.validation.UserEmailValidator;
 import pl.poznan.put.model.user.User;
+import pl.poznan.put.util.callback.Callbacks;
 import pl.poznan.put.util.password.hasher.PasswordHasher;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 import pl.poznan.put.util.validation.Validation;
@@ -89,7 +90,7 @@ public abstract class UserCrudController extends AbstractValidatedController {
     protected Runnable backCallback;
 
     @Setter
-    protected Consumer<User> operationCallback = user -> {};
+    protected Consumer<User> operationCallback = Callbacks::noop;
 
     protected final EntityManager em = EntityManagerProvider.getEntityManager();
 

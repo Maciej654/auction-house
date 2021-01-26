@@ -20,6 +20,7 @@ import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.number.GreaterThanOrEqualDoublePropertyValidator;
 import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.model.auction.Auction;
+import pl.poznan.put.util.callback.Callbacks;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 import pl.poznan.put.util.task.ProjectTaskUtils;
 
@@ -39,7 +40,7 @@ public class AuctionBidController extends AbstractValidatedController {
     private ImageView bidWarning;
 
     @Setter
-    private Runnable afterBidCallback = () -> {};
+    private Runnable afterBidCallback = Callbacks::noop;
 
     private final DoubleProperty currentPriceProperty = new SimpleDoubleProperty();
 
@@ -141,7 +142,7 @@ public class AuctionBidController extends AbstractValidatedController {
                                 currentPriceProperty.set(price);
                                 afterBidCallback.run();
                             }),
-                            exception -> {},
+                            Callbacks::noop,
                             () -> Platform.runLater(this::bindBidButton)
                     ),
                     ProjectTaskUtils.IMMEDIATE

@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import pl.poznan.put.util.callback.Callbacks;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,7 +25,7 @@ public class AuctionCreatePhotosListItemController {
     private ImageView imageView;
 
     @Setter
-    private Consumer<File> onDeleteButtonClick = file -> {};
+    private Consumer<File> onDeleteButtonClick = Callbacks::noop;
 
     @Getter
     private final ObjectProperty<File> fileProperty = new SimpleObjectProperty<>();

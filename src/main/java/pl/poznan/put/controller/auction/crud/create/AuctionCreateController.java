@@ -23,6 +23,7 @@ import pl.poznan.put.logic.common.validation.number.PositiveDoublePropertyValida
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.auction.Auction.Status;
 import pl.poznan.put.model.user.User;
+import pl.poznan.put.util.callback.Callbacks;
 import pl.poznan.put.util.date.ProjectDateUtils;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 import pl.poznan.put.util.task.ProjectTaskUtils;
@@ -38,6 +39,8 @@ import java.util.function.Consumer;
 
 @Slf4j
 public class AuctionCreateController extends AbstractValidatedController {
+    @FXML
+    private Label errorLabel;
 
     @FXML
     private HTMLEditor descriptionEditor;
@@ -105,7 +108,7 @@ public class AuctionCreateController extends AbstractValidatedController {
     private final Timer timer = new Timer();
 
     @Setter
-    private Consumer<Auction> createAuctionCallback = auction -> {};
+    private Consumer<Auction> createAuctionCallback = Callbacks::noop;
 
     @FXML
     private void createButtonClick() {
@@ -139,9 +142,13 @@ public class AuctionCreateController extends AbstractValidatedController {
         auction.setPictures(pictures);
 
         timer.schedule(
-                new AuctionCreateTask(auction, createAuctionCallback, e -> {}),
+                new AuctionCreateTask(auction, createAuctionCallback, this::setErrorLabel),
                 ProjectTaskUtils.IMMEDIATE
         );
+    }
+
+    private void setErrorLabel(Exception e) {
+        errorLabel.setText(e.getMessage());
     }
 
     @Override

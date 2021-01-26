@@ -16,7 +16,6 @@ import pl.poznan.put.controller.user.crud.create.UserCreateController;
 import pl.poznan.put.controller.user.crud.update.UserUpdateController;
 import pl.poznan.put.controller.user.login.UserLoginController;
 import pl.poznan.put.controller.user.page.UserPageController;
-import pl.poznan.put.controller.user.page.UserPageController.Type;
 import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.user.User;
@@ -27,25 +26,11 @@ import java.util.function.Consumer;
 @Slf4j
 public class AuctionHouseApp extends Application {
     private Stage primaryStage;
-    private Scene prevScene;
-    private Scene currScene;
-
-    private void updateScene(Scene nextScene) {
-        prevScene = currScene;
-        currScene = nextScene;
-        primaryStage.setScene(nextScene);
-    }
 
     private <T> void runPage(Class<T> clazz, Consumer<T> setup) {
-        Platform.runLater(() -> {
-            val root      = ViewLoader.getParent(clazz, setup);
-            val nextScene = new Scene(root);
-            updateScene(nextScene);
-        });
-    }
-
-    private void runPrevPage() {
-        Platform.runLater(() -> updateScene(prevScene));
+        val root      = ViewLoader.getParent(clazz, setup);
+        val nextScene = new Scene(root);
+        Platform.runLater(() -> primaryStage.setScene(nextScene));
     }
 
     private void runAuctionCreatePage(User user) {
@@ -57,17 +42,12 @@ public class AuctionHouseApp extends Application {
         });
     }
 
-    private void standardUserPageControllerSetup(UserPageController controller, User user) {
-        controller.getUserProperty().set(user);
-        controller.setAuctionsCallback(() -> {});
-    }
-
-    private void runPrivateUserPage(User user) {
+    private void runUserPage(User user) {
         log.info("private user page");
 
         this.runPage(UserPageController.class, controller -> {
-            controller.setType(Type.PRIVATE);
-            standardUserPageControllerSetup(controller, user);
+            controller.getUserProperty().set(user);
+            controller.setAuctionsCallback(this::runBrowserPage);
             controller.setEditCallback(this::runUserUpdatePage);
             controller.setCreateAuctionCallback(this::runAuctionCreatePage);
         });
@@ -84,8 +64,8 @@ public class AuctionHouseApp extends Application {
 
         this.runPage(UserUpdateController.class, controller -> {
             controller.setUser(user);
-            controller.setOperationCallback(this::runPrivateUserPage);
-            controller.setBackCallback(this::runPrevPage);
+            controller.setOperationCallback(this::runUserPage);
+            controller.setBackCallback(() -> runUserPage(user));
         });
     }
 
@@ -95,8 +75,8 @@ public class AuctionHouseApp extends Application {
         this.runPage(UserCreateController.class, controller -> {
             controller.setEmail(email);
             controller.setPassword(password);
-            controller.setOperationCallback(this::runPrivateUserPage);
-            controller.setBackCallback(this::runPrevPage);
+            controller.setOperationCallback(this::runUserPage);
+            controller.setBackCallback(this::runLoginPage);
         });
     }
 
@@ -110,7 +90,7 @@ public class AuctionHouseApp extends Application {
     private void runAuctionDetailsPage(Auction auction) {
         this.runPage(AuctionDetailsController.class, controller -> {
             controller.getAuctionProperty().set(auction);
-            controller.setKeyCallBack(this::runPrevPage);
+            controller.setKeyCallBack(this::runBrowserPage);
         });
     }
 
@@ -134,7 +114,7 @@ public class AuctionHouseApp extends Application {
 
         CurrentUser.getLoggedInUserProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) runLoginPage();
-            else runPrivateUserPage(newValue);
+            else runUserPage(newValue);
         });
 
         this.runLoginPage();

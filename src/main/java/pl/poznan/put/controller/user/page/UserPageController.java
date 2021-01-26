@@ -1,11 +1,12 @@
 package pl.poznan.put.controller.user.page;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -23,6 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.user.User;
+import pl.poznan.put.util.callback.Callbacks;
 
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -52,12 +54,14 @@ public class UserPageController {
     @Getter
     private final ObjectProperty<User> userProperty = new SimpleObjectProperty<>();
 
-    private final ListProperty<Auction> auctionObservableList = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private final ListProperty<Auction> auctionObservableList =
+            new SimpleListProperty<>(FXCollections.observableArrayList());
 
     private final FilteredList<Auction> auctionFilteredList = new FilteredList<>(auctionObservableList);
 
+    private final BooleanProperty privateUserPageProperty = new SimpleBooleanProperty();
 
-    public void setType(Type type) {
+    private void setType(Type type) {
         switch (type) {
             case PUBLIC:
                 privateOptionsVBox.setVisible(false);
@@ -75,9 +79,9 @@ public class UserPageController {
         HBox.setHgrow(spacePane, Priority.ALWAYS);
 
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            log.info(newValue);
             if (StringUtils.isBlank(newValue)) auctionFilteredList.setPredicate(null);
             else {
+                log.info(newValue);
                 val filter = newValue.toLowerCase(Locale.ROOT);
                 auctionFilteredList.setPredicate(
                         auction -> auction.getAuctionName().toLowerCase(Locale.ROOT).contains(filter) ||
@@ -89,14 +93,20 @@ public class UserPageController {
         userProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 userLabel.setText(newValue.getFullName());
-//                if (newValue.getAuctions() != null) auctionObservableList.setAll(newValue.getAuctions());
+                if (newValue.getAuctions() != null) auctionObservableList.setAll(newValue.getAuctions());
                 searchTextField.setText(StringUtils.EMPTY);
+                privateUserPageProperty.set(newValue == CurrentUser.getLoggedInUser());
             }
+        });
+
+        privateUserPageProperty.addListener((observable, oldValue, newValue) -> {
+            if (newValue) setType(Type.PRIVATE);
+            else setType(Type.PUBLIC);
         });
     }
 
     @Setter
-    private Runnable auctionsCallback = () -> {};
+    private Runnable auctionsCallback = Callbacks::noop;
 
     @FXML
     private void auctionsButtonClick() {
@@ -105,7 +115,7 @@ public class UserPageController {
     }
 
     @Setter
-    private Consumer<User> editCallback = user -> {};
+    private Consumer<User> editCallback = Callbacks::noop;
 
     @FXML
     private void editProfileButtonClick() {
@@ -115,7 +125,7 @@ public class UserPageController {
     }
 
     @Setter
-    private Consumer<User> createAuctionCallback = user -> {};
+    private Consumer<User> createAuctionCallback = Callbacks::noop;
 
     @FXML
     private void createAuctionButtonClick() {
