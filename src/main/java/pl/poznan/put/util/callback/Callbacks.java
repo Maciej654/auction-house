@@ -1,14 +1,22 @@
 package pl.poznan.put.util.callback;
 
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 
 @SuppressWarnings("unused")
 @UtilityClass
+@Slf4j
 public class Callbacks {
-    public void noop()                {}
+    public void noop() {
+        log.warn("noop callback called");
+    }
 
-    public <T> void noop(T t)         {}
+    public <T> void noop(T t) {
+        log.warn("noop callback called");
+    }
 
-    public <T, R> void noop(T t, R r) {}
+    public <T, R> void noop(T t, R r) {
+        log.warn("noop callback called");
+    }
 }
 

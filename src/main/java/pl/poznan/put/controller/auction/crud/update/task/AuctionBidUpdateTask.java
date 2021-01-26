@@ -49,31 +49,34 @@ public class AuctionBidUpdateTask extends TimerTask {
 
     @Override
     public void run() {
-        val em          = EntityManagerProvider.getEntityManager();
-        val transaction = em.getTransaction();
-        try {
-            auction.setPrice(price);
-            auction.setStatus(Status.BIDDING);
-            val description = String.format(LOG_FORMAT, price, bidder.getFirstName());
-            AuctionLog auctionLog = new AuctionLog(
-                    auction,
-                    LocalDateTime.now(),
-                    description,
-                    bidder
-            );
-            auction.addLog(auctionLog);
-            delayAuction(auction, em);
-            em.merge(auction);
-            transaction.commit();
-            onSuccessCallback.run();
-        }
-        catch (Exception e) {
-            log.error(e.getMessage(), e);
-            if (transaction.isActive()) transaction.rollback();
-            onFailureCallback.accept(e);
-        }
-        finally {
-            cleanup.run();
+        synchronized (auction) {
+            val em          = EntityManagerProvider.getEntityManager();
+            val transaction = em.getTransaction();
+            transaction.begin();
+            try {
+                auction.setPrice(price);
+                auction.setStatus(Status.BIDDING);
+                val description = String.format(LOG_FORMAT, price, bidder.getFirstName());
+                AuctionLog auctionLog = new AuctionLog(
+                        auction,
+                        LocalDateTime.now(),
+                        description,
+                        bidder
+                );
+                auction.addLog(auctionLog);
+                delayAuction(auction, em);
+                em.merge(auction);
+                transaction.commit();
+                onSuccessCallback.run();
+            }
+            catch (Exception e) {
+                log.error(e.getMessage(), e);
+                if (transaction.isActive()) transaction.rollback();
+                onFailureCallback.accept(e);
+            }
+            finally {
+                cleanup.run();
+            }
         }
     }
 }

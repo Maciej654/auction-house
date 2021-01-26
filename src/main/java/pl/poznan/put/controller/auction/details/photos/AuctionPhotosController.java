@@ -1,6 +1,5 @@
 package pl.poznan.put.controller.auction.details.photos;
 
-import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
@@ -28,26 +27,22 @@ public class AuctionPhotosController {
     private Image[] images;
 
     public void setPictures(Collection<Picture> pictures) {
-        new Thread(() -> {
-            images = pictures.stream()
-                             .map(Picture::getImage)
-                             .map(blob -> {
-                                 try {
-                                     return blob.getBinaryStream();
-                                 }
-                                 catch (SQLException e) {
-                                     log.error(e.getMessage(), e);
-                                     return null;
-                                 }
-                             })
-                             .filter(Objects::nonNull)
-                             .map(is -> new Image(is, 500, 500, true, true))
-                             .toArray(Image[]::new);
-            Platform.runLater(() -> {
-                currIndexProperty.set(-1);
-                currIndexProperty.set(0);
-            });
-        });
+        images = pictures.stream()
+                         .map(Picture::getImage)
+                         .map(blob -> {
+                             try {
+                                 return blob.getBinaryStream();
+                             }
+                             catch (SQLException e) {
+                                 log.error(e.getMessage(), e);
+                                 return null;
+                             }
+                         })
+                         .filter(Objects::nonNull)
+                         .map(is -> new Image(is, 500, 500, true, true))
+                         .toArray(Image[]::new);
+        currIndexProperty.set(-1);
+        currIndexProperty.set(0);
     }
 
     @FXML

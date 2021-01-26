@@ -1,5 +1,6 @@
 package pl.poznan.put.controller.auction.crud.create;
 
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -148,7 +149,7 @@ public class AuctionCreateController extends AbstractValidatedController {
     }
 
     private void setErrorLabel(Exception e) {
-        errorLabel.setText(e.getMessage());
+        Platform.runLater(() -> errorLabel.setText(e.getMessage()));
     }
 
     @Override

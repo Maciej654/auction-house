@@ -8,6 +8,7 @@ import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.auction.log.AuctionLog;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
+import javax.persistence.NoResultException;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
@@ -30,12 +31,17 @@ public class AuctionCreateTask extends TimerTask {
             query.setParameter(Auction.PARAM_AUCTION_NAME, auction.getAuctionName());
             query.setParameter(Auction.PARAM_ITEM_NAME, auction.getItemName());
             query.setParameter(Auction.PARAM_SELLER, auction.getSeller());
-            val other = query.getSingleResult();
-            if (other != null) {
-                onFailureCallback.accept(
-                        new AuctionAlreadyExistsException(auction.getAuctionName(), auction.getItemName())
-                );
-                return;
+            try {
+                val other = query.getSingleResult();
+                if (other != null) {
+                    onFailureCallback.accept(
+                            new AuctionAlreadyExistsException(auction.getAuctionName(), auction.getItemName())
+                    );
+                    return;
+                }
+            }
+            catch (NoResultException ignored) {
+                // do nothing
             }
 
             val auctionCreated = new AuctionLog(

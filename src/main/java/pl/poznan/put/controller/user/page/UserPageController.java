@@ -8,7 +8,6 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
@@ -31,10 +30,14 @@ import pl.poznan.put.model.user.User;
 import pl.poznan.put.util.callback.Callbacks;
 import pl.poznan.put.util.view.loader.ViewLoader;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class UserPageController {
@@ -67,8 +70,6 @@ public class UserPageController {
     private final ListProperty<Auction> auctionObservableList =
             new SimpleListProperty<>(FXCollections.observableArrayList());
 
-    private final FilteredList<Auction> auctionFilteredList = new FilteredList<>(auctionObservableList);
-
     private final BooleanProperty privateUserPageProperty = new SimpleBooleanProperty();
 
     private void setType(Type type) {
@@ -87,31 +88,31 @@ public class UserPageController {
     @Setter
     private Consumer<Auction> thumbnailCallback = Callbacks::noop;
 
-    private final Map<Long, Parent> thumbnailCache = new HashMap<>();
+    private final Map<Auction, Parent> thumbnailCache = new HashMap<>();
+
+    private final ObjectProperty<Predicate<Auction>> auctionPredicateProperty = new SimpleObjectProperty<>();
 
     @FXML
     private void initialize() {
         HBox.setHgrow(spacePane, Priority.ALWAYS);
 
-        auctionFilteredList.addListener((ListChangeListener<Auction>) change -> {
-            while (change.next()) {
-                if (change.wasAdded()) change.getAddedSubList().forEach(auction -> {
-                    val thumbnail = thumbnailCache.get(auction.getId());
-                    if (thumbnail != null) thumbnailsFlowPane.getChildren().add(thumbnail);
-                });
-                if (change.wasRemoved()) change.getRemoved().forEach(auction -> {
-                    val thumbnail = thumbnailCache.get(auction.getId());
-                    if (thumbnail != null) thumbnailsFlowPane.getChildren().remove(thumbnail);
-                });
-            }
+        auctionPredicateProperty.addListener((observable, oldValue, newValue) -> {
+            Collection<Parent> thumbnails;
+            if (newValue == null) thumbnails = thumbnailCache.values();
+            else thumbnails = thumbnailCache.entrySet()
+                                            .stream()
+                                            .filter(entry -> newValue.test(entry.getKey()))
+                                            .map(Entry::getValue)
+                                            .collect(Collectors.toList());
+            thumbnailsFlowPane.getChildren().setAll(thumbnails);
         });
 
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (StringUtils.isBlank(newValue)) auctionFilteredList.setPredicate(null);
+            if (StringUtils.isBlank(newValue)) auctionPredicateProperty.set(null);
             else {
                 log.info(newValue);
                 val filter = newValue.toLowerCase(Locale.ROOT);
-                auctionFilteredList.setPredicate(
+                auctionPredicateProperty.set(
                         auction -> auction.getAuctionName().toLowerCase(Locale.ROOT).contains(filter) ||
                                    auction.getItemName().toLowerCase(Locale.ROOT).contains(filter)
                 );
@@ -130,24 +131,20 @@ public class UserPageController {
                         controller.setClickCallback(thumbnailCallback);
                         controller.getAuctionProperty().set(auction);
                     });
-                    if (thumbnail != null) thumbnailCache.put(auction.getId(), thumbnail);
+                    if (thumbnail != null) thumbnailCache.put(auction, thumbnail);
                 });
-                if (change.wasRemoved()) change.getRemoved()
-                                               .stream()
-                                               .map(Auction::getId)
-                                               .forEach(thumbnailCache::remove);
+                if (change.wasRemoved()) change.getRemoved().forEach(thumbnailCache::remove);
             }
         });
 
         userProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 userLabel.setText(newValue.getFullName());
-                if (newValue.getAuctions() != null) auctionObservableList.setAll(newValue.getAuctions());
+                val auctions = newValue.getAuctions();
+                if (auctions != null) auctionObservableList.setAll(auctions);
+                thumbnailsFlowPane.getChildren().setAll(thumbnailCache.values());
                 searchTextField.setText(StringUtils.EMPTY);
                 privateUserPageProperty.set(newValue == CurrentUser.getLoggedInUser());
-            }
-            else {
-                auctionObservableList.clear();
             }
         });
     }

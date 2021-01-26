@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity
@@ -49,7 +50,8 @@ import java.util.List;
 @DiscriminatorColumn(name = "DISCRIMINATOR")
 @NamedQuery(
         name = Auction.QUERY_FIND_BY_UNIQUE_KEY,
-        query = "select auction from Auction auction where auctionName = :" + Auction.PARAM_AUCTION_NAME + " and itemName = :" + Auction.PARAM_ITEM_NAME + " and seller = :" + Auction.PARAM_SELLER
+        query = "select auction from Auction auction where auctionName = :" + Auction.PARAM_AUCTION_NAME + " and " +
+                "itemName = :" + Auction.PARAM_ITEM_NAME + " and seller = :" + Auction.PARAM_SELLER
 )
 public abstract class Auction implements Serializable {
     public static final String QUERY_FIND_BY_UNIQUE_KEY = "Auction.QUERY_FIND_BY_UNIQUE_KEY";
@@ -91,6 +93,7 @@ public abstract class Auction implements Serializable {
     @Column(name = "STATUS")
     private Status status;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "DISCRIMINATOR")
     private Type type;
 
@@ -148,5 +151,18 @@ public abstract class Auction implements Serializable {
 
     public String getCategory() {
         return this.type.name();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Auction auction = (Auction) o;
+        return id == auction.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

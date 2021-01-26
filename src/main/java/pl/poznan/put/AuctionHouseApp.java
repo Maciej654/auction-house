@@ -28,9 +28,11 @@ public class AuctionHouseApp extends Application {
     private Stage primaryStage;
 
     private <T> void runPage(Class<T> clazz, Consumer<T> setup) {
-        val root      = ViewLoader.getParent(clazz, setup);
-        val nextScene = new Scene(root);
-        Platform.runLater(() -> primaryStage.setScene(nextScene));
+        Platform.runLater(() -> {
+            val root      = ViewLoader.getParent(clazz, setup);
+            val nextScene = new Scene(root);
+            primaryStage.setScene(nextScene);
+        });
     }
 
     private void runAuctionCreatePage(User user) {
@@ -48,13 +50,13 @@ public class AuctionHouseApp extends Application {
         log.info("private user page");
 
         this.runPage(UserPageController.class, controller -> {
+            Runnable          backCallback      = () -> runUserPage(user);
+            Consumer<Auction> thumbnailCallback = auction -> runAuctionDetailsPage(auction, backCallback);
+            controller.setThumbnailCallback(thumbnailCallback);
             controller.getUserProperty().set(user);
             controller.setAuctionsCallback(this::runBrowserPage);
             controller.setEditCallback(this::runUserUpdatePage);
             controller.setCreateAuctionCallback(this::runAuctionCreatePage);
-            Runnable          backCallback      = () -> runUserPage(user);
-            Consumer<Auction> thumbnailCallback = auction -> runAuctionDetailsPage(auction, backCallback);
-            controller.setThumbnailCallback(thumbnailCallback);
         });
     }
 
