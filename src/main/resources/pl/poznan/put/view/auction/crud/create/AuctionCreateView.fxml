@@ -1,32 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.web.HTMLEditor?>
-
-<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.poznan.put.controller.auction.crud.create.AuctionCreateController">
+<?import javafx.geometry.Insets?><?import javafx.scene.control.Button?><?import javafx.scene.control.Label?><?import javafx.scene.control.Tab?><?import javafx.scene.control.TabPane?><?import javafx.scene.control.TextField?><?import javafx.scene.control.ToolBar?><?import javafx.scene.Cursor?><?import javafx.scene.image.Image?><?import javafx.scene.image.ImageView?><?import javafx.scene.layout.BorderPane?><?import javafx.scene.layout.ColumnConstraints?><?import javafx.scene.layout.GridPane?><?import javafx.scene.layout.RowConstraints?><?import javafx.scene.layout.VBox?><?import javafx.scene.text.Font?><?import javafx.scene.web.HTMLEditor?>
+<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+    minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="pl.poznan.put.controller.auction.crud.create.AuctionCreateController">
     <ToolBar nodeOrientation="RIGHT_TO_LEFT">
         <VBox.margin>
             <Insets />
         </VBox.margin>
-        <Button fx:id="createButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#createButtonClick" prefWidth="75.0" text="Create" />
+        <Button fx:id="createButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" mnemonicParsing="false" onAction="#createButtonClick" prefWidth="75.0" text="Create" />
     </ToolBar>
-   <Label fx:id="errorLabel" text="Label" />
-    <GridPane hgap="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" vgap="10.0" BorderPane.alignment="CENTER">
+    <Label fx:id="errorLabel" textFill="RED" />
+    <GridPane hgap="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+        minWidth="-Infinity" vgap="10.0" BorderPane.alignment="CENTER">
         <columnConstraints>
             <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="375.0" />
             <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
@@ -44,7 +31,8 @@
         <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
         </padding>
-        <Label fx:id="userLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="\${user}">
+        <Label fx:id="userLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            text="\${user}">
             <font>
                 <Font size="18.0" />
             </font>
@@ -54,37 +42,43 @@
                 <Font size="18.0" />
             </font>
         </Label>
-        <TextField fx:id="auctionNameTextField" alignment="CENTER_RIGHT" promptText="Auction Name" GridPane.rowIndex="1">
+        <TextField fx:id="auctionNameTextField" alignment="CENTER_RIGHT" promptText="Auction Name"
+            GridPane.rowIndex="1">
             <font>
                 <Font size="18.0" />
             </font>
         </TextField>
         <TextField fx:id="itemNameTextField" alignment="CENTER_RIGHT" promptText="Item Name" GridPane.rowIndex="2" />
-        <TextField fx:id="initialPriceTextField" promptText="Initial Price" GridPane.columnIndex="2" GridPane.rowIndex="1">
+        <TextField fx:id="initialPriceTextField" promptText="Initial Price" GridPane.columnIndex="2"
+            GridPane.rowIndex="1">
             <font>
                 <Font size="18.0" />
             </font>
         </TextField>
-        <ImageView fx:id="auctionNameWarning" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <ImageView fx:id="auctionNameWarning" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true"
+            GridPane.columnIndex="1" GridPane.rowIndex="1">
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor>
             <Image url="@/icons/warning-32.png" />
         </ImageView>
-        <ImageView fx:id="initialPriceWarning" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
+        <ImageView fx:id="initialPriceWarning" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true"
+            GridPane.columnIndex="3" GridPane.rowIndex="1">
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor>
             <Image url="@/icons/warning-32.png" />
         </ImageView>
-        <ImageView fx:id="itemNameWarning" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <ImageView fx:id="itemNameWarning" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true"
+            GridPane.columnIndex="1" GridPane.rowIndex="2">
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor>
             <Image url="@/icons/warning-32.png" />
         </ImageView>
     </GridPane>
-    <TabPane minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="100.0" tabMaxWidth="100.0" tabMinWidth="100.0" VBox.vgrow="ALWAYS">
+    <TabPane minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="100.0"
+        tabMaxWidth="100.0" tabMinWidth="100.0" VBox.vgrow="ALWAYS">
         <Tab closable="false" text="Description">
             <HTMLEditor fx:id="descriptionEditor" minHeight="-Infinity" minWidth="-Infinity" />
         </Tab>

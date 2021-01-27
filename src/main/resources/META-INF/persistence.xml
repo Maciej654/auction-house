@@ -20,8 +20,7 @@
         <class>pl.poznan.put.model.watch.list.item.WatchListItem</class>
 
         <properties>
-            <property name="javax.persistence.jdbc.url"
-                value="jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/dblab02_students.cs.put.poznan.pl" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@//localhost:1521/oracle" />
             <property name="javax.persistence.jdbc.user" value="" />
             <property name="javax.persistence.jdbc.password" value="" />
             <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
