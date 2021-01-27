@@ -5,9 +5,12 @@ import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleMapProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
@@ -31,9 +34,7 @@ import pl.poznan.put.util.callback.Callbacks;
 import pl.poznan.put.util.view.loader.ViewLoader;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -88,7 +89,8 @@ public class UserPageController {
     @Setter
     private Consumer<Auction> thumbnailCallback = Callbacks::noop;
 
-    private final Map<Auction, Parent> thumbnailCache = new HashMap<>();
+    private final ObservableMap<Auction, Parent> thumbnailCache =
+            new SimpleMapProperty<>(FXCollections.observableHashMap());
 
     private final ObjectProperty<Predicate<Auction>> auctionPredicateProperty = new SimpleObjectProperty<>();
 
@@ -139,12 +141,17 @@ public class UserPageController {
             }
         });
 
+        thumbnailCache.addListener((MapChangeListener<? super Auction, ? super Parent>) change -> {
+            val flow = thumbnailsFlowPane.getChildren();
+            if (change.wasAdded()) flow.add(change.getValueAdded());
+            if (change.wasRemoved()) flow.remove(change.getValueRemoved());
+        });
+
         userProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 userLabel.setText(newValue.getFullName());
                 val auctions = newValue.getAuctions();
                 if (auctions != null) auctionObservableList.setAll(auctions);
-                thumbnailsFlowPane.getChildren().setAll(thumbnailCache.values());
                 searchTextField.setText(StringUtils.EMPTY);
                 privateUserPageProperty.set(newValue == CurrentUser.getLoggedInUser());
             }

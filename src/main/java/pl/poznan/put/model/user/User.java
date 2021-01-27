@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class User implements Serializable {
     public static final String QUERY_CHECK_LOGIN = "User.QUERY_CHECK_LOGIN";
     public static final String PARAM_EMAIL       = "email";

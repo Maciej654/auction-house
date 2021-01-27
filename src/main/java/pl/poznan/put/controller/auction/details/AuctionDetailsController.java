@@ -84,6 +84,9 @@ public class AuctionDetailsController {
 
         auctionDetailsSpecificsController.getAuctionProperty().bind(auctionProperty);
 
+        descriptionWebView.setOnKeyTyped(Callbacks::noop);
+        descriptionWebView.setOnMouseClicked(Callbacks::noop);
+
         userHyperlink.setVisited(true);
     }
 

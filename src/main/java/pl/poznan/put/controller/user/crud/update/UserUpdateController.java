@@ -1,7 +1,6 @@
 package pl.poznan.put.controller.user.crud.update;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import pl.poznan.put.controller.user.crud.UserCrudController;
 import pl.poznan.put.logic.common.validation.PropertyValidator;
@@ -27,9 +26,14 @@ public class UserUpdateController extends UserCrudController {
 
     @Override
     public User getUser() {
-        val user = super.getUser();
-        if (Objects.nonNull(this.user) && StringUtils.isBlank(passwordField.getText())) {
-            user.setHash(this.user.getHash());
+        var user = super.getUser();
+        if (Objects.nonNull(this.user)) {
+            user = this.user.toBuilder()
+                            .firstName(user.getFirstName())
+                            .lastName(user.getLastName())
+                            .birthday(user.getBirthday())
+                            .build();
+            if (StringUtils.isBlank(passwordField.getText())) user.setHash(this.user.getHash());
         }
         return user;
     }

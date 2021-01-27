@@ -51,7 +51,7 @@ public class AuctionHouseApp extends Application {
     }
 
     private void runUserPage(User user) {
-        log.info("private user page");
+        log.info("user page");
 
         this.runPage(UserPageController.class, controller -> {
             Runnable          backCallback      = () -> runUserPage(user);
