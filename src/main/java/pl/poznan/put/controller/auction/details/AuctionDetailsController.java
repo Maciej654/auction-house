@@ -78,14 +78,11 @@ public class AuctionDetailsController {
                 auctionPriceLabel.setText(newValue.getPrice() + " PLN");
                 auctionEndLabel.setText(newValue.getEndDate().toString());
                 auctionPhotosController.setPictures(newValue.getPictures());
-                descriptionWebView.getEngine().loadContent(newValue.getItemDescription());
+                descriptionWebView.getEngine().loadContent(newValue.getItemDescription(), "text/html");
             }
         });
 
         auctionDetailsSpecificsController.getAuctionProperty().bind(auctionProperty);
-
-        descriptionWebView.setOnKeyTyped(Callbacks::noop);
-        descriptionWebView.setOnMouseClicked(Callbacks::noop);
 
         userHyperlink.setVisited(true);
     }
