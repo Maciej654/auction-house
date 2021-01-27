@@ -10,8 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import pl.poznan.put.model.picture.Picture;
 
+import java.io.ByteArrayInputStream;
 import java.util.Collection;
-import java.util.Objects;
 
 @Slf4j
 public class AuctionPhotosController {
@@ -28,16 +28,8 @@ public class AuctionPhotosController {
     public void setPictures(Collection<Picture> pictures) {
         images = pictures.stream()
                          .map(Picture::getImage)
-                         .map(blob -> {
-                             try (val input = blob.getBinaryStream()) {
-                                 return new Image(input, 500, 500, true, true);
-                             }
-                             catch (Exception e) {
-                                 log.error(e.getMessage(), e);
-                                 return null;
-                             }
-                         })
-                         .filter(Objects::nonNull)
+                         .map(ByteArrayInputStream::new)
+                         .map(input -> new Image(input, 500, 500, true, true))
                          .toArray(Image[]::new);
         currIndexProperty.set(-1);
         currIndexProperty.set(0);

@@ -13,6 +13,7 @@ import lombok.val;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.util.callback.Callbacks;
 
+import java.io.ByteArrayInputStream;
 import java.util.function.Consumer;
 
 @Slf4j
@@ -35,16 +36,16 @@ public class AuctionThumbnailController {
     @FXML
     private void initialize() {
         auctionProperty.addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
+            if (newValue != null) try {
                 auctionNameLabel.setText(newValue.getAuctionName());
                 itemNameLabel.setText(newValue.getItemName());
-                try (val input = newValue.getPictures().get(0).getImage().getBinaryStream()) {
-                    val image = new Image(input, 128, 128, true, true);
-                    auctionThumbnail.setImage(image);
-                }
-                catch (Exception e) {
-                    log.error(e.getMessage(), e);
-                }
+                val data  = newValue.getPictures().get(0).getImage();
+                val input = new ByteArrayInputStream(data);
+                val image = new Image(input, 128, 128, true, true);
+                auctionThumbnail.setImage(image);
+            }
+            catch (Exception e) {
+                log.error(e.getMessage(), e);
             }
         });
     }
