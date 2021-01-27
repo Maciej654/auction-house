@@ -53,7 +53,7 @@ public class AuctionDetailsController {
     private AuctionDetailsSpecificsController auctionDetailsSpecificsController;
 
     @Setter
-    private Runnable backCallback;
+    private Runnable backCallback = Callbacks::noop;
 
     @Getter
     private final ObjectProperty<Auction> auctionProperty = new SimpleObjectProperty<>();

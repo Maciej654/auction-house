@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import pl.poznan.put.controller.auction.details.specifics.book.AuctionDetailsBookController;
 import pl.poznan.put.controller.auction.details.specifics.car.AuctionDetailsCarController;
@@ -16,6 +17,7 @@ import pl.poznan.put.model.auction.phone.Phone;
 import pl.poznan.put.util.converter.EnumConverterUtils;
 import pl.poznan.put.util.view.loader.ViewLoader;
 
+@Slf4j
 public class AuctionDetailsSpecificsController extends AbstractAuctionDetailsTypeController<Auction> {
     @FXML
     private VBox specificVBox;
@@ -25,6 +27,8 @@ public class AuctionDetailsSpecificsController extends AbstractAuctionDetailsTyp
 
     @Override
     protected void customizeAuctionDetails(Auction auction) {
+        log.info("customize '{}'", auction.getAuctionName());
+
         val type = auction.getType();
         typeLabel.setText(EnumConverterUtils.toString(type));
         Parent customizedView;

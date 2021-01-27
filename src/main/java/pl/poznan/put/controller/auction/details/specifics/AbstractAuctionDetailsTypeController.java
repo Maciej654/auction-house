@@ -19,10 +19,7 @@ public abstract class AbstractAuctionDetailsTypeController<T extends Auction> {
         log.info("initialize");
 
         auctionProperty.addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                log.info("customize '{}'", newValue.getAuctionName());
-                customizeAuctionDetails(newValue);
-            }
+            if (newValue != null) customizeAuctionDetails(newValue);
         });
     }
 }
