@@ -39,6 +39,7 @@ public class UserLoginController {
     @FXML
     private void initialize() {
         log.info("initialize");
+
         val em = EntityManagerProvider.getEntityManager();
         if (em != null) loginQuery = em.createNamedQuery(User.QUERY_CHECK_LOGIN, User.class);
     }

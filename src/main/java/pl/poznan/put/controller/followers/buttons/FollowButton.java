@@ -11,47 +11,52 @@ import javax.persistence.Query;
 
 public class FollowButton extends Button {
     private static final EntityManager entityManager = EntityManagerProvider.getEntityManager();
-    private final Follower follower;
-    private boolean folowerExist;
+    private final        Follower      follower;
+    private              boolean       folowerExist;
 
     public FollowButton(User folower, User folowee) {
         super();
-        this.follower = new Follower(folower,folowee);
+        this.follower = new Follower(folower, folowee);
         folowerExist = followerExists();
-        if(!folowerExist){
+        if (!folowerExist) {
             setText("follow");
-        }else{
+        }
+        else {
             setText("unfollow");
         }
         this.setOnAction(a -> this.onAction());
     }
-    private void onAction(){
-        if(!folowerExist){
+
+    private void onAction() {
+        if (!folowerExist) {
             followAction();
             folowerExist = true;
             setText("unfollow");
         }
-        else{
+        else {
             unFollowAction();
             folowerExist = false;
             setText("follow");
         }
     }
 
-    private void followAction(){
+    private void followAction() {
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
         entityManager.persist(follower);
         transaction.commit();
     }
-    private void unFollowAction(){
+
+    private void unFollowAction() {
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
         entityManager.remove(entityManager.contains(follower) ? follower : entityManager.merge(follower));
         transaction.commit();
     }
-    private boolean followerExists(){
-        Query query = entityManager.createQuery("select follower from Follower follower where follower = :f", Follower.class);
+
+    private boolean followerExists() {
+        Query query = entityManager.createQuery("select follower from Follower follower where follower = :f",
+                                                Follower.class);
         query.setParameter("f", this.follower);
         long count = query.getResultStream().count();
         return count > 0;

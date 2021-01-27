@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?><?import javafx.scene.control.Label?><?import javafx.scene.layout.ColumnConstraints?><?import javafx.scene.layout.GridPane?><?import javafx.scene.layout.RowConstraints?>
+<GridPane hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="pl.poznan.put.controller.auction.details.specifics.car.AuctionDetailsCarController">
+    <columnConstraints>
+        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="200.0" />
+        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="200.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+    <Label text="Make:" />
+    <Label fx:id="makeLabel" GridPane.columnIndex="1" />
+    <Label text="Model:" GridPane.rowIndex="1" />
+    <Label fx:id="modelLabel" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+    <Label text="Mileage:" GridPane.rowIndex="2" />
+    <Label fx:id="mileageLabel" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+    <Label text="Transmission:" GridPane.rowIndex="3" />
+    <Label fx:id="transmissionLabel" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+    <Label text="Engine:" GridPane.rowIndex="4" />
+    <Label fx:id="engineLabel" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+    <Label text="Fuel:" GridPane.rowIndex="5" />
+    <Label fx:id="fuelLabel" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+    <Label text="Condition:" GridPane.rowIndex="6" />
+    <Label fx:id="conditionLabel" GridPane.rowIndex="6" GridPane.columnIndex="1" />
+</GridPane>

@@ -126,11 +126,11 @@ public class AuctionHouseApp extends Application {
         this.runPage(ShoppingCartController.class, ShoppingCartController::setup);
     }
 
-    private void runShoppingHistory(){
+    private void runShoppingHistory() {
         this.runPage(ShoppingHistoryController.class, ShoppingHistoryController::setup);
     }
 
-    private void runFollowerCreator(){
+    private void runFollowerCreator() {
         this.runPage(FollowersController.class, FollowersController::setUp);
     }
 

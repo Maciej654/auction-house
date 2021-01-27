@@ -35,6 +35,8 @@ public class AuctionThumbnailController {
 
     @FXML
     private void initialize() {
+        log.info("initialize");
+
         auctionProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) try {
                 auctionNameLabel.setText(newValue.getAuctionName());

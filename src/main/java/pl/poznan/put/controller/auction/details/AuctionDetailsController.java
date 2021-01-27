@@ -13,6 +13,7 @@ import lombok.val;
 import pl.poznan.put.controller.auction.details.bid.AuctionBidController;
 import pl.poznan.put.controller.auction.details.history.AuctionHistoryController;
 import pl.poznan.put.controller.auction.details.photos.AuctionPhotosController;
+import pl.poznan.put.controller.auction.details.specifics.AuctionDetailsSpecificsController;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.util.callback.Callbacks;
@@ -48,6 +49,9 @@ public class AuctionDetailsController {
     @FXML
     private AuctionBidController auctionBidController;
 
+    @FXML
+    private AuctionDetailsSpecificsController auctionDetailsSpecificsController;
+
     @Setter
     private Runnable backCallback;
 
@@ -56,6 +60,8 @@ public class AuctionDetailsController {
 
     @FXML
     private void initialize() {
+        log.info("initialize");
+
         auctionBidController.getAuctionProperty().bind(auctionProperty);
         auctionBidController.setAfterBidCallback(() -> {
             updateLabels();
@@ -75,6 +81,8 @@ public class AuctionDetailsController {
                 descriptionWebView.getEngine().loadContent(newValue.getItemDescription());
             }
         });
+
+        auctionDetailsSpecificsController.getAuctionProperty().bind(auctionProperty);
 
         userHyperlink.setVisited(true);
     }

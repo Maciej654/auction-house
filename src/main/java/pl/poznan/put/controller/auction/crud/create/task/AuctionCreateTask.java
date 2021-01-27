@@ -23,7 +23,7 @@ public class AuctionCreateTask extends TimerTask {
 
     @Override
     public void run() {
-        val em          = EntityManagerProvider.getEntityManager();
+        val em    = EntityManagerProvider.getEntityManager();
         val query = em.createNamedQuery(Auction.QUERY_FIND_BY_UNIQUE_KEY, Auction.class);
         query.setParameter(Auction.PARAM_AUCTION_NAME, auction.getAuctionName());
         query.setParameter(Auction.PARAM_ITEM_NAME, auction.getItemName());

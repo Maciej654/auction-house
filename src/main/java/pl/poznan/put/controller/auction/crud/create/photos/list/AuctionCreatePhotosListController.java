@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import pl.poznan.put.controller.auction.crud.create.photos.list.cell.AuctionCreatePhotosListCell;
 
@@ -14,6 +15,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
+@Slf4j
 public class AuctionCreatePhotosListController {
     @FXML
     private ListView<File> photosListView;
@@ -36,6 +38,8 @@ public class AuctionCreatePhotosListController {
 
     @FXML
     private void initialize() {
+        log.info("initialize");
+
         photosListView.setItems(photosList);
         photosListView.setCellFactory(view -> new AuctionCreatePhotosListCell(photosList::remove));
     }

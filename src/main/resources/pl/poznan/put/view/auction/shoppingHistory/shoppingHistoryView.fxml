@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="735.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.poznan.put.controller.auction.shoppingHistory.ShoppingHistoryController">
-   <children>
-      <TableView fx:id="table" layoutX="53.0" layoutY="130.0" prefHeight="200.0" prefWidth="616.0">
+<?import javafx.scene.control.TableColumn?><?import javafx.scene.control.TableView?><?import javafx.scene.layout.AnchorPane?>
+<AnchorPane prefHeight="400.0" prefWidth="735.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="pl.poznan.put.controller.auction.shoppingHistory.ShoppingHistoryController">
+    <TableView fx:id="table" layoutX="53.0" layoutY="130.0" prefHeight="200.0" prefWidth="616.0">
         <columns>
-          <TableColumn fx:id="auctionColumn" prefWidth="99.0" text="auction name" />
-          <TableColumn fx:id="itemColumn" minWidth="0.0" prefWidth="140.0" text="item name" />
+            <TableColumn fx:id="auctionColumn" prefWidth="99.0" text="auction name" />
+            <TableColumn fx:id="itemColumn" minWidth="0.0" prefWidth="140.0" text="item name" />
             <TableColumn fx:id="destinationColumn" prefWidth="160.0" text="destination" />
             <TableColumn fx:id="priceColumn" prefWidth="104.0" text="price" />
             <TableColumn fx:id="sellerColumn" prefWidth="112.0" text="seller" />
         </columns>
-      </TableView>
-   </children>
+    </TableView>
 </AnchorPane>

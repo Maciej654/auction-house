@@ -192,6 +192,7 @@ public abstract class UserCrudController extends AbstractValidatedController {
     @FXML
     protected void initialize() {
         super.initialize();
+        log.info("initialize");
 
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         birthdayDatePicker.setConverter(new UserCrudController.SimpleDateConverter(formatter));

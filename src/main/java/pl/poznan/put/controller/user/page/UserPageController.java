@@ -74,14 +74,14 @@ public class UserPageController {
 
     private void setType(Type type) {
         switch (type) {
-            case PUBLIC:
+            case PUBLIC -> {
                 privateOptionsVBox.setVisible(false);
                 privateOptionsVBox.setPrefWidth(0.0);
-                break;
-            case PRIVATE:
+            }
+            case PRIVATE -> {
                 privateOptionsVBox.setVisible(true);
                 privateOptionsVBox.setPrefWidth(VBox.USE_COMPUTED_SIZE);
-                break;
+            }
         }
     }
 
@@ -94,6 +94,8 @@ public class UserPageController {
 
     @FXML
     private void initialize() {
+        log.info("initialize");
+
         HBox.setHgrow(spacePane, Priority.ALWAYS);
 
         auctionPredicateProperty.addListener((observable, oldValue, newValue) -> {

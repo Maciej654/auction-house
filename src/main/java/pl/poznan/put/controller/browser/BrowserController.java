@@ -11,6 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
@@ -24,6 +25,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class BrowserController {
     @FXML
     private TextField auction_name;
@@ -110,6 +112,8 @@ public class BrowserController {
 
     @FXML
     private void initialize() {
+        log.info("initialize");
+
         category_column.setCellValueFactory(new PropertyValueFactory<>("category"));
         seller_column.setCellValueFactory(new PropertyValueFactory<>("seller"));
         price_column.setCellValueFactory(new PropertyValueFactory<>("price"));

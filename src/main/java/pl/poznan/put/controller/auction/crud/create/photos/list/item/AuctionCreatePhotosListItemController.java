@@ -32,6 +32,8 @@ public class AuctionCreatePhotosListItemController {
 
     @FXML
     private void initialize() {
+        log.info("initialize");
+
         fileProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {
                 log.info("delete {}", label.getText());
