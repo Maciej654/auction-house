@@ -24,6 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.PropertyValidator;
 import pl.poznan.put.logic.common.validation.alpha.AlphaPropertyValidator;
+import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.logic.user.exception.EmailAlreadyInUseException;
 import pl.poznan.put.logic.user.validation.UserBirthdayValidator;
 import pl.poznan.put.logic.user.validation.UserConfirmPasswordValidator;
@@ -258,6 +259,7 @@ public abstract class UserCrudController extends AbstractValidatedController {
                 crudOperation(user);
                 transaction.commit();
                 log.info("commit success");
+                CurrentUser.setLoggedInUser(user);
                 Platform.runLater(() -> operationCallback.accept(user));
             }
             catch (EmailAlreadyInUseException e) {

@@ -82,7 +82,7 @@
         <Tab closable="false" text="History">
             <fx:include fx:id="auctionHistory" source="history/AuctionHistoryView.fxml" />
         </Tab>
-        <Tab closable="false" text="Bid">
+        <Tab fx:id="auctionBidTab" closable="false" text="Bid">
             <fx:include fx:id="auctionBid" source="bid/AuctionBidView.fxml" />
         </Tab>
         <Tab closable="false" text="WatchList">

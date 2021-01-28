@@ -1,30 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?><?import javafx.scene.control.Label?><?import javafx.scene.control.TableColumn?><?import javafx.scene.control.TableView?><?import javafx.scene.control.TextField?><?import javafx.scene.layout.AnchorPane?><?import javafx.scene.layout.Pane?>
-<AnchorPane prefHeight="527.0" prefWidth="787.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
-    xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.poznan.put.controller.browser.BrowserController">
-    <children>
-        <Pane disable="true" prefHeight="502.0" prefWidth="755.0" />
-        <Pane prefHeight="527.0" prefWidth="787.0">
-            <children>
-                <TableView fx:id="table" layoutX="33.0" layoutY="179.0" prefHeight="297.0" prefWidth="723.0">
-                    <columns>
-                        <TableColumn fx:id="auction_name_column" prefWidth="164.0" text="auction name" />
-                        <TableColumn fx:id="item_name_column" prefWidth="114.0" text="item name" />
-                        <TableColumn fx:id="end_date_column" prefWidth="91.0" text="end date" />
-                        <TableColumn fx:id="price_column" prefWidth="79.0" text="price" />
-                        <TableColumn fx:id="seller_column" prefWidth="112.0" text="seller" />
-                        <TableColumn fx:id="category_column" prefWidth="84.0" text="category" />
-                        <TableColumn fx:id="details_column" prefWidth="78.0" text="details" />
-                    </columns>
-                </TableView>
-                <TextField fx:id="auction_name" layoutX="33.0" layoutY="107.0" />
-                <TextField fx:id="auction_type" layoutX="294.0" layoutY="107.0" />
-                <Button fx:id="button1" layoutX="626.0" layoutY="107.0" mnemonicParsing="false" onMouseClicked="#click"
-                    text="Filtruj" />
-                <Label layoutX="69.0" layoutY="74.0" text="Auction Name" />
-                <Label layoutX="333.0" layoutY="74.0" text="Auction Type" />
-            </children>
-        </Pane>
-    </children>
-</AnchorPane>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.poznan.put.controller.browser.BrowserController">
+    <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0">
+        <Button mnemonicParsing="false" onAction="#myProfileButtonClick" text="My Profile" />
+    </ToolBar>
+    <Pane prefHeight="527.0" prefWidth="787.0">
+        <TableView fx:id="table" layoutX="33.0" layoutY="179.0" prefHeight="297.0" prefWidth="723.0">
+            <columns>
+                <TableColumn fx:id="auction_name_column" prefWidth="164.0" text="auction name" />
+                <TableColumn fx:id="item_name_column" prefWidth="114.0" text="item name" />
+                <TableColumn fx:id="end_date_column" prefWidth="91.0" text="end date" />
+                <TableColumn fx:id="price_column" prefWidth="79.0" text="price" />
+                <TableColumn fx:id="seller_column" prefWidth="112.0" text="seller" />
+                <TableColumn fx:id="category_column" prefWidth="84.0" text="category" />
+                <TableColumn fx:id="details_column" prefWidth="78.0" text="details" />
+            </columns>
+        </TableView>
+        <TextField fx:id="auction_name" layoutX="33.0" layoutY="107.0" />
+        <TextField fx:id="auction_type" layoutX="294.0" layoutY="107.0" />
+        <Button layoutX="626.0" layoutY="107.0" mnemonicParsing="false" onMouseClicked="#click" text="Filtruj" />
+        <Label layoutX="69.0" layoutY="74.0" text="Auction Name" />
+        <Label layoutX="333.0" layoutY="74.0" text="Auction Type" />
+    </Pane>
+</VBox>

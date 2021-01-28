@@ -14,8 +14,11 @@ import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
+import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.auction.Auction.Status;
+import pl.poznan.put.model.user.User;
+import pl.poznan.put.util.callback.Callbacks;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
 import javax.persistence.EntityManager;
@@ -60,8 +63,20 @@ public class BrowserController {
     private TableColumn<Data, Button> details_column;
 
     private static final EntityManager em = EntityManagerProvider.getEntityManager();
+
     @Setter
-    Consumer<Auction> showAuctionDetails;
+    private Consumer<Auction> showAuctionDetails;
+
+    @Setter
+    private Consumer<User> ownProfileCallback = Callbacks::noop;
+
+    @FXML
+    private void myProfileButtonClick() {
+        log.info("my profile");
+
+        val user = CurrentUser.getLoggedInUser();
+        ownProfileCallback.accept(user);
+    }
 
     @SuperBuilder
     @lombok.Data
@@ -90,9 +105,9 @@ public class BrowserController {
     private void click() {
         List<Auction> listofAuctions = new ArrayList<>();
         if (em != null) {
-            TypedQuery<Auction> query             = em.createQuery("select auction from Auction auction ",
-                                                                   Auction.class);
-            val                 availableStatuses = Set.of(Status.CREATED, Status.BIDDING);
+            TypedQuery<Auction> query = em.createQuery("select auction from Auction auction ",
+                                                       Auction.class);
+            val availableStatuses = Set.of(Status.CREATED, Status.BIDDING);
             listofAuctions = query.getResultStream()
                                   .filter(auction -> availableStatuses.contains(auction.getStatus()))
                                   .filter(this::filterByName)

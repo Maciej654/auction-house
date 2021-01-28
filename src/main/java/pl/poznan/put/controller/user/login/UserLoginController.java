@@ -17,6 +17,7 @@ import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvi
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 @Slf4j
 public class UserLoginController {
@@ -44,6 +45,9 @@ public class UserLoginController {
         if (em != null) loginQuery = em.createNamedQuery(User.QUERY_CHECK_LOGIN, User.class);
     }
 
+    @Setter
+    private Consumer<User> loginCallback = Callbacks::noop;
+
     @FXML
     private void loginButtonClick() {
         log.info("login");
@@ -69,6 +73,7 @@ public class UserLoginController {
             errorLabel.setText(StringUtils.EMPTY);
             val user = loginQuery.getSingleResult();
             CurrentUser.setLoggedInUser(user);
+            loginCallback.accept(user);
         }
         catch (NoResultException e) {
             errorLabel.setText("Invalid email or password");

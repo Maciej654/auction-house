@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import pl.poznan.put.controller.user.crud.UserCrudController;
 import pl.poznan.put.logic.common.validation.PropertyValidator;
+import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.logic.user.exception.EmailAlreadyInUseException;
 import pl.poznan.put.logic.user.validation.UserCreatePasswordValidator;
 import pl.poznan.put.model.user.User;

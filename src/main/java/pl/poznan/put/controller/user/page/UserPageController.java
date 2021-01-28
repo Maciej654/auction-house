@@ -1,9 +1,7 @@
 package pl.poznan.put.controller.user.page;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleMapProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -36,6 +34,7 @@ import pl.poznan.put.util.view.loader.ViewLoader;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -70,8 +69,6 @@ public class UserPageController {
 
     private final ListProperty<Auction> auctionObservableList =
             new SimpleListProperty<>(FXCollections.observableArrayList());
-
-    private final BooleanProperty privateUserPageProperty = new SimpleBooleanProperty();
 
     private void setType(Type type) {
         switch (type) {
@@ -123,11 +120,6 @@ public class UserPageController {
             }
         });
 
-        privateUserPageProperty.addListener((observable, oldValue, newValue) -> {
-            if (newValue) setType(Type.PRIVATE);
-            else setType(Type.PUBLIC);
-        });
-
         auctionObservableList.addListener((ListChangeListener<Auction>) change -> {
             while (change.next()) {
                 if (change.wasAdded()) change.getAddedSubList().forEach(auction -> {
@@ -153,18 +145,20 @@ public class UserPageController {
                 val auctions = newValue.getAuctions();
                 if (auctions != null) auctionObservableList.setAll(auctions);
                 searchTextField.setText(StringUtils.EMPTY);
-                privateUserPageProperty.set(newValue == CurrentUser.getLoggedInUser());
+                val current     = CurrentUser.getLoggedInUser();
+                val privatePage = Objects.equals(newValue, current);
+                setType(privatePage ? Type.PRIVATE : Type.PUBLIC);
             }
         });
     }
 
     @Setter
-    private Consumer<User> auctionsCallback = Callbacks::noop;
+    private Runnable auctionsCallback = Callbacks::noop;
 
     @FXML
     private void auctionsButtonClick() {
         log.info("auctions");
-        auctionsCallback.accept(userProperty.get());
+        auctionsCallback.run();
     }
 
     @Setter
@@ -187,9 +181,12 @@ public class UserPageController {
         if (user != null) createAuctionCallback.accept(user);
     }
 
+    @Setter
+    private Runnable logoutCallback = Callbacks::noop;
+
     @FXML
     private void logoutButtonClick() {
         log.info("logout");
-        CurrentUser.setLoggedInUser(null);
+        logoutCallback.run();
     }
 }
