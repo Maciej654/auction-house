@@ -68,7 +68,7 @@ public class AuctionHouseApp extends Application {
             Consumer<Auction> thumbnailCallback = auction -> runAuctionDetailsPage(auction, backCallback);
             controller.setThumbnailCallback(thumbnailCallback);
             controller.getUserProperty().set(user);
-            controller.setAuctionsCallback(this::runBrowserPage);
+            controller.setAuctionsCallback(() -> runBrowserPage(user));
             controller.setEditCallback(this::runUserUpdatePage);
             controller.setCreateAuctionCallback(this::runAuctionCreatePage);
             controller.setLogoutCallback(this::runLoginPage);
@@ -106,12 +106,13 @@ public class AuctionHouseApp extends Application {
         });
     }
 
-    private void runBrowserPage() {
+    private void runBrowserPage(User user) {
         log.info("browser page");
         this.runPage(BrowserController.class, controller -> {
-            Runnable          backCallback       = this::runBrowserPage;
+            Runnable          backCallback       = () -> runBrowserPage(user);
             Consumer<Auction> showAuctionDetails = auction -> runAuctionDetailsPage(auction, backCallback);
             controller.setShowAuctionDetails(showAuctionDetails);
+            controller.setBackCallback(() -> runUserPage(user));
             controller.setOwnProfileCallback(this::runUserPage);
         });
     }

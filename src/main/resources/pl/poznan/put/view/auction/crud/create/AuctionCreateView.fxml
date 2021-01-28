@@ -11,7 +11,7 @@
         <Button maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false"
             prefWidth="75.0" text="Back" onAction="#backButtonClick">
             <graphic>
-                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                     <Image url="@/icons/prev-arrow-32.png" />
                 </ImageView>
             </graphic>

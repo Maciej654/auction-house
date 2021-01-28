@@ -4,10 +4,19 @@
 <VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="pl.poznan.put.controller.browser.BrowserController">
     <ToolBar prefHeight="40.0" prefWidth="200.0">
-        <Button mnemonicParsing="false" onAction="#myProfileButtonClick" text="Back">
+        <Button mnemonicParsing="false" onAction="#backButtonClick" text="Back">
             <graphic>
-                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                     <Image url="@/icons/prev-arrow-32.png" />
+                </ImageView>
+            </graphic>
+        </Button>
+        <Pane fx:id="spacePane" />
+        <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#myProfileButtonClick"
+            text="My Profile">
+            <graphic>
+                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/icons/user-32.png" />
                 </ImageView>
             </graphic>
         </Button>

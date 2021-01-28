@@ -28,9 +28,7 @@ import pl.poznan.put.controller.auction.thumbnail.AuctionThumbnailListChangeList
 import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.user.User;
-import pl.poznan.put.model.user.User.FollowAction;
 import pl.poznan.put.util.callback.Callbacks;
-import pl.poznan.put.util.converter.EnumConverterUtils;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -68,7 +66,7 @@ public class UserPageController {
 
     @FXML
     private void followButtonClick() {
-        val action = EnumConverterUtils.fromString(followButton.getText(), FollowAction.class);
+//        val action = EnumConverterUtils.fromString(followButton.getText(), FollowAction.class);
 
     }
 
@@ -141,8 +139,14 @@ public class UserPageController {
         userProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 userLabel.setText(newValue.getFullName());
-                val auctions = newValue.getAuctions();
-                if (auctions != null) auctionObservableList.setAll(auctions);
+                newValue.refreshAuctions();
+                val auctions = newValue.getAuctions()
+                                       .stream()
+                                       .filter(Auction::isActive)
+                                       .sorted(Auction.LATEST_FIRST)
+                                       .collect(Collectors.toList());
+                log.info("found {} auctions", auctions.size());
+                auctionObservableList.setAll(auctions);
                 searchTextField.setText(StringUtils.EMPTY);
                 val current     = CurrentUser.getLoggedInUser();
                 val privatePage = Objects.equals(newValue, current);

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.val;
 import pl.poznan.put.model.ad.personal.PersonalAd;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.auction.log.AuctionLog;
@@ -12,6 +13,7 @@ import pl.poznan.put.model.follower.Follower;
 import pl.poznan.put.model.rating.Rating;
 import pl.poznan.put.model.shopping.cart.item.ShoppingCartItem;
 import pl.poznan.put.model.watch.list.item.WatchListItem;
+import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -83,8 +85,15 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "reviewer")
     private Collection<Rating> sentRatings;
 
-    @OneToMany(mappedBy = "seller")
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
     private Collection<Auction> auctions;
+
+    public void refreshAuctions() {
+        val em    = EntityManagerProvider.getEntityManager();
+        val query = em.createNamedQuery(Auction.QUERY_FIND_ALL_BY_SELLER, Auction.class);
+        query.setParameter(Auction.PARAM_SELLER, this);
+        auctions = query.getResultList();
+    }
 
     public enum FollowAction {
         FOLLOW,

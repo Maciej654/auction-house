@@ -12,6 +12,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,6 +46,9 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class BrowserController {
+    @FXML
+    private Pane spacePane;
+
     @FXML
     private VBox suggestedAuctionsVBox;
 
@@ -90,6 +96,16 @@ public class BrowserController {
 
         val user = CurrentUser.getLoggedInUser();
         ownProfileCallback.accept(user);
+    }
+
+    @Setter
+    private Runnable backCallback = Callbacks::noop;
+
+    @FXML
+    private void backButtonClick() {
+        log.info("back");
+
+        backCallback.run();
     }
 
     @SuperBuilder
@@ -147,6 +163,9 @@ public class BrowserController {
     @FXML
     private void initialize() {
         log.info("initialize");
+
+        HBox.setHgrow(spacePane, Priority.ALWAYS);
+
         category_column.setCellValueFactory(new PropertyValueFactory<>("category"));
         seller_column.setCellValueFactory(new PropertyValueFactory<>("seller"));
         price_column.setCellValueFactory(new PropertyValueFactory<>("price"));

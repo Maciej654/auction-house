@@ -37,6 +37,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,17 +52,23 @@ import java.util.Objects;
 @DiscriminatorColumn(name = "DISCRIMINATOR")
 @NamedQuery(
         name = Auction.QUERY_FIND_BY_UNIQUE_KEY,
-        query = "select count(auction) from Auction auction where auctionName = :" + Auction.PARAM_AUCTION_NAME + " and " +
+        query = "select count(auction) from Auction auction where auctionName = :" + Auction.PARAM_AUCTION_NAME + " " +
+                "and " +
                 "itemName = :" + Auction.PARAM_ITEM_NAME + " and seller = :" + Auction.PARAM_SELLER
+)
+@NamedQuery(
+        name = Auction.QUERY_FIND_ALL_BY_SELLER,
+        query = "select auction from Auction auction where seller = :" + Auction.PARAM_SELLER
 )
 public abstract class Auction implements Serializable {
     public static final String QUERY_FIND_BY_UNIQUE_KEY = "Auction.QUERY_FIND_BY_UNIQUE_KEY";
+    public static final String QUERY_FIND_ALL_BY_SELLER = "Auction.QUERY_FIND_ALL_BY_SELLER";
 
     public static final String PARAM_AUCTION_NAME = "auctionName";
+    public static final String PARAM_ITEM_NAME    = "itemName";
+    public static final String PARAM_SELLER       = "seller";
 
-    public static final String PARAM_ITEM_NAME = "itemName";
-
-    public static final String PARAM_SELLER = "seller";
+    public static final Comparator<Auction> LATEST_FIRST = Comparator.comparing(Auction::getCreationDate).reversed();
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUCTIONS_SEQ")
@@ -126,6 +133,10 @@ public abstract class Auction implements Serializable {
         IN_SHOPPING_CART,
         FINISHED,
         CANCELLED
+    }
+
+    public boolean isActive() {
+        return status == Status.CREATED || status == Status.BIDDING;
     }
 
     public static List<Auction> getAuctions() {
