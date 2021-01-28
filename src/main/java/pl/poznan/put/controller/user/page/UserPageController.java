@@ -184,16 +184,16 @@ public class UserPageController {
             if (newValue != null) {
                 userLabel.setText(newValue.getFullName());
                 newValue.refreshAuctions();
+                val current     = CurrentUser.getLoggedInUser();
+                val privatePage = Objects.equals(newValue, current);
                 val auctions = newValue.getAuctions()
                                        .stream()
-                                       .filter(Auction::isActive)
+                                       .filter(auction -> privatePage || auction.isActive())
                                        .sorted(Auction.LATEST_FIRST)
                                        .collect(Collectors.toList());
                 log.info("found {} auctions", auctions.size());
                 auctionObservableList.setAll(auctions);
                 searchTextField.setText(StringUtils.EMPTY);
-                val current     = CurrentUser.getLoggedInUser();
-                val privatePage = Objects.equals(newValue, current);
                 setOptions(privatePage ? Options.PRIVATE : Options.PUBLIC);
             }
         });

@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import pl.poznan.put.controller.auction.details.bid.AuctionBidController;
 import pl.poznan.put.controller.auction.details.history.AuctionHistoryController;
+import pl.poznan.put.controller.auction.details.management.AuctionManagementController;
 import pl.poznan.put.controller.auction.details.photos.AuctionPhotosController;
 import pl.poznan.put.controller.auction.details.specifics.AuctionDetailsSpecificsController;
 import pl.poznan.put.controller.auction.details.watchlist.AuctionWatchListController;
@@ -28,7 +29,7 @@ import java.util.function.Consumer;
 @Slf4j
 public class AuctionDetailsController {
     @FXML
-    private Tab auctionAdsTab;
+    private Tab auctionManagementTab;
 
     @FXML
     private Tab auctionWatchListTab;
@@ -56,6 +57,9 @@ public class AuctionDetailsController {
 
     @FXML
     private WebView descriptionWebView;
+
+    @FXML
+    private AuctionManagementController auctionManagementController;
 
     @FXML
     private AuctionWatchListController auctionWatchListController;
@@ -90,7 +94,7 @@ public class AuctionDetailsController {
                 tabs.remove(auctionBidTab);
                 tabs.remove(auctionWatchListTab);
             }
-            case VIEWER -> tabs.remove(auctionAdsTab);
+            case VIEWER -> tabs.remove(auctionManagementTab);
         }
     }
 
@@ -126,6 +130,8 @@ public class AuctionDetailsController {
         });
 
         auctionDetailsSpecificsController.getAuctionProperty().bind(auctionProperty);
+
+        auctionManagementController.getAuctionProperty().bind(auctionProperty);
 
         userHyperlink.setVisited(true);
     }

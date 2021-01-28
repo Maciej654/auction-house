@@ -114,7 +114,7 @@ public abstract class Auction implements Serializable {
         logs.add(log);
     }
 
-    @OneToOne(mappedBy = "auction", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "auction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Ad ad;
 
     @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL)

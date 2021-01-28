@@ -77,6 +77,8 @@
         <Tab fx:id="auctionWatchListTab" closable="false" text="WatchList">
             <fx:include fx:id="auctionWatchList" source="watchlist/AuctionWatchListView.fxml" />
         </Tab>
-        <Tab fx:id="auctionAdsTab" text="Ads" />
+        <Tab fx:id="auctionManagementTab" text="Management">
+            <fx:include fx:id="auctionManagement" source="management/AuctionManagementView.fxml" />
+        </Tab>
     </TabPane>
 </VBox>
