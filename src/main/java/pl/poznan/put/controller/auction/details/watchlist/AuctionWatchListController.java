@@ -9,6 +9,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import lombok.Getter;
+import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.model.watch.list.item.WatchListItem;
@@ -38,9 +39,6 @@ public class AuctionWatchListController {
     @Getter
     private final ObjectProperty<Auction> auctionProperty = new SimpleObjectProperty<>();
 
-    @Getter
-    private final ObjectProperty<User> userProperty = new SimpleObjectProperty<>();
-
     private static final EntityManager em = EntityManagerProvider.getEntityManager();
 
     @FXML
@@ -50,7 +48,7 @@ public class AuctionWatchListController {
     private void setUp(){
         if(em == null) { return; }
         Auction auction = auctionProperty.get();
-        User user = userProperty.get();
+        User user = CurrentUser.getLoggedInUser();
 
         watchListChoiceBox.setItems(FXCollections.observableArrayList(viableOptions()));
         watchListChoiceBox.getSelectionModel().selectFirst();
@@ -90,7 +88,7 @@ public class AuctionWatchListController {
             return new ArrayList<>();
         }
         Auction auction = auctionProperty.get();
-        User user = userProperty.get();
+        User user = CurrentUser.getLoggedInUser();
 
         var listsOfUserQuery = em.createQuery("select distinct list.name from WatchListItem list where list.follower = :user",String.class);
         listsOfUserQuery.setParameter("user", user);
@@ -108,7 +106,7 @@ public class AuctionWatchListController {
     private void addDeliveryPreference(String name){
         if(em == null) { return; }
         Auction auction = auctionProperty.get();
-        User user = userProperty.get();
+        User user = CurrentUser.getLoggedInUser();
 
         try{
             WatchListItem watchListItem = new WatchListItem(auction, user, name);

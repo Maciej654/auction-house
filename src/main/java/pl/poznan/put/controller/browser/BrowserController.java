@@ -98,9 +98,6 @@ public class BrowserController {
         addSuggestedAuctions();
     }
 
-    @Getter
-    private final ObjectProperty<User> userProperty = new SimpleObjectProperty<>();
-
     @Setter
     private Consumer<User> ownProfileCallback = Callbacks::noop;
 
@@ -184,7 +181,7 @@ public class BrowserController {
         if (em != null) {
             var query = em.createQuery("select item from WatchListItem item where  item.follower = :user",
                                        WatchListItem.class);
-            query.setParameter("user", userProperty.getValue());
+            query.setParameter("user", CurrentUser.getLoggedInUser());
             itemsOnAnyWatchList = query.getResultList();
         }
     }
@@ -196,7 +193,6 @@ public class BrowserController {
 
         HBox.setHgrow(spacePane, Priority.ALWAYS);
 
-        userProperty.addListener((observable, oldValue, newValue) -> setUpChoiceBox());
         category_column.setCellValueFactory(new PropertyValueFactory<>("category"));
         seller_column.setCellValueFactory(new PropertyValueFactory<>("seller"));
         price_column.setCellValueFactory(new PropertyValueFactory<>("price"));
@@ -204,6 +200,7 @@ public class BrowserController {
         item_name_column.setCellValueFactory(new PropertyValueFactory<>("itemName"));
         auction_name_column.setCellValueFactory(new PropertyValueFactory<>("AuctionName"));
         details_column.setCellValueFactory(new PropertyValueFactory<>("details"));
+        setUpChoiceBox();
         click();
 
         suggestedAuctionsCache.addListener(new AuctionThumbnailCacheChangeListener(suggestedAuctionsVBox.getChildren()));
@@ -245,7 +242,7 @@ public class BrowserController {
         if (em == null) { return; }
         var query = em.createQuery("select distinct item.name from WatchListItem item where item.follower = :user",
                                    String.class);
-        query.setParameter("user", userProperty.get());
+        query.setParameter("user", CurrentUser.getLoggedInUser());
         List<String>           resultList = query.getResultList();
         ObservableList<String> obs        = FXCollections.observableArrayList((String) null);
         obs.addAll(resultList);
@@ -277,7 +274,7 @@ public class BrowserController {
             long count = itemsOnAnyWatchList.stream()
                                             .filter(i -> i.getName().equals(watchListChoiceBox.getValue()) &&
                                                          i.getAuction().equals(auction) &&
-                                                         i.getFollower().equals(userProperty.get())).count();
+                                                         i.getFollower().equals(CurrentUser.getLoggedInUser())).count();
             return count > 0;
         }
         return false;
