@@ -1,20 +1,29 @@
 package pl.poznan.put.controller.browser;
 
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleMapProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
+import pl.poznan.put.controller.auction.thumbnail.AuctionThumbnailCacheChangeListener;
+import pl.poznan.put.controller.auction.thumbnail.AuctionThumbnailListChangeListener;
 import pl.poznan.put.logic.user.current.CurrentUser;
+import pl.poznan.put.model.ad.Ad;
+import pl.poznan.put.model.ad.personal.PersonalAd;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.auction.Auction.Status;
 import pl.poznan.put.model.user.User;
@@ -25,6 +34,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -34,7 +44,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BrowserController {
     @FXML
+    private VBox suggestedAuctionsVBox;
+
+    @FXML
     private TextField auction_name;
+
     @FXML
     private TextField auction_type;
 
@@ -133,7 +147,6 @@ public class BrowserController {
     @FXML
     private void initialize() {
         log.info("initialize");
-
         category_column.setCellValueFactory(new PropertyValueFactory<>("category"));
         seller_column.setCellValueFactory(new PropertyValueFactory<>("seller"));
         price_column.setCellValueFactory(new PropertyValueFactory<>("price"));
@@ -142,6 +155,38 @@ public class BrowserController {
         auction_name_column.setCellValueFactory(new PropertyValueFactory<>("AuctionName"));
         details_column.setCellValueFactory(new PropertyValueFactory<>("details"));
         click();
+
+        suggestedAuctionsList.addListener(new AuctionThumbnailListChangeListener(showAuctionDetails,
+                                                                                 suggestedAuctionsCache));
+        suggestedAuctionsCache.addListener(new AuctionThumbnailCacheChangeListener(suggestedAuctionsVBox.getChildren()));
+        addSuggestedAuctions();
+    }
+
+    private final ObservableMap<Auction, Parent> suggestedAuctionsCache =
+            new SimpleMapProperty<>(FXCollections.observableHashMap());
+
+    private final ObservableList<Auction> suggestedAuctionsList =
+            new SimpleListProperty<>(FXCollections.observableArrayList());
+
+    private void addSuggestedAuctions() {
+        val user = CurrentUser.getLoggedInUser();
+        if (user == null) return;
+        val suggested = user.getAds()
+                            .stream()
+                            .limit(3)
+                            .map(PersonalAd::getAuction)
+                            .collect(Collectors.toList());
+        Collections.shuffle(suggested);
+        if (suggested.size() < 3 && em != null) {
+            val query = em.createNamedQuery(Ad.QUERY_FIND_ALL, Ad.class);
+            val ads   = query.getResultList();
+            Collections.shuffle(ads);
+            ads.stream()
+               .map(Ad::getAuction)
+               .limit(3 - suggested.size())
+               .forEach(suggested::add);
+        }
+        suggestedAuctionsList.setAll(suggested);
     }
 
     private boolean filterByName(Auction auction) {
@@ -153,10 +198,10 @@ public class BrowserController {
     }
 
     private boolean filterByType(Auction auction) {
-        String type = auction_type.getCharacters().toString().toUpperCase();
-        if (StringUtils.isEmpty(type)) return true;
+        String options = auction_type.getCharacters().toString().toUpperCase();
+        if (StringUtils.isEmpty(options)) return true;
         String auctionType = auction.getCategory().toUpperCase();
-        return Objects.equals(type, auctionType);
+        return Objects.equals(options, auctionType);
     }
 }
 

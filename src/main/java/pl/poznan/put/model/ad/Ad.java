@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -18,7 +19,13 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@NamedQuery(
+        name = Ad.QUERY_FIND_ALL,
+        query = "select ad from Ad ad"
+)
 public class Ad implements Serializable {
+    public static final String QUERY_FIND_ALL = "Ad.QUERY_FIND_ALL";
+
     @Id
     @JoinColumn(name = "AUCTION", referencedColumnName = "AUCTION_ID")
     @OneToOne

@@ -88,6 +88,16 @@ public class AuctionCreateController extends AbstractValidatedController {
     @Getter
     private final ObjectProperty<User> userProperty = new SimpleObjectProperty<>();
 
+    @Setter
+    private Runnable backCallback = Callbacks::noop;
+
+    @FXML
+    private void backButtonClick() {
+        log.info("back");
+
+        backCallback.run();
+    }
+
     @Override
     @FXML
     protected void initialize() {

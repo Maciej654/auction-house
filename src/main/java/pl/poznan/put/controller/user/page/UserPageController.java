@@ -1,16 +1,15 @@
 package pl.poznan.put.controller.user.page;
 
-import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleMapProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -24,12 +23,14 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
-import pl.poznan.put.controller.auction.thumbnail.AuctionThumbnailController;
+import pl.poznan.put.controller.auction.thumbnail.AuctionThumbnailCacheChangeListener;
+import pl.poznan.put.controller.auction.thumbnail.AuctionThumbnailListChangeListener;
 import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.user.User;
+import pl.poznan.put.model.user.User.FollowAction;
 import pl.poznan.put.util.callback.Callbacks;
-import pl.poznan.put.util.view.loader.ViewLoader;
+import pl.poznan.put.util.converter.EnumConverterUtils;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -41,10 +42,11 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class UserPageController {
-    public enum Type {
-        PUBLIC,
-        PRIVATE
-    }
+    @FXML
+    private Button followButton;
+
+    @FXML
+    private VBox publicOptionsVBox;
 
     @FXML
     private FlowPane thumbnailsFlowPane;
@@ -64,27 +66,41 @@ public class UserPageController {
     @FXML
     private Label userLabel;
 
+    @FXML
+    private void followButtonClick() {
+        val action = EnumConverterUtils.fromString(followButton.getText(), FollowAction.class);
+
+    }
+
+    private enum Options {
+        PUBLIC,
+        PRIVATE
+    }
+
     @Getter
     private final ObjectProperty<User> userProperty = new SimpleObjectProperty<>();
 
-    private final ListProperty<Auction> auctionObservableList =
+    private final ObservableList<Auction> auctionObservableList =
             new SimpleListProperty<>(FXCollections.observableArrayList());
 
-    private void setType(Type type) {
-        switch (type) {
+    private void setOptions(Options options) {
+        switch (options) {
             case PUBLIC -> {
                 privateOptionsVBox.setVisible(false);
-                privateOptionsVBox.setPrefWidth(0.0);
+                publicOptionsVBox.setVisible(true);
+                publicOptionsVBox.toFront();
             }
             case PRIVATE -> {
+                publicOptionsVBox.setVisible(false);
                 privateOptionsVBox.setVisible(true);
-                privateOptionsVBox.setPrefWidth(VBox.USE_COMPUTED_SIZE);
+                privateOptionsVBox.toFront();
             }
         }
     }
 
-    @Setter
-    private Consumer<Auction> thumbnailCallback = Callbacks::noop;
+    public void setThumbnailCallback(Consumer<Auction> callback) {
+        auctionObservableList.addListener(new AuctionThumbnailListChangeListener(callback, thumbnailCache));
+    }
 
     private final ObservableMap<Auction, Parent> thumbnailCache =
             new SimpleMapProperty<>(FXCollections.observableHashMap());
@@ -120,24 +136,7 @@ public class UserPageController {
             }
         });
 
-        auctionObservableList.addListener((ListChangeListener<Auction>) change -> {
-            while (change.next()) {
-                if (change.wasAdded()) change.getAddedSubList().forEach(auction -> {
-                    val thumbnail = ViewLoader.getParent(AuctionThumbnailController.class, controller -> {
-                        controller.setClickCallback(thumbnailCallback);
-                        controller.getAuctionProperty().set(auction);
-                    });
-                    if (thumbnail != null) thumbnailCache.put(auction, thumbnail);
-                });
-                if (change.wasRemoved()) change.getRemoved().forEach(thumbnailCache::remove);
-            }
-        });
-
-        thumbnailCache.addListener((MapChangeListener<? super Auction, ? super Parent>) change -> {
-            val flow = thumbnailsFlowPane.getChildren();
-            if (change.wasAdded()) flow.add(change.getValueAdded());
-            if (change.wasRemoved()) flow.remove(change.getValueRemoved());
-        });
+        thumbnailCache.addListener(new AuctionThumbnailCacheChangeListener(thumbnailsFlowPane.getChildren()));
 
         userProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -147,7 +146,7 @@ public class UserPageController {
                 searchTextField.setText(StringUtils.EMPTY);
                 val current     = CurrentUser.getLoggedInUser();
                 val privatePage = Objects.equals(newValue, current);
-                setType(privatePage ? Type.PRIVATE : Type.PUBLIC);
+                setOptions(privatePage ? Options.PRIVATE : Options.PUBLIC);
             }
         });
     }

@@ -2,6 +2,9 @@ package pl.poznan.put;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -29,6 +32,12 @@ import java.util.function.Consumer;
 
 @Slf4j
 public class AuctionHouseApp extends Application {
+    private final static BooleanProperty runningProperty = new SimpleBooleanProperty();
+
+    public static ReadOnlyBooleanProperty isRunningProperty() {
+        return runningProperty;
+    }
+
     private Stage primaryStage;
 
     private <T> void runPage(Class<T> clazz, Consumer<T> setup) {
@@ -46,6 +55,7 @@ public class AuctionHouseApp extends Application {
             controller.getUserProperty().set(user);
             Runnable          backCallback          = () -> runUserPage(user);
             Consumer<Auction> createAuctionCallback = auction -> runAuctionDetailsPage(auction, backCallback);
+            controller.setBackCallback(backCallback);
             controller.setCreateAuctionCallback(createAuctionCallback);
         });
     }
@@ -143,6 +153,7 @@ public class AuctionHouseApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         log.info("start");
+        runningProperty.set(true);
 
         primaryStage.setTitle("Auction House");
         primaryStage.getIcons().add(new Image("/icons/auction-32.png"));
@@ -150,5 +161,13 @@ public class AuctionHouseApp extends Application {
         this.runLoginPage();
 
         primaryStage.show();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        log.info("stop");
+
+        runningProperty.set(false);
     }
 }

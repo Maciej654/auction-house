@@ -86,6 +86,11 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "seller")
     private Collection<Auction> auctions;
 
+    public enum FollowAction {
+        FOLLOW,
+        UNFOLLOW
+    }
+
     public String getFullName() {
         return String.format("%s %s", firstName, lastName);
     }
