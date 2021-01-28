@@ -15,7 +15,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.Setter;
@@ -265,13 +267,14 @@ public class BrowserController {
     }
 
     private boolean filterByWatchList(Auction auction) {
-        if(watchListChoiceBox.getValue() == null){
+        if (watchListChoiceBox.getValue() == null) {
             return true;
-        }else if(em != null){
+        }
+        else if (em != null) {
             long count = itemsOnAnyWatchList.stream()
-                    .filter(i -> i.getName().equals(watchListChoiceBox.getValue()) &&
-                            i.getAuction().equals(auction) &&
-                            i.getFollower().equals(userProperty.get())).count();
+                                            .filter(i -> i.getName().equals(watchListChoiceBox.getValue()) &&
+                                                         i.getAuction().equals(auction) &&
+                                                         i.getFollower().equals(userProperty.get())).count();
             return count > 0;
         }
         return false;
