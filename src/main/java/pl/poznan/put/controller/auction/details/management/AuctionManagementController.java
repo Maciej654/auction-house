@@ -47,7 +47,7 @@ public class AuctionManagementController {
     }
 
     @FXML
-    private void finalizeButtonClick() {
+    private void cancelButtonClick() {
         log.info("cancel");
 
         val auction = auctionProperty.get();
@@ -67,6 +67,7 @@ public class AuctionManagementController {
         }
 
         auction.setStatus(Status.CANCELLED);
+        auction.setEndDate(LocalDateTime.now());
         val auctionCancelledLog = new AuctionLog(
                 auction,
                 LocalDateTime.now(),
@@ -167,6 +168,7 @@ public class AuctionManagementController {
         }
 
         auction.setStatus(Status.FINISHED);
+        auction.setEndDate(LocalDateTime.now());
         val auctionFinishedLog = new AuctionLog(
                 auction,
                 LocalDateTime.now(),
