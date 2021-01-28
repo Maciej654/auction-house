@@ -41,13 +41,13 @@ public class AuctionCreateTask extends TimerTask {
             // do nothing
         }
 
-        val auctionCreated = new AuctionLog(
+        val auctionCreatedLog = new AuctionLog(
                 auction,
                 auction.getCreationDate(),
                 "Auction created",
                 auction.getSeller()
         );
-        auction.addLog(auctionCreated);
+        auction.addLog(auctionCreatedLog);
 
         val transaction = em.getTransaction();
         transaction.begin();

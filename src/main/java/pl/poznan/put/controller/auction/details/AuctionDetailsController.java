@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.web.WebView;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,8 +16,8 @@ import pl.poznan.put.controller.auction.details.bid.AuctionBidController;
 import pl.poznan.put.controller.auction.details.history.AuctionHistoryController;
 import pl.poznan.put.controller.auction.details.photos.AuctionPhotosController;
 import pl.poznan.put.controller.auction.details.specifics.AuctionDetailsSpecificsController;
-import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.controller.auction.details.watchlist.AuctionWatchListController;
+import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.util.callback.Callbacks;
@@ -26,6 +27,12 @@ import java.util.function.Consumer;
 
 @Slf4j
 public class AuctionDetailsController {
+    @FXML
+    private Tab auctionWatchListTab;
+
+    @FXML
+    private TabPane auctionTabPane;
+
     @FXML
     private Tab auctionBidTab;
 
@@ -68,6 +75,24 @@ public class AuctionDetailsController {
     @Getter
     private final ObjectProperty<Auction> auctionProperty = new SimpleObjectProperty<>();
 
+    private enum Options {
+        OWNER,
+        VIEWER
+    }
+
+    private void setOptions(Options options) {
+        val tabs = auctionTabPane.getTabs();
+        switch (options) {
+            case OWNER -> {
+                tabs.remove(auctionBidTab);
+                tabs.remove(auctionWatchListTab);
+            }
+            case VIEWER -> {
+
+            }
+        }
+    }
+
     @FXML
     private void initialize() {
         log.info("initialize");
@@ -84,9 +109,7 @@ public class AuctionDetailsController {
 
         auctionProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                val seller  = newValue.getSeller();
-                val current = CurrentUser.getLoggedInUser();
-                auctionBidTab.setDisable(Objects.equals(seller, current));
+                val seller = newValue.getSeller();
                 userHyperlink.setText(seller.getFullName());
                 auctionNameLabel.setText(newValue.getAuctionName());
                 itemNameLabel.setText(newValue.getItemName());
@@ -94,6 +117,10 @@ public class AuctionDetailsController {
                 auctionEndLabel.setText(newValue.getEndDate().toString());
                 auctionPhotosController.setPictures(newValue.getPictures());
                 descriptionWebView.getEngine().loadContent(newValue.getItemDescription(), "text/html");
+
+                val current = CurrentUser.getLoggedInUser();
+                val owner   = Objects.equals(seller, current);
+                setOptions(owner ? Options.OWNER : Options.VIEWER);
             }
         });
 

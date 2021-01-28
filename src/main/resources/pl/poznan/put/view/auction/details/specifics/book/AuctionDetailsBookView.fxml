@@ -5,7 +5,6 @@
     fx:controller="pl.poznan.put.controller.auction.details.specifics.book.AuctionDetailsBookController">
     <columnConstraints>
         <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="200.0" />
-        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="200.0" />
         <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="200.0" />
     </columnConstraints>
     <rowConstraints>
