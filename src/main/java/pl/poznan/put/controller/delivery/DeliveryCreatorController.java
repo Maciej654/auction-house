@@ -3,19 +3,25 @@ package pl.poznan.put.controller.delivery;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import pl.poznan.put.logic.common.validation.empty.AbstractNotEmptyPropertyValidator;
+import lombok.extern.slf4j.Slf4j;
 import pl.poznan.put.model.delivery.preference.DeliveryPreference;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
 import javax.persistence.EntityManager;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class DeliveryCreatorController {
     @FXML
     public Button okButton;
@@ -40,7 +46,7 @@ public class DeliveryCreatorController {
 
     @lombok.Data
     @AllArgsConstructor
-    public static class Data{
+    public static class Data {
         private String address;
         private Button button;
     }
@@ -56,11 +62,12 @@ public class DeliveryCreatorController {
             this.setOnAction(a -> deleteAuction());
         }
 
-        private void deleteAuction(){
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "are you sure you want to delete this", ButtonType.YES, ButtonType.NO);
+        private void deleteAuction() {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "are you sure you want to delete this",
+                                    ButtonType.YES, ButtonType.NO);
             alert.showAndWait();
             if (alert.getResult() == ButtonType.NO) { return; }
-            if(em != null){
+            if (em != null) {
                 var transaction = em.getTransaction();
                 transaction.begin();
                 em.remove(em.contains(deliveryPreference) ? deliveryPreference : em.merge(deliveryPreference));
@@ -72,25 +79,28 @@ public class DeliveryCreatorController {
 
     @FXML
     private void initialize() {
+        log.info("initialize");
+
         addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
         buttonColumn.setCellValueFactory(new PropertyValueFactory<>("button"));
     }
 
-    public void setup(){
+    public void setup() {
         refreshView();
-        if(em != null){
+        if (em != null) {
             user = em.find(User.class, "hercogmaciej@gmail.com"); //toDo connect with other views
         }
 
     }
 
     private void refreshView() {
-        if(em != null){
+        if (em != null) {
             em.clear();
-            var query = em.createQuery("select dp from DeliveryPreference dp where dp.user = user", DeliveryPreference.class);
+            var query = em.createQuery("select dp from DeliveryPreference dp where dp.user = user",
+                                       DeliveryPreference.class);
             var addresses = query.getResultStream()
-                    .map(dp -> new Data(dp.getAddress(), new DeleteButton(dp)))
-                    .collect(Collectors.toList());
+                                 .map(dp -> new Data(dp.getAddress(), new DeleteButton(dp)))
+                                 .collect(Collectors.toList());
             var FXAddresses = FXCollections.observableArrayList(addresses);
             table.setItems(FXAddresses);
         }
@@ -99,38 +109,40 @@ public class DeliveryCreatorController {
     }
 
 
-    private boolean validate(String address){
-        if(em == null){
+    private boolean validate(String address) {
+        if (em == null) {
             return false;
         }
         em.clear();
-        var query = em.createQuery("select dp from DeliveryPreference dp where dp.user = :user and dp.address = :address",DeliveryPreference.class);
+        var query = em.createQuery("select dp from DeliveryPreference dp where dp.user = :user and dp.address = " +
+                                   ":address", DeliveryPreference.class);
         query.setParameter("user", user);
         query.setParameter("address", address);
         int size = query.getResultList().size();
-        if(size > 0){
+        if (size > 0) {
             errorLabel.setText("This address already exists");
             return false;
         }
-        if(address == null || address.length() == 0){
+        if (address == null || address.length() == 0) {
             errorLabel.setText("The field cannot be empty");
             return false;
         }
         return true;
     }
+
     @FXML
     public void okButtonPressed(ActionEvent actionEvent) {
-        if(em == null){
+        if (em == null) {
             return;
         }
         String address = deliveryAddressEntry.getText();
 
-        if(!validate(address)){
+        if (!validate(address)) {
             return;
         }
 
-        DeliveryPreference dp = new DeliveryPreference(user,address);
-        var transaction = em.getTransaction();
+        DeliveryPreference dp          = new DeliveryPreference(user, address);
+        var                transaction = em.getTransaction();
         transaction.begin();
         em.merge(dp);
         transaction.commit();

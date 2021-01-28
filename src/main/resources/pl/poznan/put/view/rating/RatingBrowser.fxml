@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.poznan.put.controller.rating.RatingBrowser">
-    <children>
-        <Pane layoutX="34.0" layoutY="42.0" prefHeight="316.0" prefWidth="525.0">
-            <children>
-                <TextField fx:id="userEntry" layoutX="28.0" layoutY="51.0" onAction="#userEntered" opacity="0.32" />
-                <Label fx:id="avgLabel" layoutX="315.0" layoutY="55.0" text="average" />
-                <TableView fx:id="tableview" layoutX="17.0" layoutY="102.0" prefHeight="200.0" prefWidth="493.0">
-                    <columns>
-                        <TableColumn fx:id="ratingColumn" prefWidth="75.0" text="rating" />
-                        <TableColumn fx:id="auctionNameColumn" prefWidth="108.0" text="auction_name" />
-                        <TableColumn fx:id="reviewerColumn" prefWidth="71.0" text="reviewer" />
-                        <TableColumn fx:id="commentColumn" prefWidth="153.0" text="comment" />
-                        <TableColumn fx:id="dateColumn" prefWidth="85.0" text="date" />
-                    </columns>
-                </TableView>
-            <Label layoutX="73.0" layoutY="22.0" text="User Name" />
-            </children>
-        </Pane>
-    </children>
+<?import javafx.scene.control.Label?><?import javafx.scene.control.TableColumn?><?import javafx.scene.control.TableView?><?import javafx.scene.control.TextField?><?import javafx.scene.layout.AnchorPane?><?import javafx.scene.layout.Pane?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+    prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="pl.poznan.put.controller.rating.RatingBrowser">
+    <Pane layoutX="34.0" layoutY="42.0" prefHeight="316.0" prefWidth="525.0">
+        <TextField fx:id="userEntry" layoutX="28.0" layoutY="51.0" onAction="#userEntered" opacity="0.32" />
+        <Label fx:id="avgLabel" layoutX="315.0" layoutY="55.0" text="average" />
+        <TableView fx:id="tableview" layoutX="17.0" layoutY="102.0" prefHeight="200.0" prefWidth="493.0">
+            <columns>
+                <TableColumn fx:id="ratingColumn" prefWidth="75.0" text="rating" />
+                <TableColumn fx:id="auctionNameColumn" prefWidth="108.0" text="auction_name" />
+                <TableColumn fx:id="reviewerColumn" prefWidth="71.0" text="reviewer" />
+                <TableColumn fx:id="commentColumn" prefWidth="153.0" text="comment" />
+                <TableColumn fx:id="dateColumn" prefWidth="85.0" text="date" />
+            </columns>
+        </TableView>
+        <Label layoutX="73.0" layoutY="22.0" text="User Name" />
+    </Pane>
 </AnchorPane>

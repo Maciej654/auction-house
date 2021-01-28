@@ -192,6 +192,7 @@ public abstract class UserCrudController extends AbstractValidatedController {
     @FXML
     protected void initialize() {
         super.initialize();
+        log.info("initialize");
 
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         birthdayDatePicker.setConverter(new UserCrudController.SimpleDateConverter(formatter));
@@ -245,15 +246,15 @@ public abstract class UserCrudController extends AbstractValidatedController {
         }
 
         new Thread(() -> {
+            Platform.runLater(() -> {
+                unbindActionButton();
+                actionButton.setDisable(true);
+                actionButton.setCursor(Cursor.WAIT);
+            });
+            val user = getUser();
             val transaction = em.getTransaction();
             transaction.begin();
             try {
-                Platform.runLater(() -> {
-                    unbindActionButton();
-                    actionButton.setDisable(true);
-                    actionButton.setCursor(Cursor.WAIT);
-                });
-                val user = getUser();
                 crudOperation(user);
                 transaction.commit();
                 log.info("commit success");

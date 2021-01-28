@@ -6,13 +6,19 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import pl.poznan.put.model.auction.Auction;
-import pl.poznan.put.model.auction.log.AuctionLog;
 import pl.poznan.put.model.rating.Rating;
 import pl.poznan.put.model.user.User;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.Collection;
 
 @Entity
 @Table(name = "ITEMS_IN_SHOPPING_CARTS")
@@ -31,12 +37,12 @@ public class ShoppingCartItem implements Serializable {
     @ManyToOne
     private User buyer;
 
-    @OneToOne(fetch=FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumns({
-            @JoinColumn(name="auction", referencedColumnName="auction"),
-            @JoinColumn(name="buyer", referencedColumnName="reviewer")
-    })
+                         @JoinColumn(name = "auction", referencedColumnName = "auction"),
+                         @JoinColumn(name = "buyer", referencedColumnName = "reviewer")
+                 })
     private Rating rating;
 
     @Data

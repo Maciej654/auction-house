@@ -11,8 +11,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import pl.poznan.put.model.auction.Auction;
+import pl.poznan.put.model.auction.Auction.Status;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
 import javax.persistence.EntityManager;
@@ -21,9 +24,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class BrowserController {
     @FXML
     private TextField auction_name;
@@ -85,9 +90,11 @@ public class BrowserController {
     private void click() {
         List<Auction> listofAuctions = new ArrayList<>();
         if (em != null) {
-            TypedQuery<Auction> query = em.createQuery("select auction from Auction auction ", Auction.class);
+            TypedQuery<Auction> query             = em.createQuery("select auction from Auction auction ",
+                                                                   Auction.class);
+            val                 availableStatuses = Set.of(Status.CREATED, Status.BIDDING);
             listofAuctions = query.getResultStream()
-                                  .filter(auction -> auction.getStatus().equals(Auction.Status.CREATED))
+                                  .filter(auction -> availableStatuses.contains(auction.getStatus()))
                                   .filter(this::filterByName)
                                   .filter(this::filterByType)
                                   .collect(Collectors.toList());
@@ -110,6 +117,8 @@ public class BrowserController {
 
     @FXML
     private void initialize() {
+        log.info("initialize");
+
         category_column.setCellValueFactory(new PropertyValueFactory<>("category"));
         seller_column.setCellValueFactory(new PropertyValueFactory<>("seller"));
         price_column.setCellValueFactory(new PropertyValueFactory<>("price"));

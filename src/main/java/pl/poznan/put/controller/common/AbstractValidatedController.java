@@ -7,9 +7,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import pl.poznan.put.util.converter.EnumConverter;
 
+@Slf4j
 public abstract class AbstractValidatedController {
     @Getter
     protected BooleanProperty informationValid = new SimpleBooleanProperty();
@@ -31,6 +33,8 @@ public abstract class AbstractValidatedController {
 
     @FXML
     protected void initialize() {
+        log.info("initialize");
+
         installValidation();
         setupInitialValues();
     }

@@ -92,6 +92,7 @@ public class AuctionCreateController extends AbstractValidatedController {
     @FXML
     protected void initialize() {
         super.initialize();
+        log.info("initialize");
 
         userProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) userLabel.setText(newValue.getFullName());

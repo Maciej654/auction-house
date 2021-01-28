@@ -20,13 +20,13 @@
         <class>pl.poznan.put.model.watch.list.item.WatchListItem</class>
 
         <properties>
-            <property name="javax.persistence.jdbc.url"
-                value="jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/dblab02_students.cs.put.poznan.pl" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@//localhost:1521/oracle" />
             <property name="javax.persistence.jdbc.user" value="" />
             <property name="javax.persistence.jdbc.password" value="" />
             <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle12cDialect" />
-            <property name="hibernate.hbm2ddl.auto" value="validate" />
+            <!--            <property name="hibernate.hbm2ddl.auto" value="validate" />-->
+            <property name="hibernate.temp.use_jdbc_metadata_defaults" value="false" />
         </properties>
     </persistence-unit>
 </persistence>

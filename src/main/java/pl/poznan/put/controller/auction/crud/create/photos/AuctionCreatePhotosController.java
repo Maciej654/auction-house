@@ -6,7 +6,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.hibernate.engine.jdbc.BlobProxy;
 import pl.poznan.put.controller.auction.crud.create.photos.list.AuctionCreatePhotosListController;
 import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.logic.auction.validation.PhotosListNotEmptyPropertyValidator;
@@ -62,8 +61,7 @@ public class AuctionCreatePhotosController extends AbstractValidatedController {
                 .map(file -> {
                     try {
                         val bytes = Files.readAllBytes(file.toPath());
-                        val blob  = BlobProxy.generateProxy(bytes);
-                        return new Picture(auction, file.getName(), blob);
+                        return new Picture(auction, file.getName(), bytes);
                     }
                     catch (IOException e) {
                         log.error(e.getMessage(), e);

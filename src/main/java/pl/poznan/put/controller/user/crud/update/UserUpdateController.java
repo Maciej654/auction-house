@@ -27,9 +27,15 @@ public class UserUpdateController extends UserCrudController {
 
     @Override
     public User getUser() {
-        val user = super.getUser();
-        if (Objects.nonNull(this.user) && StringUtils.isBlank(passwordField.getText())) {
-            user.setHash(this.user.getHash());
+        var user = super.getUser();
+        if (Objects.nonNull(this.user)) {
+            user = this.user.toBuilder()
+                            .firstName(user.getFirstName())
+                            .lastName(user.getLastName())
+                            .birthday(user.getBirthday())
+                            .hash(user.getHash())
+                            .build();
+            if (StringUtils.isBlank(passwordField.getText())) user.setHash(this.user.getHash());
         }
         return user;
     }

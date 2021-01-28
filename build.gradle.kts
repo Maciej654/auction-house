@@ -21,12 +21,12 @@ val javafxModuleNames = listOf(
 )
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_14
+    targetCompatibility = JavaVersion.VERSION_14
 }
 
 javafx {
-    version = "11.0.1"
+    version = "14.0.1"
     modules = javafxModuleNames.map { "javafx.$it" }
 }
 

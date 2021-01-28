@@ -23,34 +23,35 @@ public class AuctionCreateTask extends TimerTask {
 
     @Override
     public void run() {
-        val em          = EntityManagerProvider.getEntityManager();
+        val em    = EntityManagerProvider.getEntityManager();
+        val query = em.createNamedQuery(Auction.QUERY_FIND_BY_UNIQUE_KEY, Auction.class);
+        query.setParameter(Auction.PARAM_AUCTION_NAME, auction.getAuctionName());
+        query.setParameter(Auction.PARAM_ITEM_NAME, auction.getItemName());
+        query.setParameter(Auction.PARAM_SELLER, auction.getSeller());
+        try {
+            val other = query.getSingleResult();
+            if (other != null) {
+                onFailureCallback.accept(
+                        new AuctionAlreadyExistsException(auction.getAuctionName(), auction.getItemName())
+                );
+                return;
+            }
+        }
+        catch (NoResultException ignored) {
+            // do nothing
+        }
+
+        val auctionCreated = new AuctionLog(
+                auction,
+                auction.getCreationDate(),
+                "Auction created",
+                auction.getSeller()
+        );
+        auction.addLog(auctionCreated);
+
         val transaction = em.getTransaction();
         transaction.begin();
         try {
-            val query = em.createNamedQuery(Auction.QUERY_FIND_BY_UNIQUE_KEY, Auction.class);
-            query.setParameter(Auction.PARAM_AUCTION_NAME, auction.getAuctionName());
-            query.setParameter(Auction.PARAM_ITEM_NAME, auction.getItemName());
-            query.setParameter(Auction.PARAM_SELLER, auction.getSeller());
-            try {
-                val other = query.getSingleResult();
-                if (other != null) {
-                    onFailureCallback.accept(
-                            new AuctionAlreadyExistsException(auction.getAuctionName(), auction.getItemName())
-                    );
-                    return;
-                }
-            }
-            catch (NoResultException ignored) {
-                // do nothing
-            }
-
-            val auctionCreated = new AuctionLog(
-                    auction,
-                    auction.getCreationDate(),
-                    "Auction created",
-                    auction.getSeller()
-            );
-            auction.addLog(auctionCreated);
             em.persist(auction);
             transaction.commit();
             onSuccessCallback.accept(auction);

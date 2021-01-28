@@ -105,6 +105,8 @@ public class AuctionBidController extends AbstractValidatedController {
     @Override
     protected void initialize() {
         super.initialize();
+        log.info("initialize");
+
         bindBidButton();
         auctionProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) currentPriceProperty.set(newValue.getPrice());

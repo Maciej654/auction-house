@@ -29,6 +29,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
@@ -63,7 +64,8 @@ public abstract class Auction implements Serializable {
     public static final String PARAM_SELLER = "seller";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUCTIONS_SEQ")
+    @SequenceGenerator(name = "AUCTIONS_SEQ", allocationSize = 1)
     @Column(name = "AUCTION_ID")
     private long id;
 
@@ -94,7 +96,7 @@ public abstract class Auction implements Serializable {
     private Status status;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "DISCRIMINATOR")
+    @Column(name = "DISCRIMINATOR", nullable = false, insertable = false, updatable = false)
     private Type type;
 
     @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL)

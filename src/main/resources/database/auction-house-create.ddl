@@ -13,9 +13,11 @@ CREATE TABLE ads
 ALTER TABLE ads
     ADD CONSTRAINT ad_pk PRIMARY KEY (auction);
 
+CREATE SEQUENCE auctions_seq START WITH 1 INCREMENT BY 1;
+
 CREATE TABLE auctions
 (
-    auction_id       INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1),
+    auction_id       INTEGER          NOT NULL,
     auction_name     VARCHAR2(128)    NOT NULL,
     item_name        VARCHAR2(64)     NOT NULL,
     item_description VARCHAR2(1024)   NOT NULL,

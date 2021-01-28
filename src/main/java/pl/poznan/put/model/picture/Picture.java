@@ -10,11 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.sql.Blob;
 
 @Entity
 @Table(name = "PICTURES")
@@ -32,9 +30,8 @@ public class Picture implements Serializable {
     @Column(name = "NAME")
     private String name;
 
-    @Lob
     @Column(name = "IMAGE")
-    private Blob image;
+    private byte[] image;
 
     @Data
     @NoArgsConstructor

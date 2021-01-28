@@ -52,7 +52,7 @@ public class AuctionHouseApp extends Application {
     }
 
     private void runUserPage(User user) {
-        log.info("private user page");
+        log.info("user page");
 
         this.runPage(UserPageController.class, controller -> {
             Consumer<User>          backCallback      = this::runUserPage;
@@ -128,11 +128,11 @@ public class AuctionHouseApp extends Application {
         this.runPage(ShoppingCartController.class, ShoppingCartController::setup);
     }
 
-    private void runShoppingHistory(){
+    private void runShoppingHistory() {
         this.runPage(ShoppingHistoryController.class, ShoppingHistoryController::setup);
     }
 
-    private void runFollowerCreator(){
+    private void runFollowerCreator() {
         this.runPage(FollowersController.class, FollowersController::setUp);
     }
 
