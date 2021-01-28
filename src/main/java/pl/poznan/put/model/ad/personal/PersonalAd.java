@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -20,7 +21,15 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@NamedQuery(
+        name = PersonalAd.QUERY_FIND_BY_RECIPIENT,
+        query = "select ad from PersonalAd ad where recipient = :" + PersonalAd.PARAM_RECIPIENT
+)
 public class PersonalAd implements Serializable {
+    public static final String QUERY_FIND_BY_RECIPIENT = "PersonalAd.QUERY_FIND_BY_RECIPIENT";
+
+    public static final String PARAM_RECIPIENT = "recipient";
+
     @Id
     @JoinColumn(name = "AUCTION", referencedColumnName = "AUCTION_ID")
     @ManyToOne

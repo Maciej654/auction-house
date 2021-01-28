@@ -220,6 +220,7 @@ public class BrowserController {
     private void addSuggestedAuctions() {
         val user = CurrentUser.getLoggedInUser();
         if (user == null) return;
+        user.refreshAds();
         val suggested = user.getAds()
                             .stream()
                             .limit(3)

@@ -82,6 +82,13 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "recipient")
     private Collection<PersonalAd> ads;
 
+    public void refreshAds() {
+        val em    = EntityManagerProvider.getEntityManager();
+        val query = em.createNamedQuery(PersonalAd.QUERY_FIND_BY_RECIPIENT, PersonalAd.class);
+        query.setParameter(PersonalAd.PARAM_RECIPIENT, this);
+        ads = query.getResultList();
+    }
+
     @OneToMany(mappedBy = "reviewer")
     private Collection<Rating> sentRatings;
 
