@@ -44,14 +44,10 @@ public class AuctionBidUpdateTask extends TimerTask {
         val em          = EntityManagerProvider.getEntityManager();
         val transaction = em.getTransaction();
         try {
-//            em.refresh(auction);
-//            if (!auction.isActive() || price < auction.getPrice() + 1) {
-//                throw new RuntimeException("Bid could not be placed");
-//            }
             auction.setPrice(price);
             auction.setStatus(Status.BIDDING);
             val description = String.format(LOG_FORMAT, price, bidder.getFullName());
-            AuctionLog auctionLog = new AuctionLog(
+            val auctionLog = new AuctionLog(
                     auction,
                     LocalDateTime.now(),
                     description,

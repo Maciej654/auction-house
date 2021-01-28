@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,9 @@ public class AuctionThumbnailController {
             if (newValue != null) try {
                 auctionNameLabel.setText(newValue.getAuctionName());
                 itemNameLabel.setText(newValue.getItemName());
+                val color = newValue.isActive() ? Color.GREEN : Color.ORANGE;
+                auctionNameLabel.setTextFill(color);
+                itemNameLabel.setTextFill(color);
                 val data  = newValue.getPictures().get(0).getImage();
                 val input = new ByteArrayInputStream(data);
                 val image = new Image(input, 128, 128, true, true);
