@@ -98,7 +98,11 @@ public class AuctionHouseApp extends Application {
         Consumer<Auction> showAuctionDetails = auction -> runAuctionDetailsPage(auction,user, consumer);
         Consumer<BrowserController> setup =
                 controller -> controller.setShowAuctionDetails(showAuctionDetails);
-        this.runPage(BrowserController.class, setup);
+
+        this.runPage(BrowserController.class, controller -> {
+            controller.setShowAuctionDetails(showAuctionDetails);
+            controller.getUserProperty().setValue(user);
+        });
     }
 
     private void runAuctionDetailsPage(Auction auction, User user,  Consumer<User> backCallback) {

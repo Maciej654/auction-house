@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?><?import javafx.scene.control.Label?><?import javafx.scene.control.TableColumn?><?import javafx.scene.control.TableView?><?import javafx.scene.control.TextField?><?import javafx.scene.layout.AnchorPane?><?import javafx.scene.layout.Pane?>
-<AnchorPane prefHeight="527.0" prefWidth="787.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
-    xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.poznan.put.controller.browser.BrowserController">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="527.0" prefWidth="787.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.poznan.put.controller.browser.BrowserController">
     <children>
         <Pane disable="true" prefHeight="502.0" prefWidth="755.0" />
         <Pane prefHeight="527.0" prefWidth="787.0">
@@ -19,11 +20,11 @@
                     </columns>
                 </TableView>
                 <TextField fx:id="auction_name" layoutX="33.0" layoutY="107.0" />
-                <TextField fx:id="auction_type" layoutX="294.0" layoutY="107.0" />
-                <Button fx:id="button1" layoutX="626.0" layoutY="107.0" mnemonicParsing="false" onMouseClicked="#click"
-                    text="Filtruj" />
+                <TextField fx:id="auction_type" layoutX="214.0" layoutY="107.0" />
+                <Button fx:id="button1" layoutX="626.0" layoutY="107.0" mnemonicParsing="false" onMouseClicked="#click" text="Filtruj" />
                 <Label layoutX="69.0" layoutY="74.0" text="Auction Name" />
-                <Label layoutX="333.0" layoutY="74.0" text="Auction Type" />
+                <Label layoutX="212.0" layoutY="74.0" prefHeight="17.0" prefWidth="99.0" text="Auction Type" />
+            <ChoiceBox fx:id="watchListChoiceBox" layoutX="188.0" layoutY="25.0" prefHeight="25.0" prefWidth="133.0" />
             </children>
         </Pane>
     </children>

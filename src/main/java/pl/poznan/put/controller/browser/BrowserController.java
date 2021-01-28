@@ -1,12 +1,11 @@
 package pl.poznan.put.controller.browser;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,9 +15,13 @@ import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.auction.Auction.Status;
+import pl.poznan.put.model.user.User;
+import pl.poznan.put.model.watch.list.WatchList;
+import pl.poznan.put.model.watch.list.item.WatchListItem;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -30,6 +33,10 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class BrowserController {
+
+    @FXML
+    public ChoiceBox<String> watchListChoiceBox;
+
     @FXML
     private TextField auction_name;
     @FXML
@@ -60,8 +67,14 @@ public class BrowserController {
     private TableColumn<Data, Button> details_column;
 
     private static final EntityManager em = EntityManagerProvider.getEntityManager();
+
+    @Getter
+    private final ObjectProperty<User> userProperty  = new SimpleObjectProperty<>();
+
     @Setter
     Consumer<Auction> showAuctionDetails;
+
+    private List<WatchListItem> itemsOnAnyWatchList = new ArrayList<>();
 
     @SuperBuilder
     @lombok.Data
@@ -88,13 +101,16 @@ public class BrowserController {
 
     @FXML
     private void click() {
+
         List<Auction> listofAuctions = new ArrayList<>();
         if (em != null) {
+            prepareWatchList();
             TypedQuery<Auction> query             = em.createQuery("select auction from Auction auction ",
                                                                    Auction.class);
             val                 availableStatuses = Set.of(Status.CREATED, Status.BIDDING);
             listofAuctions = query.getResultStream()
                                   .filter(auction -> availableStatuses.contains(auction.getStatus()))
+                                  .filter(this::filterByWatchList)
                                   .filter(this::filterByName)
                                   .filter(this::filterByType)
                                   .collect(Collectors.toList());
@@ -115,10 +131,19 @@ public class BrowserController {
 
     }
 
+    private void prepareWatchList() {
+        if(em != null){
+            var query = em.createQuery("select item from WatchListItem item where  item.follower = :user",WatchListItem.class);
+            query.setParameter("user", userProperty.getValue());
+            itemsOnAnyWatchList = query.getResultList();
+        }
+    }
+
+
     @FXML
     private void initialize() {
         log.info("initialize");
-
+        userProperty.addListener((observable, oldValue, newValue) -> setUpChoiceBox());
         category_column.setCellValueFactory(new PropertyValueFactory<>("category"));
         seller_column.setCellValueFactory(new PropertyValueFactory<>("seller"));
         price_column.setCellValueFactory(new PropertyValueFactory<>("price"));
@@ -127,6 +152,18 @@ public class BrowserController {
         auction_name_column.setCellValueFactory(new PropertyValueFactory<>("AuctionName"));
         details_column.setCellValueFactory(new PropertyValueFactory<>("details"));
         click();
+    }
+
+    private void setUpChoiceBox() {
+        if(em == null){ return; }
+        var query = em.createQuery("select distinct item.name from WatchListItem item where item.follower = :user",String.class);
+        query.setParameter("user",userProperty.get());
+        List<String> resultList = query.getResultList();
+        ObservableList<String> obs = FXCollections.observableArrayList((String) null);
+        obs.addAll(resultList);
+        watchListChoiceBox.setItems(obs);
+
+
     }
 
     private boolean filterByName(Auction auction) {
@@ -142,6 +179,19 @@ public class BrowserController {
         if (StringUtils.isEmpty(type)) return true;
         String auctionType = auction.getCategory().toUpperCase();
         return Objects.equals(type, auctionType);
+    }
+    private boolean filterByWatchList(Auction auction) {
+        if(watchListChoiceBox.getValue() == null){
+            return true;
+        }else if(em != null){
+            long count = itemsOnAnyWatchList.stream()
+                    .filter(i -> i.getName().equals(watchListChoiceBox.getValue()) &&
+                            i.getAuction().equals(auction) &&
+                            i.getFollower().equals(userProperty.get())).count();
+            return count > 0;
+        }
+        return false;
+
     }
 }
 
