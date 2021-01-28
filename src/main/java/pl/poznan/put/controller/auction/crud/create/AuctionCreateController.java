@@ -10,6 +10,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.web.HTMLEditor;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,6 +43,9 @@ import java.util.function.Consumer;
 
 @Slf4j
 public class AuctionCreateController extends AbstractValidatedController {
+    @FXML
+    private Pane spacePane;
+
     @FXML
     private Label errorLabel;
 
@@ -103,6 +109,8 @@ public class AuctionCreateController extends AbstractValidatedController {
     protected void initialize() {
         super.initialize();
         log.info("initialize");
+
+        HBox.setHgrow(spacePane, Priority.ALWAYS);
 
         userProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) userLabel.setText(newValue.getFullName());
