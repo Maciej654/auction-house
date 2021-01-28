@@ -51,7 +51,7 @@ import java.util.Objects;
 @DiscriminatorColumn(name = "DISCRIMINATOR")
 @NamedQuery(
         name = Auction.QUERY_FIND_BY_UNIQUE_KEY,
-        query = "select auction from Auction auction where auctionName = :" + Auction.PARAM_AUCTION_NAME + " and " +
+        query = "select count(auction) from Auction auction where auctionName = :" + Auction.PARAM_AUCTION_NAME + " and " +
                 "itemName = :" + Auction.PARAM_ITEM_NAME + " and seller = :" + Auction.PARAM_SELLER
 )
 public abstract class Auction implements Serializable {
