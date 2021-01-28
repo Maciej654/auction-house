@@ -82,5 +82,8 @@
         <Tab closable="false" text="Bid">
             <fx:include fx:id="auctionBid" source="bid/AuctionBidView.fxml" />
         </Tab>
+        <Tab closable="false" text="WatchList">
+            <fx:include fx:id="auctionWatchList" source="watchlist/AuctionWatchListView.fxml" />
+        </Tab>
     </TabPane>
 </VBox>

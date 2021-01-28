@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="pl.poznan.put.controller.auction.details.watchlist.AuctionWatchListController">
+   <children>
+      <Button fx:id="addToExistingButton" layoutX="276.0" layoutY="83.0" mnemonicParsing="false" text="Add to exsisting watchlist" />
+      <ChoiceBox fx:id="watchListChoiceBox" layoutX="83.0" layoutY="83.0" prefWidth="150.0" />
+      <TextField fx:id="newWatchListEntry" layoutX="84.0" layoutY="175.0" prefHeight="25.0" prefWidth="150.0" />
+      <Button fx:id="addToNewListButton" layoutX="276.0" layoutY="175.0" mnemonicParsing="false" text="Add to new watchlist" />
+      <Label fx:id="errorLabel" layoutX="233.0" layoutY="298.0" textFill="#fc1111" />
+   </children>
+</AnchorPane>

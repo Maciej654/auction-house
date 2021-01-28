@@ -150,12 +150,12 @@ public class UserPageController {
     }
 
     @Setter
-    private Runnable auctionsCallback = Callbacks::noop;
+    private Consumer<User> auctionsCallback = Callbacks::noop;
 
     @FXML
     private void auctionsButtonClick() {
         log.info("auctions");
-        auctionsCallback.run();
+        auctionsCallback.accept(userProperty.get());
     }
 
     @Setter

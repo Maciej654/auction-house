@@ -13,6 +13,7 @@ import lombok.val;
 import pl.poznan.put.controller.auction.details.bid.AuctionBidController;
 import pl.poznan.put.controller.auction.details.history.AuctionHistoryController;
 import pl.poznan.put.controller.auction.details.photos.AuctionPhotosController;
+import pl.poznan.put.controller.auction.details.watchlist.AuctionWatchListController;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.util.callback.Callbacks;
@@ -40,6 +41,9 @@ public class AuctionDetailsController {
     private WebView descriptionWebView;
 
     @FXML
+    private AuctionWatchListController auctionWatchListController;
+
+    @FXML
     private AuctionHistoryController auctionHistoryController;
 
     @FXML
@@ -49,10 +53,13 @@ public class AuctionDetailsController {
     private AuctionBidController auctionBidController;
 
     @Setter
-    private Runnable backCallback;
+    private Consumer<User> backCallback;
 
     @Getter
     private final ObjectProperty<Auction> auctionProperty = new SimpleObjectProperty<>();
+
+    @Getter
+    private final ObjectProperty<User> userProperty = new SimpleObjectProperty<>();
 
     @FXML
     private void initialize() {
@@ -63,6 +70,9 @@ public class AuctionDetailsController {
         });
 
         auctionHistoryController.getAuctionProperty().bind(auctionProperty);
+
+        auctionWatchListController.getAuctionProperty().bind(auctionProperty);
+        auctionWatchListController.getUserProperty().bind(userProperty);
 
         auctionProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -81,7 +91,7 @@ public class AuctionDetailsController {
 
     @FXML
     private void backButtonClick() {
-        backCallback.run();
+        backCallback.accept(userProperty.get());
     }
 
     public void updateLabels() {

@@ -25,6 +25,7 @@ import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.util.view.loader.ViewLoader;
 
+import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
 @Slf4j
@@ -44,8 +45,8 @@ public class AuctionHouseApp extends Application {
 
         this.runPage(AuctionCreateController.class, controller -> {
             controller.getUserProperty().set(user);
-            Runnable          backCallback          = () -> runUserPage(user);
-            Consumer<Auction> createAuctionCallback = auction -> runAuctionDetailsPage(auction, backCallback);
+            Consumer<User> backCallback          = this::runUserPage;
+            Consumer<Auction> createAuctionCallback = auction -> runAuctionDetailsPage(auction,user, backCallback);
             controller.setCreateAuctionCallback(createAuctionCallback);
         });
     }
@@ -54,8 +55,8 @@ public class AuctionHouseApp extends Application {
         log.info("private user page");
 
         this.runPage(UserPageController.class, controller -> {
-            Runnable          backCallback      = () -> runUserPage(user);
-            Consumer<Auction> thumbnailCallback = auction -> runAuctionDetailsPage(auction, backCallback);
+            Consumer<User>          backCallback      = this::runUserPage;
+            Consumer<Auction> thumbnailCallback = auction -> runAuctionDetailsPage(auction,user, backCallback);
             controller.setThumbnailCallback(thumbnailCallback);
             controller.getUserProperty().set(user);
             controller.setAuctionsCallback(this::runBrowserPage);
@@ -91,17 +92,18 @@ public class AuctionHouseApp extends Application {
         });
     }
 
-    private void runBrowserPage() {
+    private void runBrowserPage(User user) {
         log.info("browser page");
-        Runnable          backCallback       = this::runBrowserPage;
-        Consumer<Auction> showAuctionDetails = auction -> runAuctionDetailsPage(auction, backCallback);
+        Consumer<User> consumer = this::runBrowserPage;
+        Consumer<Auction> showAuctionDetails = auction -> runAuctionDetailsPage(auction,user, consumer);
         Consumer<BrowserController> setup =
                 controller -> controller.setShowAuctionDetails(showAuctionDetails);
         this.runPage(BrowserController.class, setup);
     }
 
-    private void runAuctionDetailsPage(Auction auction, Runnable backCallback) {
+    private void runAuctionDetailsPage(Auction auction, User user,  Consumer<User> backCallback) {
         this.runPage(AuctionDetailsController.class, controller -> {
+            controller.getUserProperty().set(user);
             controller.getAuctionProperty().set(auction);
             controller.setBackCallback(backCallback);
             controller.setUserHyperlinkCallback(this::runUserPage);
@@ -133,6 +135,11 @@ public class AuctionHouseApp extends Application {
     private void runFollowerCreator(){
         this.runPage(FollowersController.class, FollowersController::setUp);
     }
+
+   /* private void watchlist(){
+        this.runPage(AuctionWatchListController.class, AuctionWatchListController::setup);
+    }*/
+
 
     @Override
     public void start(Stage primaryStage) {
