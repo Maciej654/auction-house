@@ -50,6 +50,7 @@ public class AuctionManagementController {
     private void cancelButtonClick() {
         log.info("cancel");
 
+        feedbackLabel.setText(StringUtils.EMPTY);
         val auction = auctionProperty.get();
         if (auction == null) {
             log.warn("auction is null");
@@ -83,6 +84,7 @@ public class AuctionManagementController {
     private void advertiseButtonClick() {
         log.info("advertise");
 
+        feedbackLabel.setText(StringUtils.EMPTY);
         val auction = auctionProperty.get();
         if (auction == null) {
             log.warn("auction is null");
@@ -127,7 +129,6 @@ public class AuctionManagementController {
     }
 
     private void mergeAuction(Auction auction) {
-        feedbackLabel.setText(StringUtils.EMPTY);
         val transaction = em.getTransaction();
         transaction.begin();
         try {
@@ -151,6 +152,7 @@ public class AuctionManagementController {
     private void finishButtonClick() {
         log.info("finish");
 
+        feedbackLabel.setText(StringUtils.EMPTY);
         val auction = auctionProperty.get();
         if (auction == null) {
             log.warn("auction is null");
