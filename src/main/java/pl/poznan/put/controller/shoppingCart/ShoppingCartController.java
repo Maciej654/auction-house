@@ -10,12 +10,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.auction.log.AuctionLog;
 import pl.poznan.put.model.delivery.preference.DeliveryPreference;
 import pl.poznan.put.model.shopping.cart.item.ShoppingCartItem;
 import pl.poznan.put.model.user.User;
+import pl.poznan.put.util.callback.Callbacks;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
 import javax.persistence.EntityManager;
@@ -46,10 +48,15 @@ public class ShoppingCartController {
     @FXML
     public Label errorLabel;
 
-    private static final EntityManager em = EntityManagerProvider.getEntityManager();
+    @FXML
+    public Button userPageButton;
 
     private User user;
 
+    @Setter
+    Runnable userPageCallback = Callbacks::noop;
+
+    private static final EntityManager em = EntityManagerProvider.getEntityManager();
 
     @lombok.Data
     public class Data {
@@ -115,7 +122,7 @@ public class ShoppingCartController {
     @FXML
     private void initialize() {
         log.info("initialize");
-
+        userPageButton.setOnAction(a -> userPageCallback.run());
         auctionNameColumn.setCellValueFactory(new PropertyValueFactory<>("auctionName"));
         itemNameColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
         sellerColumn.setCellValueFactory(new PropertyValueFactory<>("seller"));
@@ -123,11 +130,11 @@ public class ShoppingCartController {
         acceptColumn.setCellValueFactory(new PropertyValueFactory<>("button"));
     }
 
-    public void setup() {
+    public void setup(User user) {
+        this.user = user;
         if (em == null) {
             return;
         }
-        user = em.find(User.class, "hercogmaciej@gmail.com");//toDo connect with other views
         refresh();
     }
 

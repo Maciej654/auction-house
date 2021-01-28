@@ -1,20 +1,21 @@
 package pl.poznan.put.controller.browser;
 
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleMapProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,8 +29,8 @@ import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.model.ad.Ad;
 import pl.poznan.put.model.ad.personal.PersonalAd;
 import pl.poznan.put.model.auction.Auction;
-import pl.poznan.put.model.auction.Auction.Status;
 import pl.poznan.put.model.user.User;
+import pl.poznan.put.model.watch.list.item.WatchListItem;
 import pl.poznan.put.util.callback.Callbacks;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
@@ -40,7 +41,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -51,6 +51,12 @@ public class BrowserController {
 
     @FXML
     private VBox suggestedAuctionsVBox;
+
+    @FXML
+    public ChoiceBox<String> watchListChoiceBox;
+
+    @FXML
+    private Button userPageButton;
 
     @FXML
     private TextField auction_name;
@@ -87,6 +93,9 @@ public class BrowserController {
     @Setter
     private Consumer<Auction> showAuctionDetails;
 
+    @Getter
+    private final ObjectProperty<User> userProperty = new SimpleObjectProperty<>();
+
     @Setter
     private Consumer<User> ownProfileCallback = Callbacks::noop;
 
@@ -107,6 +116,11 @@ public class BrowserController {
 
         backCallback.run();
     }
+
+    @Setter
+    Runnable userPageCallback = Callbacks::noop;
+
+    private List<WatchListItem> itemsOnAnyWatchList = new ArrayList<>();
 
     @SuperBuilder
     @lombok.Data
@@ -133,13 +147,15 @@ public class BrowserController {
 
     @FXML
     private void click() {
+
         List<Auction> listofAuctions = new ArrayList<>();
         if (em != null) {
+            prepareWatchList();
             TypedQuery<Auction> query = em.createQuery("select auction from Auction auction ",
                                                        Auction.class);
-            val availableStatuses = Set.of(Status.CREATED, Status.BIDDING);
             listofAuctions = query.getResultStream()
-                                  .filter(auction -> availableStatuses.contains(auction.getStatus()))
+                                  .filter(Auction::isActive)
+                                  .filter(this::filterByWatchList)
                                   .filter(this::filterByName)
                                   .filter(this::filterByType)
                                   .collect(Collectors.toList());
@@ -160,12 +176,24 @@ public class BrowserController {
 
     }
 
+    private void prepareWatchList() {
+        if (em != null) {
+            var query = em.createQuery("select item from WatchListItem item where  item.follower = :user",
+                                       WatchListItem.class);
+            query.setParameter("user", userProperty.getValue());
+            itemsOnAnyWatchList = query.getResultList();
+        }
+    }
+
+
     @FXML
     private void initialize() {
         log.info("initialize");
 
         HBox.setHgrow(spacePane, Priority.ALWAYS);
 
+        userPageButton.setOnAction(a -> userPageCallback.run());
+        userProperty.addListener((observable, oldValue, newValue) -> setUpChoiceBox());
         category_column.setCellValueFactory(new PropertyValueFactory<>("category"));
         seller_column.setCellValueFactory(new PropertyValueFactory<>("seller"));
         price_column.setCellValueFactory(new PropertyValueFactory<>("price"));
@@ -208,6 +236,19 @@ public class BrowserController {
         suggestedAuctionsList.setAll(suggested);
     }
 
+    private void setUpChoiceBox() {
+        if (em == null) { return; }
+        var query = em.createQuery("select distinct item.name from WatchListItem item where item.follower = :user",
+                                   String.class);
+        query.setParameter("user", userProperty.get());
+        List<String>           resultList = query.getResultList();
+        ObservableList<String> obs        = FXCollections.observableArrayList((String) null);
+        obs.addAll(resultList);
+        watchListChoiceBox.setItems(obs);
+
+
+    }
+
     private boolean filterByName(Auction auction) {
         String name = auction_name.getCharacters().toString().toUpperCase();
         if (StringUtils.isEmpty(name)) return true;
@@ -217,10 +258,24 @@ public class BrowserController {
     }
 
     private boolean filterByType(Auction auction) {
-        String options = auction_type.getCharacters().toString().toUpperCase();
-        if (StringUtils.isEmpty(options)) return true;
+        String type = auction_type.getCharacters().toString().toUpperCase();
+        if (StringUtils.isEmpty(type)) return true;
         String auctionType = auction.getCategory().toUpperCase();
-        return Objects.equals(options, auctionType);
+        return Objects.equals(type, auctionType);
+    }
+
+    private boolean filterByWatchList(Auction auction) {
+        if(watchListChoiceBox.getValue() == null){
+            return true;
+        }else if(em != null){
+            long count = itemsOnAnyWatchList.stream()
+                    .filter(i -> i.getName().equals(watchListChoiceBox.getValue()) &&
+                            i.getAuction().equals(auction) &&
+                            i.getFollower().equals(userProperty.get())).count();
+            return count > 0;
+        }
+        return false;
+
     }
 }
 

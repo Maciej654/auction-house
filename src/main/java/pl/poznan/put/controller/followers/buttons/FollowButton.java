@@ -43,7 +43,7 @@ public class FollowButton extends Button {
     private void followAction() {
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
-        entityManager.persist(follower);
+        entityManager.merge(follower);
         transaction.commit();
     }
 

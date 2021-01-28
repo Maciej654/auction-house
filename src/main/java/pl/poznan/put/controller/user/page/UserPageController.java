@@ -65,15 +65,30 @@ public class UserPageController {
     private Label userLabel;
 
     @FXML
-    private void followButtonClick() {
-//        val action = EnumConverterUtils.fromString(followButton.getText(), FollowAction.class);
-
-    }
+    private void followButtonClick() {}
 
     private enum Options {
         PUBLIC,
         PRIVATE
     }
+
+    @FXML
+    private Button shoppingCartButton;
+
+    @FXML
+    private Button followerButton;
+
+    @FXML
+    private Button reviewCreatorButton;
+
+    @FXML
+    private Button reviewBrowserButton;
+
+    @FXML
+    private Button deliveryButton;
+
+    @FXML
+    private Button historyButton;
 
     @Getter
     private final ObjectProperty<User> userProperty = new SimpleObjectProperty<>();
@@ -100,6 +115,24 @@ public class UserPageController {
         auctionObservableList.addListener(new AuctionThumbnailListChangeListener(callback, thumbnailCache));
     }
 
+    @Setter
+    private Runnable reviewCreatorCallback = Callbacks::noop;
+
+    @Setter
+    private Runnable reviewBrowserCallback = Callbacks::noop;
+
+    @Setter
+    private Runnable shoppingCartBrowserCallback = Callbacks::noop;
+
+    @Setter
+    private Runnable followerCreatorCallback = Callbacks::noop;
+
+    @Setter
+    private Runnable historyCallback = Callbacks::noop;
+
+    @Setter
+    private Runnable deliveryCallback = Callbacks::noop;
+
     private final ObservableMap<Auction, Parent> thumbnailCache =
             new SimpleMapProperty<>(FXCollections.observableHashMap());
 
@@ -108,6 +141,17 @@ public class UserPageController {
     @FXML
     private void initialize() {
         log.info("initialize");
+        shoppingCartButton.setOnAction(a -> System.out.println("shoppingCartButton"));
+        followerButton.setOnAction(a -> System.out.println("followerButton"));
+        reviewBrowserButton.setOnAction(a -> System.out.println("reviewBrowserButton"));
+        reviewCreatorButton.setOnAction(a -> System.out.println("reviewCreatorButton"));
+
+        reviewCreatorButton.setOnAction(a -> reviewCreatorCallback.run());
+        shoppingCartButton.setOnAction(a -> shoppingCartBrowserCallback.run());
+        reviewBrowserButton.setOnAction(a -> reviewBrowserCallback.run());
+        followerButton.setOnAction(a -> followerCreatorCallback.run());
+        historyButton.setOnAction(a -> historyCallback.run());
+        deliveryButton.setOnAction(a -> deliveryCallback.run());
 
         HBox.setHgrow(spacePane, Priority.ALWAYS);
 

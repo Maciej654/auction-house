@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?><?import javafx.scene.control.TableColumn?><?import javafx.scene.control.TableView?><?import javafx.scene.layout.AnchorPane?>
-<AnchorPane prefHeight="400.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
-    xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.poznan.put.controller.shoppingCart.ShoppingCartController">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.poznan.put.controller.shoppingCart.ShoppingCartController">
     <TableView fx:id="table" layoutX="9.0" layoutY="72.0" prefHeight="257.0" prefWidth="732.0">
         <columns>
             <TableColumn fx:id="auctionNameColumn" prefWidth="169.0" text="auction name" />
@@ -13,4 +14,5 @@
         </columns>
     </TableView>
     <Label fx:id="errorLabel" layoutX="182.0" layoutY="34.0" prefHeight="17.0" prefWidth="406.0" textFill="#f50000" />
+   <Button fx:id="userPageButton" layoutX="9.0" layoutY="2.0" mnemonicParsing="false" text="user page" />
 </AnchorPane>

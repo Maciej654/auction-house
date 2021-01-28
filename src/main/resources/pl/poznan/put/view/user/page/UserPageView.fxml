@@ -42,6 +42,12 @@
                 <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Search:" />
                 <TextField fx:id="searchTextField" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" promptText="Auction name" />
             </HBox>
+         <Button fx:id="shoppingCartButton" mnemonicParsing="false" text="shopping cart" />
+         <Button fx:id="followerButton" mnemonicParsing="false" text="follower" />
+         <Button fx:id="reviewCreatorButton" mnemonicParsing="false" text="review creator" />
+         <Button fx:id="reviewBrowserButton" mnemonicParsing="false" text="review browser" />
+         <Button fx:id="deliveryButton" mnemonicParsing="false" text="delivery" />
+         <Button fx:id="historyButton" mnemonicParsing="false" text="history" />
         </ToolBar>
     </top>
     <right>

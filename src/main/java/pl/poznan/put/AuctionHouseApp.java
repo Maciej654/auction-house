@@ -72,6 +72,13 @@ public class AuctionHouseApp extends Application {
             controller.setEditCallback(this::runUserUpdatePage);
             controller.setCreateAuctionCallback(this::runAuctionCreatePage);
             controller.setLogoutCallback(this::runLoginPage);
+
+            controller.setReviewCreatorCallback(() -> runRatingCreator(user));
+            controller.setShoppingCartBrowserCallback(() -> runShoppingCart(user));
+            controller.setReviewBrowserCallback(() -> runRatingBrowser(user));
+            controller.setFollowerCreatorCallback(() -> runFollowerCreator(user));
+            controller.setDeliveryCallback(() -> runDeliveryPreferencesCreator(user));
+            controller.setHistoryCallback(() -> runShoppingHistory(user));
         });
     }
 
@@ -125,30 +132,46 @@ public class AuctionHouseApp extends Application {
         });
     }
 
-    private void runRatingBrowser() {
-        this.runPage(RatingBrowser.class, controller -> {
-        });
+    private void runRatingBrowser(User user) {
+        this.runPage(RatingBrowser.class, controller -> controller.setUserPageCallback(() -> this.runUserPage(user)));
     }
 
-    private void runRatingCreator() {
+    private void runRatingCreator(User user) {
         this.runPage(RatingCreator.class, controller -> {
+            controller.setUser(user);
+            controller.setup();
+            controller.setUserPageCallback(() -> runUserPage(user));
         });
     }
 
-    private void runDeliveryPreferencesCreator() {
-        this.runPage(DeliveryCreatorController.class, DeliveryCreatorController::setup);
+    private void runDeliveryPreferencesCreator(User user) {
+        this.runPage(DeliveryCreatorController.class,controller -> {
+            controller.setUser(user);
+            controller.setUserPageCallback(() -> runUserPage(user));
+            controller.setup();
+        });
     }
 
-    private void runShoppingCart() {
-        this.runPage(ShoppingCartController.class, ShoppingCartController::setup);
+    private void runShoppingCart(User user) {
+        this.runPage(ShoppingCartController.class, controller ->{
+            controller.setUserPageCallback(() -> this.runUserPage(user));
+            controller.setup(user);
+        } );
     }
 
-    private void runShoppingHistory() {
-        this.runPage(ShoppingHistoryController.class, ShoppingHistoryController::setup);
+    private void runShoppingHistory(User user) {
+        this.runPage(ShoppingHistoryController.class, controller -> {
+            controller.setUser(user);
+            controller.setUserPageCallback(() -> runUserPage(user));
+            controller.setup();
+        });
     }
 
-    private void runFollowerCreator() {
-        this.runPage(FollowersController.class, FollowersController::setUp);
+    private void runFollowerCreator(User user) {
+        this.runPage(FollowersController.class, controller ->{
+            controller.setUp(user);
+            controller.setUserPageCallback(() -> this.runUserPage(user));
+        });
     }
 
     @Override
