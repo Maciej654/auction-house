@@ -41,7 +41,6 @@
             <Label layoutX="333.0" layoutY="74.0" text="Auction Type" />
             <ChoiceBox fx:id="watchListChoiceBox" layoutX="378.0" layoutY="107.0" prefHeight="25.0" prefWidth="133.0" />
             <Label layoutX="378.0" layoutY="74.0" text="WatchList" />
-            <Button fx:id="userPageButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="user page" />
         </Pane>
         <VBox fx:id="suggestedAuctionsVBox" maxHeight="1.7976931348623157E308" minHeight="-Infinity"
             minWidth="-Infinity" prefWidth="128.0" spacing="10.0">

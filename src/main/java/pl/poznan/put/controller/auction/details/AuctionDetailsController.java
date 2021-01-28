@@ -28,6 +28,9 @@ import java.util.function.Consumer;
 @Slf4j
 public class AuctionDetailsController {
     @FXML
+    private Tab auctionAdsTab;
+
+    @FXML
     private Tab auctionWatchListTab;
 
     @FXML
@@ -87,9 +90,7 @@ public class AuctionDetailsController {
                 tabs.remove(auctionBidTab);
                 tabs.remove(auctionWatchListTab);
             }
-            case VIEWER -> {
-
-            }
+            case VIEWER -> tabs.remove(auctionAdsTab);
         }
     }
 

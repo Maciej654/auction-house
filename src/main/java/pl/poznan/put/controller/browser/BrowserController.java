@@ -58,9 +58,6 @@ public class BrowserController {
     public ChoiceBox<String> watchListChoiceBox;
 
     @FXML
-    private Button userPageButton;
-
-    @FXML
     private TextField auction_name;
 
     @FXML
@@ -194,7 +191,6 @@ public class BrowserController {
 
         HBox.setHgrow(spacePane, Priority.ALWAYS);
 
-        userPageButton.setOnAction(a -> userPageCallback.run());
         userProperty.addListener((observable, oldValue, newValue) -> setUpChoiceBox());
         category_column.setCellValueFactory(new PropertyValueFactory<>("category"));
         seller_column.setCellValueFactory(new PropertyValueFactory<>("seller"));
