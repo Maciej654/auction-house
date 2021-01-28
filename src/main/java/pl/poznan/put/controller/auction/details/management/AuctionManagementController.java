@@ -22,6 +22,9 @@ import java.time.LocalDateTime;
 @Slf4j
 public class AuctionManagementController {
     @FXML
+    private Label feedbackLabel;
+
+    @FXML
     private Label auctionStatusLabel;
 
     @FXML
@@ -96,7 +99,8 @@ public class AuctionManagementController {
             return;
         }
 
-        ad = new Ad(auction, "Best " + auction.getItemName() + " ever!");
+        ad = new Ad(auction.getId(), auction, "Best " + auction.getItemName() + " ever!");
+        auction.setAd(ad);
         val transaction = em.getTransaction();
         transaction.begin();
         try {
@@ -110,8 +114,6 @@ public class AuctionManagementController {
             return;
         }
 
-        auction.setAd(ad);
-
         val auctionAdCreatedLog = new AuctionLog(
                 auction,
                 LocalDateTime.now(),
@@ -124,6 +126,7 @@ public class AuctionManagementController {
     }
 
     private void mergeAuction(Auction auction) {
+        feedbackLabel.setText(StringUtils.EMPTY);
         val transaction = em.getTransaction();
         transaction.begin();
         try {
@@ -138,6 +141,7 @@ public class AuctionManagementController {
         }
 
         errorLabel.setText(StringUtils.EMPTY);
+        feedbackLabel.setText("Success");
         log.info("auction '{}' merged successfully", auction.getAuctionName());
         customizeView(auction);
     }

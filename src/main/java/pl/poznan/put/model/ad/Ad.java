@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -27,6 +28,9 @@ public class Ad implements Serializable {
     public static final String QUERY_FIND_ALL = "Ad.QUERY_FIND_ALL";
 
     @Id
+    @Column(name = "AUCTION")
+    private long id;
+
     @JoinColumn(name = "AUCTION", referencedColumnName = "AUCTION_ID")
     @OneToOne
     private Auction auction;

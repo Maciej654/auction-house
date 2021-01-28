@@ -89,8 +89,14 @@ public class BrowserController {
 
     private static final EntityManager em = EntityManagerProvider.getEntityManager();
 
-    @Setter
-    private Consumer<Auction> showAuctionDetails;
+    private Consumer<Auction> showAuctionDetails = Callbacks::noop;
+
+    public void setShowAuctionDetails(Consumer<Auction> showAuctionDetails) {
+        this.showAuctionDetails = showAuctionDetails;
+        suggestedAuctionsList.addListener(new AuctionThumbnailListChangeListener(showAuctionDetails,
+                                                                                 suggestedAuctionsCache));
+        addSuggestedAuctions();
+    }
 
     @Getter
     private final ObjectProperty<User> userProperty = new SimpleObjectProperty<>();
@@ -172,7 +178,6 @@ public class BrowserController {
 
         ObservableList<Data> obsList = FXCollections.observableArrayList(list);
         table.setItems(obsList);
-
     }
 
     private void prepareWatchList() {
@@ -201,10 +206,7 @@ public class BrowserController {
         details_column.setCellValueFactory(new PropertyValueFactory<>("details"));
         click();
 
-        suggestedAuctionsList.addListener(new AuctionThumbnailListChangeListener(showAuctionDetails,
-                                                                                 suggestedAuctionsCache));
         suggestedAuctionsCache.addListener(new AuctionThumbnailCacheChangeListener(suggestedAuctionsVBox.getChildren()));
-        addSuggestedAuctions();
     }
 
     private final ObservableMap<Auction, Parent> suggestedAuctionsCache =
@@ -221,6 +223,8 @@ public class BrowserController {
                             .stream()
                             .limit(3)
                             .map(PersonalAd::getAuction)
+                            .filter(Objects::nonNull)
+                            .filter(Auction::isActive)
                             .collect(Collectors.toList());
         Collections.shuffle(suggested);
         if (suggested.size() < 3 && em != null) {
@@ -229,6 +233,8 @@ public class BrowserController {
             Collections.shuffle(ads);
             ads.stream()
                .map(Ad::getAuction)
+               .filter(Objects::nonNull)
+               .filter(Auction::isActive)
                .limit(3 - suggested.size())
                .forEach(suggested::add);
         }

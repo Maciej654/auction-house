@@ -31,4 +31,5 @@
         <Button mnemonicParsing="false" onAction="#advertiseButtonClick" prefWidth="100.0" text="Advertise" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <Button mnemonicParsing="false" onAction="#finishButtonClick" prefWidth="100.0" text="Finish" GridPane.columnIndex="1" GridPane.rowIndex="1" />
     </GridPane>
+   <Label fx:id="feedbackLabel" textFill="LIME" />
 </VBox>
