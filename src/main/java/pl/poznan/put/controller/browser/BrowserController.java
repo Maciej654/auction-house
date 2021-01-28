@@ -16,12 +16,11 @@ import org.apache.commons.lang3.StringUtils;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.auction.Auction.Status;
 import pl.poznan.put.model.user.User;
-import pl.poznan.put.model.watch.list.WatchList;
 import pl.poznan.put.model.watch.list.item.WatchListItem;
+import pl.poznan.put.util.callback.Callbacks;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,6 +35,9 @@ public class BrowserController {
 
     @FXML
     public ChoiceBox<String> watchListChoiceBox;
+
+    @FXML
+    private Button userPageButton;
 
     @FXML
     private TextField auction_name;
@@ -73,6 +75,9 @@ public class BrowserController {
 
     @Setter
     Consumer<Auction> showAuctionDetails;
+
+    @Setter
+    Runnable userPageCallback = Callbacks::noop;
 
     private List<WatchListItem> itemsOnAnyWatchList = new ArrayList<>();
 
@@ -143,6 +148,7 @@ public class BrowserController {
     @FXML
     private void initialize() {
         log.info("initialize");
+        userPageButton.setOnAction(a -> userPageCallback.run());
         userProperty.addListener((observable, oldValue, newValue) -> setUpChoiceBox());
         category_column.setCellValueFactory(new PropertyValueFactory<>("category"));
         seller_column.setCellValueFactory(new PropertyValueFactory<>("seller"));

@@ -2,9 +2,11 @@ package pl.poznan.put.controller.auction.shoppingHistory;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -13,6 +15,7 @@ import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.auction.log.AuctionLog;
 import pl.poznan.put.model.shopping.cart.item.ShoppingCartItem;
 import pl.poznan.put.model.user.User;
+import pl.poznan.put.util.callback.Callbacks;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
 import javax.persistence.EntityManager;
@@ -39,6 +42,13 @@ public class ShoppingHistoryController {
     @FXML
     private TableColumn<Data, String> sellerColumn;
 
+    @FXML
+    private Button userPageButton;
+
+    @Setter
+    private Runnable userPageCallback = Callbacks::noop;
+
+
     private User user;
 
     private static final EntityManager em = EntityManagerProvider.getEntityManager();
@@ -56,7 +66,7 @@ public class ShoppingHistoryController {
     @FXML
     private void initialize() {
         log.info("initialize");
-
+        userPageButton.setOnAction(a -> userPageCallback.run());
         auctionColumn.setCellValueFactory(new PropertyValueFactory<>("auction"));
         itemColumn.setCellValueFactory(new PropertyValueFactory<>("item"));
         destinationColumn.setCellValueFactory(new PropertyValueFactory<>("destination"));

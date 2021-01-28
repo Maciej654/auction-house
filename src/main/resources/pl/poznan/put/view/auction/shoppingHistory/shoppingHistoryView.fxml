@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<?import javafx.scene.control.TableColumn?><?import javafx.scene.control.TableView?><?import javafx.scene.layout.AnchorPane?>
-<AnchorPane prefHeight="400.0" prefWidth="735.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
-    xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="pl.poznan.put.controller.auction.shoppingHistory.ShoppingHistoryController">
+<AnchorPane prefHeight="400.0" prefWidth="735.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.poznan.put.controller.auction.shoppingHistory.ShoppingHistoryController">
     <TableView fx:id="table" layoutX="53.0" layoutY="130.0" prefHeight="200.0" prefWidth="616.0">
         <columns>
             <TableColumn fx:id="auctionColumn" prefWidth="99.0" text="auction name" />
@@ -14,4 +13,5 @@
             <TableColumn fx:id="sellerColumn" prefWidth="112.0" text="seller" />
         </columns>
     </TableView>
+   <Button fx:id="userPageButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="user page" />
 </AnchorPane>

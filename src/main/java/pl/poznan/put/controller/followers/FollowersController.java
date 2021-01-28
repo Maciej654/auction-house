@@ -10,9 +10,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.AllArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import pl.poznan.put.controller.followers.buttons.FollowButton;
 import pl.poznan.put.model.user.User;
+import pl.poznan.put.util.callback.Callbacks;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
 import javax.persistence.EntityManager;
@@ -32,10 +34,14 @@ public class FollowersController {
     public TextField                 userEntry;
     @FXML
     public Button                    allUsersButton;
-
+    @FXML
+    public Button userPageButton;
+    @Setter
+    private Runnable userPageCallback = Callbacks::noop;
     private static final EntityManager em = EntityManagerProvider.getEntityManager();
-
     private User user;
+
+
 
     @AllArgsConstructor
     @lombok.Data
@@ -47,14 +53,14 @@ public class FollowersController {
     @FXML
     private void initialize() {
         log.info("initialize");
-
+        userPageButton.setOnAction(a -> userPageCallback.run());
         userColumn.setCellValueFactory(new PropertyValueFactory<>("user"));
         actionColumn.setCellValueFactory(new PropertyValueFactory<>("button"));
     }
 
-    public void setUp() {
+    public void setUp(User user) {
         if (em == null) { return; }
-        user = em.find(User.class, "hercogmaciej@gmail.com"); //toDo integrate with other views
+        this.user = user;
         showAllRows();
     }
 

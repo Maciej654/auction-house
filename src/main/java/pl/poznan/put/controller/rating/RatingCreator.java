@@ -6,12 +6,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.rating.Rating;
 import pl.poznan.put.model.shopping.cart.item.ShoppingCartItem;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.popup.PopUpWindow;
+import pl.poznan.put.util.callback.Callbacks;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
 import javax.persistence.EntityManager;
@@ -32,16 +35,21 @@ public class RatingCreator {
     public               TextField         ratingEntry;
     @FXML
     public               TextField         commentEntry;
-    private static final EntityManager     entityManager = EntityManagerProvider.getEntityManager();
+    @FXML
+    public               Button            userPageButton;
+
+    private static final EntityManager em = EntityManagerProvider.getEntityManager();
+
+    @Setter
     private              User              user;
+    @Setter
+    private Runnable userPageCallback = Callbacks::noop;
 
     @FXML
     private void initialize() {
         log.info("initialize");
+        userPageButton.setOnAction(a -> userPageCallback.run());
 
-        //todo maybe make presentation more readable
-        user = Objects.requireNonNull(entityManager)
-                      .find(User.class, "jacek.hercog@gmail.com");//toDO get the User from login view
         List<String> collect = shoppingCartItemStream()
                 .filter(i -> i.getRating() == null) //for some reasons this can't be done in the query
                 .map(ShoppingCartItem::getAuction)
@@ -52,7 +60,7 @@ public class RatingCreator {
 
     @FXML
     public void buttonClicked() {
-        if (!validate()) return;
+        if (!validate() || em == null) return;
         int    score = Integer.parseInt(ratingEntry.getText());
         String value = choiceBox.getValue();
         Auction auction = shoppingCartItemStream().map(ShoppingCartItem::getAuction)
@@ -61,17 +69,18 @@ public class RatingCreator {
                                                   .orElse(null);
         if (auction == null) return;
         Rating            rating      = new Rating(auction, user, score, commentEntry.getText());
-        EntityTransaction transaction = Objects.requireNonNull(entityManager).getTransaction();
+        EntityTransaction transaction = em.getTransaction();
         transaction.begin();
-        entityManager.merge(rating); //persist z jakiegos powodu rzuca error
+        em.merge(rating);
         transaction.commit();
         refresh();
     }
 
     private void refresh() {
-        Objects.requireNonNull(entityManager).clear(); //whe can't use cached values
+        if(em == null) { return; }
+        em.clear(); //we can't use cached values
         List<String> collect = shoppingCartItemStream()
-                .filter(i -> i.getRating() == null) //for some reasons this can't be done in the query
+                .filter(i -> i.getRating() == null)
                 .map(ShoppingCartItem::getAuction)
                 .map(this::auctionAttributes).collect(Collectors.toList());
         ObservableList<String> x = FXCollections.observableArrayList(collect);
@@ -99,8 +108,10 @@ public class RatingCreator {
     }
 
     private Stream<ShoppingCartItem> shoppingCartItemStream() {
-        TypedQuery<ShoppingCartItem> query = Objects.requireNonNull(entityManager)
-                                                    .createQuery("select item from ShoppingCartItem item where item" +
+        if(em == null) {
+            return Stream.empty();
+        }
+        TypedQuery<ShoppingCartItem> query = em.createQuery("select item from ShoppingCartItem item where item" +
                                                                  ".buyer = :buyer and item.auction.status = :status",
                                                                  ShoppingCartItem.class);
         query.setParameter("buyer", user);

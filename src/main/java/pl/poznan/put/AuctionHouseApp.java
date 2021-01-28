@@ -25,7 +25,6 @@ import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.util.view.loader.ViewLoader;
 
-import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
 @Slf4j
@@ -62,6 +61,13 @@ public class AuctionHouseApp extends Application {
             controller.setAuctionsCallback(this::runBrowserPage);
             controller.setEditCallback(this::runUserUpdatePage);
             controller.setCreateAuctionCallback(this::runAuctionCreatePage);
+
+            controller.setReviewCreatorCallback(() -> runRatingCreator(user));
+            controller.setShoppingCartBrowserCallback(() -> runShoppingCart(user));
+            controller.setReviewBrowserCallback(() -> runRatingBrowser(user));
+            controller.setFollowerCreatorCallback(() -> runFollowerCreator(user));
+            controller.setDeliveryCallback(() -> runDeliveryPreferencesCreator(user));
+            controller.setHistoryCallback(() -> runShoppingHistory(user));
         });
     }
 
@@ -100,6 +106,7 @@ public class AuctionHouseApp extends Application {
                 controller -> controller.setShowAuctionDetails(showAuctionDetails);
 
         this.runPage(BrowserController.class, controller -> {
+            controller.setUserPageCallback(() -> runUserPage(user));
             controller.setShowAuctionDetails(showAuctionDetails);
             controller.getUserProperty().setValue(user);
         });
@@ -114,35 +121,45 @@ public class AuctionHouseApp extends Application {
         });
     }
 
-    private void runRatingBrowser() {
-        this.runPage(RatingBrowser.class, controller -> {
-        });
+    private void runRatingBrowser(User user) {
+        this.runPage(RatingBrowser.class, controller -> controller.setUserPageCallback(() -> this.runUserPage(user)));
     }
 
-    private void runRatingCreator() {
+    private void runRatingCreator(User user) {
         this.runPage(RatingCreator.class, controller -> {
+            controller.setUserPageCallback(() -> runUserPage(user));
+            controller.setUser(user);
+
         });
     }
 
-    private void runDeliveryPreferencesCreator() {
-        this.runPage(DeliveryCreatorController.class, DeliveryCreatorController::setup);
+    private void runDeliveryPreferencesCreator(User user) {
+        this.runPage(DeliveryCreatorController.class,controller -> {
+            controller.setUserPageCallback(() -> runUserPage(user));
+            controller.setup();
+        });
     }
 
-    private void runShoppingCart() {
-        this.runPage(ShoppingCartController.class, ShoppingCartController::setup);
+    private void runShoppingCart(User user) {
+        this.runPage(ShoppingCartController.class, controller ->{
+            controller.setUserPageCallback(() -> this.runUserPage(user));
+            controller.setup(user);
+        } );
     }
 
-    private void runShoppingHistory() {
-        this.runPage(ShoppingHistoryController.class, ShoppingHistoryController::setup);
+    private void runShoppingHistory(User user) {
+        this.runPage(ShoppingHistoryController.class, controller -> {
+            controller.setUserPageCallback(() -> runUserPage(user));
+            controller.setup();
+        });
     }
 
-    private void runFollowerCreator() {
-        this.runPage(FollowersController.class, FollowersController::setUp);
+    private void runFollowerCreator(User user) {
+        this.runPage(FollowersController.class, controller ->{
+            controller.setUp(user);
+            controller.setUserPageCallback(() -> this.runUserPage(user));
+        });
     }
-
-   /* private void watchlist(){
-        this.runPage(AuctionWatchListController.class, AuctionWatchListController::setup);
-    }*/
 
 
     @Override

@@ -13,6 +13,7 @@ import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -42,6 +43,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class UserPageController {
+
     public enum Type {
         PUBLIC,
         PRIVATE
@@ -64,6 +66,24 @@ public class UserPageController {
 
     @FXML
     private Label userLabel;
+
+    @FXML
+    private Button shoppingCartButton;
+
+    @FXML
+    private Button followerButton;
+
+    @FXML
+    private Button reviewCreatorButton;
+
+    @FXML
+    private Button reviewBrowserButton;
+
+    @FXML
+    private Button deliveryButton;
+
+    @FXML
+    private Button historyButton;
 
     @Getter
     private final ObjectProperty<User> userProperty = new SimpleObjectProperty<>();
@@ -89,6 +109,24 @@ public class UserPageController {
     @Setter
     private Consumer<Auction> thumbnailCallback = Callbacks::noop;
 
+    @Setter
+    private Runnable reviewCreatorCallback = Callbacks::noop;
+
+    @Setter
+    private Runnable reviewBrowserCallback = Callbacks::noop;
+
+    @Setter
+    private Runnable shoppingCartBrowserCallback = Callbacks::noop;
+
+    @Setter
+    private Runnable followerCreatorCallback = Callbacks::noop;
+
+    @Setter
+    private Runnable historyCallback = Callbacks::noop;
+
+    @Setter
+    private Runnable deliveryCallback = Callbacks::noop;
+
     private final ObservableMap<Auction, Parent> thumbnailCache =
             new SimpleMapProperty<>(FXCollections.observableHashMap());
 
@@ -97,6 +135,17 @@ public class UserPageController {
     @FXML
     private void initialize() {
         log.info("initialize");
+        shoppingCartButton.setOnAction(a -> System.out.println("shoppingCartButton"));
+        followerButton.setOnAction(a -> System.out.println("followerButton"));
+        reviewBrowserButton.setOnAction(a -> System.out.println("reviewBrowserButton"));
+        reviewCreatorButton.setOnAction(a -> System.out.println("reviewCreatorButton"));
+
+        reviewCreatorButton.setOnAction(a -> reviewCreatorCallback.run());
+        shoppingCartButton.setOnAction(a -> shoppingCartBrowserCallback.run());
+        reviewBrowserButton.setOnAction(a -> reviewBrowserCallback.run());
+        followerButton.setOnAction(a -> followerCreatorCallback.run());
+        historyButton.setOnAction(a -> historyCallback.run());
+        deliveryButton.setOnAction(a -> deliveryCallback.run());
 
         HBox.setHgrow(spacePane, Priority.ALWAYS);
 

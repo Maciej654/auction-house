@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import pl.poznan.put.model.delivery.preference.DeliveryPreference;
 import pl.poznan.put.model.user.User;
@@ -38,11 +39,18 @@ public class DeliveryCreatorController {
     @FXML
     public TableColumn<Data, Button> buttonColumn;
 
+    @FXML
+    public Button userPageButton;
+
+    @Setter
+    private Runnable userPageCallback;
+
     private static final EntityManager em = EntityManagerProvider.getEntityManager();
 
     public Label errorLabel;
 
     private User user;
+
 
     @lombok.Data
     @AllArgsConstructor
@@ -80,7 +88,7 @@ public class DeliveryCreatorController {
     @FXML
     private void initialize() {
         log.info("initialize");
-
+        userPageButton.setOnAction(a -> userPageCallback.run());
         addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
         buttonColumn.setCellValueFactory(new PropertyValueFactory<>("button"));
     }

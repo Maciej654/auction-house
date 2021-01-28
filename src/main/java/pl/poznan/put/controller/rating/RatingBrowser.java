@@ -4,16 +4,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.Data;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 import pl.poznan.put.model.rating.Rating;
 import pl.poznan.put.popup.PopUpWindow;
+import pl.poznan.put.util.callback.Callbacks;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
 import javax.persistence.EntityManager;
@@ -43,8 +42,12 @@ public class RatingBrowser {
     public TableColumn<ReviewData, LocalDateTime> dateColumn;
     @FXML
     public TableColumn<ReviewData, String>        reviewerColumn;
+    @FXML
+    private Button userPageButton;
 
     private static final EntityManager entityManager = EntityManagerProvider.getEntityManager();
+    @Setter
+    private Runnable userPageCallback = Callbacks::noop;
 
     @SuperBuilder
     @Data
@@ -78,7 +81,7 @@ public class RatingBrowser {
     @FXML
     private void initialize() {
         log.info("initialize");
-
+        userPageButton.setOnAction(a -> userPageCallback.run());
         ratingColumn.setCellValueFactory(new PropertyValueFactory<>("rating"));
         auctionNameColumn.setCellValueFactory(new PropertyValueFactory<>("auction_name"));
         commentColumn.setCellValueFactory(new PropertyValueFactory<>("comment"));
