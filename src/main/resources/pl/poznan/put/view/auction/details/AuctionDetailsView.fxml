@@ -59,11 +59,11 @@
     </GridPane>
     <TabPane fx:id="auctionTabPane" minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE"
         tabMaxHeight="100.0" tabMaxWidth="100.0" tabMinWidth="100.0" VBox.vgrow="ALWAYS">
-        <Tab closable="false" text="Description">
-            <WebView fx:id="descriptionWebView" disable="true" />
-        </Tab>
         <Tab closable="false" text="Photos">
             <fx:include fx:id="auctionPhotos" source="photos/AuctionPhotosView.fxml" />
+        </Tab>
+        <Tab closable="false" text="Description">
+            <WebView fx:id="descriptionWebView" disable="true" />
         </Tab>
         <Tab closable="false" text="Specifics">
             <fx:include fx:id="auctionDetailsSpecifics" source="specifics/AuctionDetailsSpecificsView.fxml" />

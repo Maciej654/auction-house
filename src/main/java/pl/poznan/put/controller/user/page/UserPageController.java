@@ -41,12 +41,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserPageController {
     @FXML
-    private Button followButton;
-
-    @FXML
-    private VBox publicOptionsVBox;
-
-    @FXML
     private FlowPane thumbnailsFlowPane;
 
     @FXML
@@ -95,21 +89,6 @@ public class UserPageController {
 
     private final ObservableList<Auction> auctionObservableList =
             new SimpleListProperty<>(FXCollections.observableArrayList());
-
-    private void setOptions(Options options) {
-        switch (options) {
-            case PUBLIC -> {
-                privateOptionsVBox.setVisible(false);
-                publicOptionsVBox.setVisible(true);
-                publicOptionsVBox.toFront();
-            }
-            case PRIVATE -> {
-                publicOptionsVBox.setVisible(false);
-                privateOptionsVBox.setVisible(true);
-                privateOptionsVBox.toFront();
-            }
-        }
-    }
 
     public void setThumbnailCallback(Consumer<Auction> callback) {
         auctionObservableList.addListener(new AuctionThumbnailListChangeListener(callback, thumbnailCache));
@@ -194,7 +173,7 @@ public class UserPageController {
                 log.info("found {} auctions", auctions.size());
                 auctionObservableList.setAll(auctions);
                 searchTextField.setText(StringUtils.EMPTY);
-                setOptions(privatePage ? Options.PRIVATE : Options.PUBLIC);
+                privateOptionsVBox.setVisible(privatePage);
             }
         });
     }

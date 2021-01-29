@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TableColumn?><?import javafx.scene.control.TableView?>
+<?import javafx.geometry.Insets?><?import javafx.scene.control.TableColumn?><?import javafx.scene.control.TableView?>
 <TableView fx:id="historyTableView" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1"
     xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="pl.poznan.put.controller.auction.details.history.AuctionHistoryController">
@@ -10,4 +10,7 @@
         <TableColumn fx:id="descriptionTableColumn" editable="false" maxWidth="1.7976931348623157E308"
             minWidth="-Infinity" prefWidth="450.0" sortable="false" text="Action" />
     </columns>
+    <padding>
+        <Insets bottom="10.0" />
+    </padding>
 </TableView>

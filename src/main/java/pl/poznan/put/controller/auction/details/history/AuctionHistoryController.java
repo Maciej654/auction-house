@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.auction.log.AuctionLog;
+import pl.poznan.put.util.converter.DateConverterUtils;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
 import javax.persistence.TypedQuery;
@@ -52,8 +53,8 @@ public class AuctionHistoryController {
     @lombok.Data
     @AllArgsConstructor
     public static class Data {
-        private LocalDateTime timestamp;
-        private String        description;
+        private String timestamp;
+        private String description;
     }
 
     public void updateHistory() {
@@ -70,7 +71,10 @@ public class AuctionHistoryController {
 
         selectQuery.setParameter(AuctionLog.PARAM_AUCTION, auction);
         val resultList = selectQuery.getResultStream()
-                                    .map(r -> new Data(r.getTimestamp(), r.getDescription()))
+                                    .map(r -> new Data(
+                                            DateConverterUtils.toString(r.getTimestamp()),
+                                            r.getDescription())
+                                    )
                                     .collect(Collectors.toList());
         val auctionLogs = FXCollections.observableArrayList(resultList);
         historyTableView.setItems(auctionLogs);
