@@ -183,6 +183,7 @@ public class BrowserController {
                                        WatchListItem.class);
             query.setParameter("user", CurrentUser.getLoggedInUser());
             itemsOnAnyWatchList = query.getResultList();
+
         }
     }
 
@@ -268,12 +269,12 @@ public class BrowserController {
         if (watchListChoiceBox.getValue() == null) {
             return true;
         }
-        else if (em != null) {
-            long count = itemsOnAnyWatchList.stream()
-                                            .filter(i -> i.getName().equals(watchListChoiceBox.getValue()) &&
-                                                         i.getAuction().equals(auction) &&
-                                                         i.getFollower().equals(CurrentUser.getLoggedInUser())).count();
-            return count > 0;
+        for (int i = 0; i < itemsOnAnyWatchList.size(); i++) {
+            if (itemsOnAnyWatchList.get(i).getName().equals(watchListChoiceBox.getValue())
+                    && itemsOnAnyWatchList.get(i).getAuction().equals(auction)
+                    && itemsOnAnyWatchList.get(i).getFollower().getEmail().equals(CurrentUser.getLoggedInUser().getEmail())){
+                return true;
+            }
         }
         return false;
 
