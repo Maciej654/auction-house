@@ -9,11 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -31,6 +27,7 @@ import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.model.ad.Ad;
 import pl.poznan.put.model.ad.personal.PersonalAd;
 import pl.poznan.put.model.auction.Auction;
+import pl.poznan.put.model.follower.Follower;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.model.watch.list.item.WatchListItem;
 import pl.poznan.put.util.callback.Callbacks;
@@ -48,6 +45,8 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class BrowserController {
+    @FXML
+    private CheckBox followedUsersCheckBox;
     @FXML
     private Pane spacePane;
 
@@ -124,6 +123,8 @@ public class BrowserController {
 
     private List<WatchListItem> itemsOnAnyWatchList = new ArrayList<>();
 
+    private List<Follower> followees = new ArrayList<>();
+
     @SuperBuilder
     @lombok.Data
     public static class Data {
@@ -153,6 +154,7 @@ public class BrowserController {
         List<Auction> listofAuctions = new ArrayList<>();
         if (em != null) {
             prepareWatchList();
+            prepareFollowee();
             TypedQuery<Auction> query = em.createQuery("select auction from Auction auction ",
                                                        Auction.class);
             listofAuctions = query.getResultStream()
@@ -160,6 +162,7 @@ public class BrowserController {
                                   .filter(this::filterByWatchList)
                                   .filter(this::filterByName)
                                   .filter(this::filterByType)
+                                    .filter(this::filterByFollowers)
                                   .collect(Collectors.toList());
         }
         List<Data> list = listofAuctions.stream()
@@ -177,6 +180,14 @@ public class BrowserController {
         table.setItems(obsList);
     }
 
+    private boolean filterByFollowers(Auction auction) {
+        if(!followedUsersCheckBox.isSelected()){
+            return true;
+        }
+        return followees.stream()
+                .anyMatch(i -> i.getFollowee().getEmail().equals(auction.getSeller().getEmail()));
+    }
+
     private void prepareWatchList() {
         if (em != null) {
             var query = em.createQuery("select item from WatchListItem item where  item.follower = :user",
@@ -186,8 +197,14 @@ public class BrowserController {
 
         }
     }
-
-
+    private void prepareFollowee() {
+        if (em != null) {
+            var query = em.createQuery("select f from Follower f  where f.follower = :follower",
+                    Follower.class);
+            query.setParameter("follower", CurrentUser.getLoggedInUser());
+            followees = query.getResultList();
+        }
+    }
     @FXML
     private void initialize() {
         log.info("initialize");
