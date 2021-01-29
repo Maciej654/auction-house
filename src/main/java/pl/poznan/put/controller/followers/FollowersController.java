@@ -2,7 +2,6 @@ package pl.poznan.put.controller.followers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -25,22 +24,29 @@ import java.util.stream.Collectors;
 @Slf4j
 public class FollowersController {
     @FXML
-    public TableView<Data>           tableView;
+    public TableView<Data> tableView;
+
     @FXML
     public TableColumn<Data, String> userColumn;
+
     @FXML
     public TableColumn<Data, Button> actionColumn;
+
     @FXML
-    public TextField                 userEntry;
+    public TextField userEntry;
+
     @FXML
-    public Button                    allUsersButton;
+    public Button allUsersButton;
+
     @FXML
     public Button userPageButton;
+
     @Setter
     private Runnable userPageCallback = Callbacks::noop;
-    private static final EntityManager em = EntityManagerProvider.getEntityManager();
-    private User user;
 
+    private static final EntityManager em = EntityManagerProvider.getEntityManager();
+
+    private User user;
 
 
     @AllArgsConstructor
@@ -59,14 +65,14 @@ public class FollowersController {
     }
 
     public void setUp(User user) {
-        if (em == null) { return; }
+        if (em == null) return;
         this.user = user;
         showAllRows();
     }
 
     @FXML
-    public void userEntered(ActionEvent actionEvent) {
-        if (em == null) { return; }
+    public void userEntered() {
+        if (em == null) return;
 
         TypedQuery<User> query = em.createQuery("select user from User user where user <> :user", User.class);
         query.setParameter("user", user);
@@ -81,16 +87,17 @@ public class FollowersController {
     }
 
     @FXML
-    public void allUsersClicked(ActionEvent actionEvent) {
+    public void allUsersClicked() {
         showAllRows();
     }
 
     private void showAllRows() {
-        if (em == null) { return; }
+        if (em == null) return;
+
         TypedQuery<User> query = em.createQuery("select user from User user where user <> :user", User.class);
         query.setParameter("user", user);
         List<Data> rows = query.getResultStream()
-                               .map(u -> new Data(u.getEmail(), new FollowButton(user, u)))
+                               .map(u -> new Data(u.getFullName(), new FollowButton(user, u)))
                                .collect(Collectors.toList());
         ObservableList<Data> obs = FXCollections.observableArrayList(rows);
         tableView.setItems(obs);

@@ -72,7 +72,7 @@ public class AuctionHistoryController {
         selectQuery.setParameter(AuctionLog.PARAM_AUCTION, auction);
         val resultList = selectQuery.getResultStream()
                                     .map(r -> new Data(
-                                            DateConverterUtils.toString(r.getTimestamp()),
+                                            DateConverterUtils.logDateToString(r.getTimestamp()),
                                             r.getDescription())
                                     )
                                     .collect(Collectors.toList());

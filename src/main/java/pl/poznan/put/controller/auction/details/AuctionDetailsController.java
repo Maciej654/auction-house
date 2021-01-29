@@ -146,7 +146,7 @@ public class AuctionDetailsController {
         val auction = auctionProperty.get();
         if (auction != null) {
             auctionPriceLabel.setText(PriceConverterUtils.toString(auction.getPrice()));
-            auctionEndLabel.setText(DateConverterUtils.toString(auction.getEndDate()));
+            auctionEndLabel.setText(DateConverterUtils.endDateToString(auction.getEndDate()));
         }
     }
 

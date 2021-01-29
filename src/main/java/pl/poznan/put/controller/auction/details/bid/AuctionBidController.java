@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import pl.poznan.put.AuctionHouseApp;
 import pl.poznan.put.controller.auction.crud.update.task.AuctionBidUpdateTask;
 import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.number.GreaterThanOrEqualDoublePropertyValidator;
@@ -114,6 +115,10 @@ public class AuctionBidController extends AbstractValidatedController {
         auctionProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) currentPriceProperty.set(newValue.getPrice());
         });
+
+        AuctionHouseApp.isRunningProperty().addListener((observable, oldValue, newValue) -> {
+            if (Boolean.FALSE.equals(newValue)) timer.cancel();
+        });
     }
 
     @Override
@@ -147,7 +152,7 @@ public class AuctionBidController extends AbstractValidatedController {
                                 currentPriceProperty.set(price);
                                 afterBidCallback.run();
                             }),
-                            Callbacks::noop,
+                            e -> log.error(e.getMessage(), e),
                             () -> Platform.runLater(this::bindBidButton)
                     ),
                     ProjectTaskUtils.IMMEDIATE

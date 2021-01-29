@@ -119,7 +119,7 @@ public class AuctionCreateController extends AbstractValidatedController {
         val endLocalDate     = LocalDate.now().plusDays(30);
         val endLocalTime     = LocalTime.now();
         val endLocalDateTime = LocalDateTime.of(endLocalDate, endLocalTime);
-        val endText          = DateConverterUtils.toString(endLocalDateTime);
+        val endText          = DateConverterUtils.endDateToString(endLocalDateTime);
         endLabel.setText(endText);
     }
 

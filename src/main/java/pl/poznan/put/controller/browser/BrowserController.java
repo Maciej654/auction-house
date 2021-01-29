@@ -1,15 +1,18 @@
 package pl.poznan.put.controller.browser;
 
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleMapProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -31,11 +34,11 @@ import pl.poznan.put.model.follower.Follower;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.model.watch.list.item.WatchListItem;
 import pl.poznan.put.util.callback.Callbacks;
+import pl.poznan.put.util.converter.DateConverterUtils;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,7 +51,7 @@ public class BrowserController {
     @FXML
     private CheckBox followedUsersCheckBox;
     @FXML
-    private Pane spacePane;
+    private Pane     spacePane;
 
     @FXML
     private VBox suggestedAuctionsVBox;
@@ -75,7 +78,7 @@ public class BrowserController {
     private TableColumn<Data, Double> price_column;
 
     @FXML
-    private TableColumn<Data, LocalDateTime> end_date_column;
+    private TableColumn<Data, String> end_date_column;
 
     @FXML
     private TableColumn<Data, String> item_name_column;
@@ -128,13 +131,13 @@ public class BrowserController {
     @SuperBuilder
     @lombok.Data
     public static class Data {
-        private String        AuctionName;
-        private String        itemName;
-        private LocalDateTime endDate;
-        private double        price;
-        private String        seller;
-        private String        category;
-        private Button        details;
+        private String AuctionName;
+        private String itemName;
+        private String endDate;
+        private double price;
+        private String seller;
+        private String category;
+        private Button details;
     }
 
     private class AuctionDetailsButton extends Button {
@@ -162,14 +165,14 @@ public class BrowserController {
                                   .filter(this::filterByWatchList)
                                   .filter(this::filterByName)
                                   .filter(this::filterByType)
-                                    .filter(this::filterByFollowers)
+                                  .filter(this::filterByFollowers)
                                   .collect(Collectors.toList());
         }
         List<Data> list = listofAuctions.stream()
                                         .map(auction -> Data.builder()
                                                             .AuctionName(auction.getAuctionName())
                                                             .itemName(auction.getItemName())
-                                                            .endDate(auction.getEndDate())
+                                                            .endDate(DateConverterUtils.endDateToString(auction.getEndDate()))
                                                             .price(auction.getPrice())
                                                             .seller(auction.getSeller().getEmail())
                                                             .category(auction.getCategory())
@@ -181,11 +184,11 @@ public class BrowserController {
     }
 
     private boolean filterByFollowers(Auction auction) {
-        if(!followedUsersCheckBox.isSelected()){
+        if (!followedUsersCheckBox.isSelected()) {
             return true;
         }
         return followees.stream()
-                .anyMatch(i -> i.getFollowee().getEmail().equals(auction.getSeller().getEmail()));
+                        .anyMatch(i -> i.getFollowee().getEmail().equals(auction.getSeller().getEmail()));
     }
 
     private void prepareWatchList() {
@@ -197,14 +200,16 @@ public class BrowserController {
 
         }
     }
+
     private void prepareFollowee() {
         if (em != null) {
             var query = em.createQuery("select f from Follower f  where f.follower = :follower",
-                    Follower.class);
+                                       Follower.class);
             query.setParameter("follower", CurrentUser.getLoggedInUser());
             followees = query.getResultList();
         }
     }
+
     @FXML
     private void initialize() {
         log.info("initialize");
@@ -286,10 +291,13 @@ public class BrowserController {
         if (watchListChoiceBox.getValue() == null) {
             return true;
         }
-        for (int i = 0; i < itemsOnAnyWatchList.size(); i++) {
-            if (itemsOnAnyWatchList.get(i).getName().equals(watchListChoiceBox.getValue())
-                    && itemsOnAnyWatchList.get(i).getAuction().equals(auction)
-                    && itemsOnAnyWatchList.get(i).getFollower().getEmail().equals(CurrentUser.getLoggedInUser().getEmail())){
+        for (WatchListItem watchListItem : itemsOnAnyWatchList) {
+            if (watchListItem.getName().equals(watchListChoiceBox.getValue())
+                && watchListItem.getAuction().equals(auction)
+                && watchListItem
+                        .getFollower()
+                        .getEmail()
+                        .equals(CurrentUser.getLoggedInUser().getEmail())) {
                 return true;
             }
         }
