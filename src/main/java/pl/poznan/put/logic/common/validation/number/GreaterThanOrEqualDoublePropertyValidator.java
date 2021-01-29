@@ -1,5 +1,7 @@
 package pl.poznan.put.logic.common.validation.number;
 
+import pl.poznan.put.util.converter.DoubleConverterUtils;
+
 public class GreaterThanOrEqualDoublePropertyValidator extends AbstractDoublePropertyValidator {
     private final Double value;
 
@@ -10,6 +12,6 @@ public class GreaterThanOrEqualDoublePropertyValidator extends AbstractDoublePro
 
     @Override
     public String getErrorMessage() {
-        return field + " must be at least " + value;
+        return field + " must be at least " + DoubleConverterUtils.toString(value);
     }
 }

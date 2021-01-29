@@ -24,11 +24,12 @@ import pl.poznan.put.controller.auction.crud.create.task.AuctionCreateTask;
 import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.empty.NotBlankPropertyValidator;
 import pl.poznan.put.logic.common.validation.number.PositiveDoublePropertyValidator;
+import pl.poznan.put.logic.common.validation.number.PricePropertyValidator;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.auction.Auction.Status;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.util.callback.Callbacks;
-import pl.poznan.put.util.date.ProjectDateUtils;
+import pl.poznan.put.util.converter.DateConverterUtils;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 import pl.poznan.put.util.task.ProjectTaskUtils;
 import pl.poznan.put.util.validation.Validation;
@@ -37,7 +38,6 @@ import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Timer;
 import java.util.function.Consumer;
 
@@ -119,7 +119,7 @@ public class AuctionCreateController extends AbstractValidatedController {
         val endLocalDate     = LocalDate.now().plusDays(30);
         val endLocalTime     = LocalTime.now();
         val endLocalDateTime = LocalDateTime.of(endLocalDate, endLocalTime);
-        val endText          = endLocalDateTime.format(DateTimeFormatter.ofPattern(ProjectDateUtils.PATTERN));
+        val endText          = DateConverterUtils.toString(endLocalDateTime);
         endLabel.setText(endText);
     }
 
@@ -178,7 +178,7 @@ public class AuctionCreateController extends AbstractValidatedController {
                 initialPriceTextField.textProperty(),
                 initialPriceValid,
                 initialPriceWarning,
-                new PositiveDoublePropertyValidator("Initial price")
+                new PricePropertyValidator(new PositiveDoublePropertyValidator("Initial price"))
         );
 
         // item name

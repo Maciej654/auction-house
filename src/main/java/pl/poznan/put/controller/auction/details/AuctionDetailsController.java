@@ -22,6 +22,8 @@ import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.util.callback.Callbacks;
+import pl.poznan.put.util.converter.DateConverterUtils;
+import pl.poznan.put.util.converter.PriceConverterUtils;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -118,8 +120,7 @@ public class AuctionDetailsController {
                 userHyperlink.setText(seller.getFullName());
                 auctionNameLabel.setText(newValue.getAuctionName());
                 itemNameLabel.setText(newValue.getItemName());
-                auctionPriceLabel.setText(newValue.getPrice() + " PLN");
-                auctionEndLabel.setText(newValue.getEndDate().toString());
+                updateLabels();
                 auctionPhotosController.setPictures(newValue.getPictures());
                 descriptionWebView.getEngine().loadContent(newValue.getItemDescription(), "text/html");
 
@@ -144,8 +145,8 @@ public class AuctionDetailsController {
     public void updateLabels() {
         val auction = auctionProperty.get();
         if (auction != null) {
-            auctionPriceLabel.setText(auction.getPrice() + " PLN");
-            auctionEndLabel.setText(auction.getEndDate().toString());
+            auctionPriceLabel.setText(PriceConverterUtils.toString(auction.getPrice()));
+            auctionEndLabel.setText(DateConverterUtils.toString(auction.getEndDate()));
         }
     }
 

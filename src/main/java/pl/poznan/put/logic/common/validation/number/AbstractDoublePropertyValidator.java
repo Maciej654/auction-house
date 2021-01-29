@@ -2,6 +2,7 @@ package pl.poznan.put.logic.common.validation.number;
 
 import lombok.val;
 import pl.poznan.put.logic.common.validation.AbstractPropertyValidator;
+import pl.poznan.put.util.converter.DoubleConverterUtils;
 
 import java.util.function.Predicate;
 
@@ -17,7 +18,7 @@ abstract public class AbstractDoublePropertyValidator extends AbstractPropertyVa
     public Predicate<String> getPredicate() {
         return s -> {
             try {
-                val value = Double.parseDouble(s);
+                val value = DoubleConverterUtils.fromString(s);
                 return check.test(value);
             }
             catch (NumberFormatException | NullPointerException ignored) {

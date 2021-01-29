@@ -18,9 +18,11 @@ import lombok.val;
 import pl.poznan.put.controller.auction.crud.update.task.AuctionBidUpdateTask;
 import pl.poznan.put.controller.common.AbstractValidatedController;
 import pl.poznan.put.logic.common.validation.number.GreaterThanOrEqualDoublePropertyValidator;
+import pl.poznan.put.logic.common.validation.number.PricePropertyValidator;
 import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.model.auction.Auction;
 import pl.poznan.put.util.callback.Callbacks;
+import pl.poznan.put.util.converter.DoubleConverterUtils;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 import pl.poznan.put.util.task.ProjectTaskUtils;
 
@@ -65,7 +67,8 @@ public class AuctionBidController extends AbstractValidatedController {
     protected void installCurrentValidation(Double currentPrice) {
         uninstallCurrentValidation();
 
-        val validator = new GreaterThanOrEqualDoublePropertyValidator("New bidding", currentPrice + 1);
+        val validator = new PricePropertyValidator(new GreaterThanOrEqualDoublePropertyValidator("New bidding",
+                                                                                                 currentPrice + 1));
 
         val predicate = validator.getPredicate();
         currentListener = (observable, oldValue, newValue) -> {
@@ -133,7 +136,7 @@ public class AuctionBidController extends AbstractValidatedController {
         log.info("bid");
         val auction = auctionProperty.get();
         if (auction != null) try {
-            val price = Double.parseDouble(priceEntry.getText());
+            val price = DoubleConverterUtils.fromString(priceEntry.getText());
             unbindBidButton();
             timer.schedule(
                     new AuctionBidUpdateTask(
