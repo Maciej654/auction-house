@@ -9,7 +9,6 @@ import pl.poznan.put.model.auction.log.AuctionLog;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
 
-import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
 import java.time.LocalDateTime;
 import java.util.TimerTask;
@@ -32,11 +31,16 @@ public class AuctionBidUpdateTask extends TimerTask {
 
     private final Runnable cleanup;
 
-    private void delayAuction(Auction auction, EntityManager em) {
-        val query = em.createStoredProcedureQuery("subprograms.delayAuctionsEnd");
-        query.registerStoredProcedureParameter("p_id", Long.class, ParameterMode.IN);
-        query.setParameter("p_id", auction.getId());
-        query.execute();
+    private void delayAuction(Auction auction) {
+        val em          = EntityManagerProvider.getEntityManager();
+        val transaction = em.getTransaction();
+        transaction.begin();
+        em.createStoredProcedureQuery("SUBPROGRAMS.DELAY_AUCTION_END")
+          .registerStoredProcedureParameter("p_id", Long.class, ParameterMode.IN)
+          .setParameter("p_id", auction.getId())
+          .execute();
+        transaction.commit();
+        auction.refreshEndDate();
     }
 
     @Override
@@ -55,9 +59,9 @@ public class AuctionBidUpdateTask extends TimerTask {
             );
             auction.addLog(auctionLog);
             transaction.begin();
-            delayAuction(auction, em);
             em.merge(auction);
             transaction.commit();
+            delayAuction(auction);
             onSuccessCallback.run();
         }
         catch (Exception e) {

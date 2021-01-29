@@ -95,6 +95,13 @@ public abstract class Auction implements Serializable {
     @Column(name = "END_DATE")
     private LocalDateTime endDate;
 
+    public void refreshEndDate() {
+        endDate = EntityManagerProvider.getEntityManager()
+                                       .createQuery("select auction.endDate from Auction auction where auction.id = :id", LocalDateTime.class)
+                                       .setParameter("id", id)
+                                       .getSingleResult();
+    }
+
     @Column(name = "PRICE")
     private double price;
 

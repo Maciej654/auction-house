@@ -393,17 +393,17 @@ ALTER TABLE watch_lists
     ADD CONSTRAINT watch_lists_follower_fk FOREIGN KEY (follower)
         REFERENCES users (email);
 
-CREATE OR REPLACE PACKAGE Subprograms IS
+CREATE OR REPLACE PACKAGE subprograms IS
 
-    FUNCTION calculateRating(p_reviewee VARCHAR) RETURN number ;
+    FUNCTION calculateRating(p_reviewee VARCHAR) RETURN DOUBLE PRECISION;
 
-    PROCEDURE delayAuctionsEnd(p_id NUMBER);
+    PROCEDURE delay_auction_end(p_id INTEGER);
 
-END Subprograms;
+END subprograms;
 
-CREATE OR REPLACE PACKAGE BODY Subprograms IS
+CREATE OR REPLACE PACKAGE BODY subprograms IS
 
-    FUNCTION calculateRating(p_reviewee VARCHAR) RETURN number is
+    FUNCTION calculateRating(p_reviewee VARCHAR) RETURN DOUBLE PRECISION is
         reviewee_rating number;
     begin
         select avg(r.rating)
@@ -414,11 +414,11 @@ CREATE OR REPLACE PACKAGE BODY Subprograms IS
         return reviewee_rating;
     end calculateRating;
 
-    PROCEDURE delayAuctionsEnd(p_id number) IS
+    PROCEDURE delay_auction_end(p_id integer) IS
     BEGIN
         update auctions
         set end_date = end_date + interval '1' day
         where auction_id = p_id;
-    END delayAuctionsEnd;
+    END delay_auction_end;
 
-END Subprograms;
+END subprograms;

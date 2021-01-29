@@ -247,8 +247,6 @@ public class BrowserController {
         ObservableList<String> obs        = FXCollections.observableArrayList((String) null);
         obs.addAll(resultList);
         watchListChoiceBox.setItems(obs);
-
-
     }
 
     private boolean filterByName(Auction auction) {
