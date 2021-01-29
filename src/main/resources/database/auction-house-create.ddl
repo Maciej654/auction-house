@@ -422,3 +422,35 @@ CREATE OR REPLACE PACKAGE BODY subprograms IS
     END delay_auction_end;
 
 END subprograms;
+
+create or replace trigger FINISHED_AUCTION_TRIGGER
+    before update of STATUS
+    on AUCTIONS
+    for each row
+    when ( NEW.STATUS = 'FINISHED' )
+begin
+    insert into ITEMS_IN_SHOPPING_CARTS
+    values (:NEW.AUCTION_ID, (
+        select ACTOR
+        from AUCTIONS_LOGS
+        where ACTION_DESCRIPTION like 'Auction bid to %'
+          and AUCTION = :NEW.AUCTION_ID
+          and TO_NUMBER(REGEXP_SUBSTR(ACTION_DESCRIPTION, '[0-9.]+')) = :NEW.PRICE
+    ));
+    :NEW.STATUS := 'IN_SHOPPING_CART';
+end;
+
+create or replace procedure update_auctions is
+begin
+    update auctions
+    set status = 'CANCELLED'
+    where end_date < sysdate
+      and status = 'CREATED';
+
+    update auctions
+    set status = 'FINISHED'
+    where end_date < sysdate
+      and status = 'BIDDING';
+
+    commit;
+end update_auctions;
