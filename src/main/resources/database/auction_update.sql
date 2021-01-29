@@ -5,13 +5,15 @@ BEGIN
             job_type => 'STORED_PROCEDURE',
             job_action => 'update_auctions',
             start_date => SYSTIMESTAMP,
-            repeat_interval => 'FREQ=HOURLY;INTERVAL=1;',
+            repeat_interval => 'FREQ=MINUTELY;INTERVAL=1;',
             auto_drop => FALSE,
-            comments => 'My new job');
+            comments => 'Periodically checks which auctions have to be finished or cancelled');
 END;
 
 -- to enable
-exec DBMS_SCHEDULER.enable('update_auctions_job');
+begin
+    DBMS_SCHEDULER.ENABLE('update_auctions_job');
+end;
 
 --to drop
 BEGIN
@@ -19,4 +21,6 @@ BEGIN
 END;
 
 --to disable
-exec DBMS_SCHEDULER.disable('update_auctions_job');
+begin
+    DBMS_SCHEDULER.DISABLE('update_auctions_job');
+end;
