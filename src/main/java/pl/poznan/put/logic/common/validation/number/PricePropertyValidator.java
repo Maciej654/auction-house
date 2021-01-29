@@ -22,6 +22,6 @@ public class PricePropertyValidator extends AbstractPropertyValidator<String> {
 
     @Override
     public String getErrorMessage() {
-        return abstractDoublePropertyValidator.getErrorMessage() + " and must have at most 2 decimal places";
+        return abstractDoublePropertyValidator.getErrorMessage() + " and can have at most 2 decimal places";
     }
 }
