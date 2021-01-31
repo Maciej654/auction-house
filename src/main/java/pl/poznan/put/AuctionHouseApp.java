@@ -42,9 +42,13 @@ public class AuctionHouseApp extends Application {
 
     private <T> void runPage(Class<T> clazz, Consumer<T> setup) {
         Platform.runLater(() -> {
-            val root      = ViewLoader.getParent(clazz, setup);
-            val nextScene = new Scene(root);
-            primaryStage.setScene(nextScene);
+            val root  = ViewLoader.getParent(clazz, setup);
+            var scene = primaryStage.getScene();
+            if (scene == null) {
+                scene = new Scene(root);
+                primaryStage.setScene(scene);
+            }
+            else scene.setRoot(root);
         });
     }
 
@@ -145,7 +149,7 @@ public class AuctionHouseApp extends Application {
     }
 
     private void runDeliveryPreferencesCreator(User user) {
-        this.runPage(DeliveryCreatorController.class,controller -> {
+        this.runPage(DeliveryCreatorController.class, controller -> {
             controller.setUser(user);
             controller.setUserPageCallback(() -> runUserPage(user));
             controller.setup();
@@ -153,10 +157,10 @@ public class AuctionHouseApp extends Application {
     }
 
     private void runShoppingCart(User user) {
-        this.runPage(ShoppingCartController.class, controller ->{
+        this.runPage(ShoppingCartController.class, controller -> {
             controller.setUserPageCallback(() -> this.runUserPage(user));
             controller.setup(user);
-        } );
+        });
     }
 
     private void runShoppingHistory(User user) {
@@ -168,7 +172,7 @@ public class AuctionHouseApp extends Application {
     }
 
     private void runFollowerCreator(User user) {
-        this.runPage(FollowersController.class, controller ->{
+        this.runPage(FollowersController.class, controller -> {
             controller.setUp(CurrentUser.getLoggedInUser());
             controller.setUserPageCallback(() -> this.runUserPage(user));
         });
@@ -183,7 +187,6 @@ public class AuctionHouseApp extends Application {
         primaryStage.getIcons().add(new Image("/icons/auction-32.png"));
         this.primaryStage = primaryStage;
         this.runLoginPage();
-
         primaryStage.show();
     }
 
