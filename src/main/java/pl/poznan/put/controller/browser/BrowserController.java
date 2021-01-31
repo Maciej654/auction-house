@@ -193,7 +193,7 @@ public class BrowserController {
 
     private void prepareWatchList() {
         if (em != null) {
-            var query = em.createQuery("select item from WatchListItem item where  item.follower = :user",
+            var query = em.createQuery("select item from WatchListItem item where  item.follower = :user order by item.name",
                                        WatchListItem.class);
             query.setParameter("user", CurrentUser.getLoggedInUser());
             itemsOnAnyWatchList = query.getResultList();
@@ -302,7 +302,6 @@ public class BrowserController {
             }
         }
         return false;
-
     }
 }
 

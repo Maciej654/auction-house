@@ -148,7 +148,7 @@ public class AuctionWatchListController {
         Auction auction = auctionProperty.get();
         User user = CurrentUser.getLoggedInUser();
 
-        var listsOfUserQuery = em.createQuery("select distinct list.name from WatchListItem list where list.follower = :user",String.class);
+        var listsOfUserQuery = em.createQuery("select distinct list.name from WatchListItem list where list.follower = :user order by list.name",String.class);
         listsOfUserQuery.setParameter("user", user);
         List<String> listsOfUser = listsOfUserQuery.getResultList();
 
@@ -166,7 +166,7 @@ public class AuctionWatchListController {
             return new ArrayList<>();
         }
         User user = CurrentUser.getLoggedInUser();
-        var listsOfUserQuery = em.createQuery("select distinct list.name from WatchListItem list where list.follower = :user", String.class);
+        var listsOfUserQuery = em.createQuery("select distinct list.name from WatchListItem list where list.follower = :user order by list.name", String.class);
         listsOfUserQuery.setParameter("user", user);
         try {
             return listsOfUserQuery.getResultList();
@@ -180,7 +180,7 @@ public class AuctionWatchListController {
             return new ArrayList<>();
         }
         Auction auction = auctionProperty.get();
-        var listsOfUserQuery = em.createQuery("select distinct list.name from WatchListItem list where list.auction = :auction",String.class);
+        var listsOfUserQuery = em.createQuery("select distinct list.name from WatchListItem list where list.auction = :auction order by list.name",String.class);
         listsOfUserQuery.setParameter("auction", auction);
         try{
             return listsOfUserQuery.getResultList();
