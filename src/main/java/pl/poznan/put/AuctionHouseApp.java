@@ -173,7 +173,7 @@ public class AuctionHouseApp extends Application {
 
     private void runFollowerCreator(User user) {
         this.runPage(FollowersController.class, controller -> {
-            controller.setUp(CurrentUser.getLoggedInUser());
+            controller.setUp();
             controller.setUserPageCallback(() -> this.runUserPage(user));
         });
     }

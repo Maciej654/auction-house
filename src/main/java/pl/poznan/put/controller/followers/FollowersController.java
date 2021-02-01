@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import pl.poznan.put.controller.followers.buttons.FollowButton;
+import pl.poznan.put.logic.user.current.CurrentUser;
 import pl.poznan.put.model.user.User;
 import pl.poznan.put.util.callback.Callbacks;
 import pl.poznan.put.util.persistence.entity.manager.provider.EntityManagerProvider;
@@ -46,9 +47,6 @@ public class FollowersController {
 
     private static final EntityManager em = EntityManagerProvider.getEntityManager();
 
-    private User user;
-
-
     @AllArgsConstructor
     @lombok.Data
     public static class Data {
@@ -64,23 +62,22 @@ public class FollowersController {
         actionColumn.setCellValueFactory(new PropertyValueFactory<>("button"));
     }
 
-    public void setUp(User user) {
+    public void setUp() {
         if (em == null) return;
-        this.user = user;
         showAllRows();
     }
 
     @FXML
     public void userEntered() {
         if (em == null) return;
-
+        User user = CurrentUser.getLoggedInUser();
         TypedQuery<User> query = em.createQuery("select user from User user where user <> :user", User.class);
         query.setParameter("user", user);
         List<Data> rows = query.getResultStream()
-                               .filter(user -> user.getEmail()
+                               .filter(u -> u.getEmail()
                                                    .toUpperCase()
                                                    .contains(userEntry.getText().toUpperCase()))
-                               .map(u -> new Data(u.getEmail(), new FollowButton(user, u)))
+                               .map(u -> new Data(u.getEmail(), new FollowButton(u, u)))
                                .collect(Collectors.toList());
         ObservableList<Data> obs = FXCollections.observableArrayList(rows);
         tableView.setItems(obs);
@@ -93,7 +90,7 @@ public class FollowersController {
 
     private void showAllRows() {
         if (em == null) return;
-
+        User user = CurrentUser.getLoggedInUser();
         TypedQuery<User> query = em.createQuery("select user from User user where user <> :user", User.class);
         query.setParameter("user", user);
         List<Data> rows = query.getResultStream()
