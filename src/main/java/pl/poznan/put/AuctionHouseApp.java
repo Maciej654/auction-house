@@ -127,9 +127,9 @@ public class AuctionHouseApp extends Application {
 
     private void runRatingCreator(User user) {
         this.runPage(RatingCreator.class, controller -> {
-            controller.setUserPageCallback(() -> runUserPage(user));
             controller.setUser(user);
-
+            controller.setup();
+            controller.setUserPageCallback(() -> runUserPage(user));
         });
     }
 

@@ -50,8 +50,11 @@ public class RatingCreator {
         log.info("initialize");
         userPageButton.setOnAction(a -> userPageCallback.run());
 
+
+    }
+    public void setup(){
         List<String> collect = shoppingCartItemStream()
-                .filter(i -> i.getRating() == null) //for some reasons this can't be done in the query
+                .filter(i -> i.getRating() == null)
                 .map(ShoppingCartItem::getAuction)
                 .map(this::auctionAttributes).collect(Collectors.toList());
         ObservableList<String> x = FXCollections.observableArrayList(collect);
