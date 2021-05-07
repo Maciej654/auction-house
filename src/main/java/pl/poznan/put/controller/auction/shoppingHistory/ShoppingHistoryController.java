@@ -48,7 +48,7 @@ public class ShoppingHistoryController {
     @Setter
     private Runnable userPageCallback = Callbacks::noop;
 
-
+    @Setter
     private User user;
 
     private static final EntityManager em = EntityManagerProvider.getEntityManager();
@@ -76,7 +76,6 @@ public class ShoppingHistoryController {
 
     public void setup() {
         if (em == null) { return; }
-        user = em.find(User.class, "hercogmaciej@gmail.com"); //toDo connect with other views
         var query = em.createQuery("select item from ShoppingCartItem item where item.buyer = :buyer and item.auction" +
                                    ".status = :status", ShoppingCartItem.class);
         query.setParameter("buyer", user);

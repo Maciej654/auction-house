@@ -135,6 +135,7 @@ public class AuctionHouseApp extends Application {
 
     private void runDeliveryPreferencesCreator(User user) {
         this.runPage(DeliveryCreatorController.class,controller -> {
+            controller.setUser(user);
             controller.setUserPageCallback(() -> runUserPage(user));
             controller.setup();
         });
@@ -149,6 +150,7 @@ public class AuctionHouseApp extends Application {
 
     private void runShoppingHistory(User user) {
         this.runPage(ShoppingHistoryController.class, controller -> {
+            controller.setUser(user);
             controller.setUserPageCallback(() -> runUserPage(user));
             controller.setup();
         });

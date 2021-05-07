@@ -49,6 +49,7 @@ public class DeliveryCreatorController {
 
     public Label errorLabel;
 
+    @Setter
     private User user;
 
 
@@ -95,17 +96,14 @@ public class DeliveryCreatorController {
 
     public void setup() {
         refreshView();
-        if (em != null) {
-            user = em.find(User.class, "hercogmaciej@gmail.com"); //toDo connect with other views
-        }
-
     }
 
     private void refreshView() {
         if (em != null) {
             em.clear();
-            var query = em.createQuery("select dp from DeliveryPreference dp where dp.user = user",
+            var query = em.createQuery("select dp from DeliveryPreference dp where dp.user = :user",
                                        DeliveryPreference.class);
+            query.setParameter("user", user);
             var addresses = query.getResultStream()
                                  .map(dp -> new Data(dp.getAddress(), new DeleteButton(dp)))
                                  .collect(Collectors.toList());
